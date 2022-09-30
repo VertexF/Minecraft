@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include "Game.h"
+#include <memory>
+#include "Source/Application.h"
 
 int main() 
 {
-    game::Game game;
-    game.mainLoop();
+    std::unique_ptr<acid::Application> application = std::make_unique<acid::Application>();
 
     std::cout << "Hello world." << std::endl;
     return 0;
