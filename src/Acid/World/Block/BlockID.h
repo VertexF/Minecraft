@@ -1,0 +1,19 @@
+#ifndef BLOCK_ID_HDR
+#define BLOCK_ID_HDR
+
+#include <cstdint>
+
+namespace acid 
+{
+    enum class BlockID : uint8_t 
+    {
+        AIR = 0,
+        GRASS,
+        DIRT,
+        STONE,
+
+        NUM_TYPES
+    };
+}
+
+#endif // !BLOCK_ID_HDR

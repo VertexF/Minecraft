@@ -8,7 +8,7 @@
 
 namespace acid
 {
-    CubeRenderer::CubeRenderer()
+    CubeRenderer::CubeRenderer() : _textureAtlas("DefaultPack")
     {
         _basicTexture.loadFromFile("Test");
 
@@ -51,39 +51,6 @@ namespace acid
             0.f, 0.f, 1.f
         };
 
-        std::vector<GLfloat> texCoords
-        {
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
-            0.f, 0.f,
-
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
-            0.f, 0.f,
-
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
-            0.f, 0.f,
-
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
-            0.f, 0.f,
-
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
-            0.f, 0.f,
-
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
-            0.f, 0.f
-        };
-
         std::vector<GLuint> indices
         {
             0, 1, 2,
@@ -105,6 +72,18 @@ namespace acid
             22, 23, 20
         };
 
+        auto top = _textureAtlas.getTexture({ 0, 0 });
+        auto side = _textureAtlas.getTexture({ 1, 0 });
+        auto bottom = _textureAtlas.getTexture({ 2, 0 });
+
+        std::vector<GLfloat> texCoords;
+        texCoords.insert(texCoords.end(), side.begin(), side.end());
+        texCoords.insert(texCoords.end(), side.begin(), side.end());
+        texCoords.insert(texCoords.end(), side.begin(), side.end());
+        texCoords.insert(texCoords.end(), side.begin(), side.end());
+        texCoords.insert(texCoords.end(), top.begin(), top.end());
+        texCoords.insert(texCoords.end(), bottom.begin(), bottom.end());
+
         _cubeModel.addData(vertexCoords, texCoords, indices);
     }
 
@@ -119,7 +98,7 @@ namespace acid
 
         _shader.useProgram();
         _cubeModel.bindVAO();
-        _basicTexture.bindTexture();
+        _textureAtlas.bindTexture();
 
         _shader.loadProjectionViewMatrix(camera.getProjectionViewMatrix());
 

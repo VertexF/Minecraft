@@ -2,8 +2,6 @@
 
 #include <stdexcept>
 
-#include <SFML/Graphics.hpp>
-
 namespace acid 
 {
     BasicTexture::BasicTexture(const std::string& file) 
@@ -24,7 +22,11 @@ namespace acid
             std::string filePath = "Assets/Textures/" + file + ".png";
             throw std::runtime_error("Cound not load the file : " + filePath);
         }
+        loadFromImage(image);
+    }
 
+    void BasicTexture::loadFromImage(const sf::Image& image)
+    {
         glGenTextures(1, &_id);
         glBindTexture(GL_TEXTURE_2D, _id);
 

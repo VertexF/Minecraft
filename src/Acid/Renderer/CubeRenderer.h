@@ -7,6 +7,7 @@
 #include "../Source/Model.h"
 #include "../Shaders/BasicShader.h"
 #include "../Texture/BasicTexture.h"
+#include "../Texture/TextureAtlas.h"
 
 namespace acid 
 {
@@ -26,6 +27,7 @@ namespace acid
         Model _cubeModel;
         BasicShader _shader;
         BasicTexture _basicTexture;
+        TextureAtlas _textureAtlas;
     };
 }
 
