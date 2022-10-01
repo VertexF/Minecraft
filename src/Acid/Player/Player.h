@@ -1,6 +1,8 @@
 #ifndef PLAYER_HDR
 #define PLAYER_HDR
 
+#include <SFML/Graphics.hpp>
+
 #include "../Source/Entity.h"
 
 namespace acid 
@@ -10,12 +12,14 @@ namespace acid
     public:
         Player();
 
-        void handleInput();
+        void handleInput(const sf::RenderWindow& window);
 
         void update(float dt);
     private:
         void keyboardInput();
-        void mouseInput();
+        void mouseInput(const sf::RenderWindow& window);
+
+        glm::vec3 _velocity;
     };
 }
 

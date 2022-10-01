@@ -12,7 +12,7 @@ namespace acid
         _viewMatrix = glm::mat4(1.0);
         _projViewMatrix = glm::mat4(1.0);
 
-        position = { 0.f, 0.f, -3.5f };
+        position = { 0.f, 0.f, 0.f };
         rotation = { 0.f, 0.f, 0.f };
     }
 
@@ -23,6 +23,9 @@ namespace acid
 
     void Camera::update() 
     {
+        position = _entity->position;
+        rotation = _entity->rotation;
+
         _viewMatrix = makeViewMatrix(*this);
         _projViewMatrix = _projectionMatrix * _viewMatrix;
     }

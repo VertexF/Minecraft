@@ -2,6 +2,7 @@
 #define PLAYING_STATE_HDR
 
 #include "StateBase.h"
+#include "../Player/Player.h"
 
 namespace acid 
 {
@@ -16,6 +17,8 @@ namespace acid
 
         virtual void update(float deltaTime);
         virtual void render(RenderMaster& renderer);
+    private:
+        Player _player;
     };
 }
 

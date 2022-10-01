@@ -28,6 +28,9 @@ namespace acid
             auto& s = _states.back();
         }
 
+        Camera& getCamera() { return _camera; }
+        const sf::RenderWindow& getWindow() const { return _context.window; }
+
         void popState();
     private:
         void handleEvents();

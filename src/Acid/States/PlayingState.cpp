@@ -3,12 +3,14 @@
 #include <glm/glm.hpp>
 
 #include "../Renderer/RenderMaster.h"
+#include "../Source/Application.h"
 
 namespace acid 
 {
     StatePlaying::StatePlaying(Application& app) :
         StateBase(app)
     {
+        app.getCamera().hookEntity(_player);
     }
 
     void StatePlaying::handleEvent(sf::Event e) 
@@ -17,20 +19,16 @@ namespace acid
 
     void StatePlaying::handleInput() 
     {
+        _player.handleInput(_application->getWindow());
     }
 
     void StatePlaying::update(float deltaTime) 
     {
+        _player.update(deltaTime);
     }
 
     void StatePlaying::render(RenderMaster& renderer) 
     {
-        static sf::Clock clock;
-        static float lastTime = 0.f;
-        float timeNow = clock.getElapsedTime().asSeconds();
-        auto dt = timeNow - lastTime;
-        lastTime = timeNow;
-
-        renderer.drawQuad({0, 0, glm::sin(timeNow) * 3 });
+        renderer.drawQuad({ 0, 0, 0 });
     }
 }

@@ -22,7 +22,7 @@ namespace acid
         if (image.loadFromFile("Assets/Textures/" + file + ".png") == false)
         {
             std::string filePath = "Assets/Textures/" + file + ".png";
-            std::runtime_error("Cound not load the file : " + filePath);
+            throw std::runtime_error("Cound not load the file : " + filePath);
         }
 
         glGenTextures(1, &_id);
