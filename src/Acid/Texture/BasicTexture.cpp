@@ -1,5 +1,7 @@
 #include "BasicTexture.h"
 
+#include <stdexcept>
+
 #include <SFML/Graphics.hpp>
 
 namespace acid 
@@ -19,6 +21,8 @@ namespace acid
         sf::Image image;
         if (image.loadFromFile("Assets/Textures/" + file + ".png") == false)
         {
+            std::string filePath = "Assets/Textures/" + file + ".png";
+            std::runtime_error("Cound not load the file : " + filePath);
         }
 
         glGenTextures(1, &_id);
@@ -29,8 +33,8 @@ namespace acid
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
 
     void BasicTexture::bindTexture() const 
