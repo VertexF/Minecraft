@@ -1,5 +1,7 @@
 #include "PlayingState.h"
 
+#include <glm/glm.hpp>
+
 #include "../Renderer/RenderMaster.h"
 
 namespace acid 
@@ -23,6 +25,12 @@ namespace acid
 
     void StatePlaying::render(RenderMaster& renderer) 
     {
-        renderer.drawQuad({0, 0, 0});
+        static sf::Clock clock;
+        static float lastTime = 0.f;
+        float timeNow = clock.getElapsedTime().asSeconds();
+        auto dt = timeNow - lastTime;
+        lastTime = timeNow;
+
+        renderer.drawQuad({0, 0, glm::sin(timeNow) * 3 });
     }
 }

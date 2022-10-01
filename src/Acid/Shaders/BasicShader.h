@@ -13,10 +13,12 @@ namespace acid
         BasicShader(const std::string& vertexFile = "BasicVertex", const std::string& fragmentFile = "BasicFragment");
 
         void loadProjectionViewMatrix(const glm::mat4& pvMatrix);
+        void loadModelMatrix(const glm::mat4& modelMatrix);
     private:
         virtual void getUniforms() override;
 
         GLuint _locationProjectionViewMatrix;
+        GLuint _locationModelMatrix;
     };
 }
 

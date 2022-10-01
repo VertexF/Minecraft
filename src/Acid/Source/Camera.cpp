@@ -9,6 +9,9 @@ namespace acid
     Camera::Camera() 
     {
         _projectionMatrix = makeProjectionMatrix(90);
+
+        _worldPosition = { 0, 0, -5 };
+        _rotation = { 0, 0, 0 };
     }
 
     void Camera::update() 
