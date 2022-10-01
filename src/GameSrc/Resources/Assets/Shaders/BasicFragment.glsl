@@ -1,9 +1,9 @@
-#version 330
+#version 450
 
 out vec4 outColour;
 in vec2 passTextureCoord;
 
-uniform sample2D texSampler;
+uniform sampler2D texSampler;
 
 void main()
 {

@@ -1,12 +1,12 @@
 #include <iostream>
 
 #include <memory>
-#include "Source/Application.h"
+#include "../Acid/Source/Application.h"
 
 int main() 
 {
-    std::unique_ptr<acid::Application> application = std::make_unique<acid::Application>();
+    std::unique_ptr<acid::Application> application = std::make_unique<acid::Application>("Minecraft");
+    application->mainLoop();
 
-    std::cout << "Hello world." << std::endl;
     return 0;
 }
