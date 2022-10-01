@@ -28,6 +28,8 @@ namespace acid
         glewExperimental = GL_TRUE;
         glViewport(0, 0, 1280, 720);
 
+        glCullFace(GL_BACK);
+
         window.setFramerateLimit(60);
     }
 }

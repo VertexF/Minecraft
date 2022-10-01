@@ -29,6 +29,6 @@ namespace acid
 
     void StatePlaying::render(RenderMaster& renderer) 
     {
-        renderer.drawQuad({ 0, 0, 0 });
+        renderer.drawCube({ 0, 0, 0 });
     }
 }

@@ -4,7 +4,7 @@ namespace acid
 {
     Player::Player() 
     {
-        position = { 0.f, 0.f, -5.f };
+        position = { 0.f, 0.f, 5.f };
         rotation = { 0.f, 0.f, 0.f };
         _velocity = { 0.f, 0.f, 0.f };
     }
@@ -28,23 +28,32 @@ namespace acid
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {
-            change.x = glm::cos(glm::radians(rotation.y + 90)) * speed;
-            change.z = glm::sin(glm::radians(rotation.y + 90)) * speed;
+            change.x += -glm::cos(glm::radians(rotation.y + 90)) * speed;
+            change.z += -glm::sin(glm::radians(rotation.y + 90)) * speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            change.x = -glm::cos(glm::radians(rotation.y + 90)) * speed;
-            change.z = -glm::sin(glm::radians(rotation.y + 90)) * speed;
+            change.x += glm::cos(glm::radians(rotation.y + 90)) * speed;
+            change.z += glm::sin(glm::radians(rotation.y + 90)) * speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            change.x = glm::cos(glm::radians(rotation.y)) * speed;
-            change.z = glm::sin(glm::radians(rotation.y)) * speed;
+            change.x += -glm::cos(glm::radians(rotation.y)) * speed;
+            change.z += -glm::sin(glm::radians(rotation.y)) * speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            change.x = -glm::cos(glm::radians(rotation.y)) * speed;
-            change.z = -glm::sin(glm::radians(rotation.y)) * speed;
+            change.x += glm::cos(glm::radians(rotation.y)) * speed;
+            change.z += glm::sin(glm::radians(rotation.y)) * speed;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
+        {
+            change.y += speed;
+        }
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+        {
+            change.y -= speed;
         }
 
         _velocity += change;
