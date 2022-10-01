@@ -21,7 +21,7 @@ namespace acid
     void BasicShader::getUniforms() 
     {
         useProgram();
-        _locationProjectionViewMatrix = glGetUniformLocation(_id, "projViewMat");
+        _locationProjectionViewMatrix = glGetUniformLocation(_id, "projViewMatrix");
         _locationModelMatrix = glGetUniformLocation(_id, "modelMatrix");
     }
 }

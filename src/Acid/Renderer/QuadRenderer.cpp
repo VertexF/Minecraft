@@ -2,6 +2,7 @@
 
 #include "../Source/Camera.h"
 #include "../Maths/Matrix.h"
+#include "../Source/Entity.h"
 
 namespace acid 
 {
@@ -43,7 +44,7 @@ namespace acid
 
         for (auto& quad : _quads) 
         {
-            _shader.loadModelMatrix(makeModelMatrix(quad, { 0, 0, 0 }));
+            _shader.loadModelMatrix(makeModelMatrix({ quad, { 0, 0, 0 } }));
             glDrawElements(GL_TRIANGLES, _quadModel.getIndicesCount(), GL_UNSIGNED_INT, nullptr);
         }
 

@@ -3,24 +3,22 @@
 
 #include <glm/glm.hpp>
 
+#include "Entity.h"
+
 namespace acid 
 {
-    class Camera 
+    class Camera : public Entity
     {
     public:
         Camera();
         void update();
+        void hookEntity(const Entity& entity);
 
         const glm::mat4& getViewMatrix() const noexcept;
         const glm::mat4& getProjMatrix() const noexcept;
         const glm::mat4& getProjectionViewMatrix() const noexcept;
-
-        const glm::vec3& getPosition() const noexcept;
-        const glm::vec3& getRotation() const noexcept;
-
     private:
-        glm::vec3 _worldPosition;
-        glm::vec3 _rotation;
+        const Entity* _entity;
 
         glm::mat4 _projectionMatrix;
         glm::mat4 _viewMatrix;

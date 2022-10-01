@@ -6,12 +6,19 @@
 
 namespace acid 
 {
-    Camera::Camera() 
+    Camera::Camera() : _entity(nullptr)
     {
         _projectionMatrix = makeProjectionMatrix(90);
+        _viewMatrix = glm::mat4(1.0);
+        _projViewMatrix = glm::mat4(1.0);
 
-        _worldPosition = { 0, 0, -5 };
-        _rotation = { 0, 0, 0 };
+        position = { 0.f, 0.f, -3.5f };
+        rotation = { 0.f, 0.f, 0.f };
+    }
+
+    void Camera::hookEntity(const Entity& entity)
+    {
+        _entity = &entity;
     }
 
     void Camera::update() 
@@ -33,15 +40,5 @@ namespace acid
     const glm::mat4& Camera::getProjectionViewMatrix() const noexcept 
     {
         return _projViewMatrix;
-    }
-
-    const glm::vec3& Camera::getPosition() const noexcept 
-    {
-        return _worldPosition;
-    }
-
-    const glm::vec3& Camera::getRotation() const noexcept 
-    {
-        return _rotation;
     }
 }

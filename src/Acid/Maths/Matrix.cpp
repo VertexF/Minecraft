@@ -4,29 +4,28 @@
 
 namespace acid 
 {
-    glm::mat4 makeModelMatrix(const glm::vec3& position, const glm::vec3& rotation) 
+    glm::mat4 makeModelMatrix(const Entity& entity) 
     {
-        glm::mat4 matrix;
+        glm::mat4 matrix = glm::mat4(1.0);
 
-        matrix = glm::rotate(matrix, glm::radians(rotation.x), { 1, 0, 0 });
-        matrix = glm::rotate(matrix, glm::radians(rotation.y), { 0, 1, 0 });
-        matrix = glm::rotate(matrix, glm::radians(rotation.z), { 0, 0, 1 });
+        matrix = glm::rotate(matrix, glm::radians(entity.rotation.x), { 1, 0, 0 });
+        matrix = glm::rotate(matrix, glm::radians(entity.rotation.y), { 0, 1, 0 });
+        matrix = glm::rotate(matrix, glm::radians(entity.rotation.z), { 0, 0, 1 });
 
-        matrix = glm::translate(matrix, position);
+        matrix = glm::translate(matrix, entity.position);
 
         return matrix;
     }
 
     glm::mat4 makeViewMatrix(const Camera& camera) 
     {
-        glm::mat4 matrix;
+        glm::mat4 matrix = glm::mat4(1.0);
 
-        auto& rot = camera.getRotation();
-        matrix = glm::rotate(matrix, glm::radians(rot.x), { 1, 0, 0 });
-        matrix = glm::rotate(matrix, glm::radians(rot.y), { 0, 1, 0 });
-        matrix = glm::rotate(matrix, glm::radians(rot.z), { 0, 0, 1 });
+        matrix = glm::rotate(matrix, glm::radians(camera.rotation.x), { 1, 0, 0 });
+        matrix = glm::rotate(matrix, glm::radians(camera.rotation.y), { 0, 1, 0 });
+        matrix = glm::rotate(matrix, glm::radians(camera.rotation.z), { 0, 0, 1 });
 
-        matrix = glm::translate(matrix, camera.getPosition());
+        matrix = glm::translate(matrix, camera.position);
 
         return matrix;
     }
