@@ -3,6 +3,7 @@
 #include "../Source/Global.h"
 #include "../Source/Camera.h"
 #include "../World/Chunk/ChunkMesh.h"
+#include "../Source/GL/GLFunctions.h"
 
 namespace acid 
 {
@@ -25,7 +26,7 @@ namespace acid
             const ChunkMesh& currentMesh = *mesh;
 
             currentMesh.getModel().bindVAO();
-            glDrawElements(GL_TRIANGLES, currentMesh.getModel().getIndicesCount(), GL_UNSIGNED_INT, nullptr);
+            drawElements(currentMesh.getModel().getIndicesCount());
         }
 
         _chunks.clear();

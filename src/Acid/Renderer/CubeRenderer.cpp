@@ -5,6 +5,7 @@
 #include "../Source/Camera.h"
 #include "../Maths/Matrix.h"
 #include "../Source/Entity.h"
+#include "../Source/GL/GLFunctions.h"
 
 namespace acid
 {
@@ -105,7 +106,7 @@ namespace acid
         for (auto& cube : _cubes)
         {
             _shader.loadModelMatrix(makeModelMatrix({ cube, { 0, 0, 0 } }));
-            glDrawElements(GL_TRIANGLES, _cubeModel.getIndicesCount(), GL_UNSIGNED_INT, nullptr);
+            drawElements(_cubeModel.getIndicesCount());
         }
 
         _cubes.clear();

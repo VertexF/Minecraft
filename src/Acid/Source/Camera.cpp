@@ -8,7 +8,7 @@ namespace acid
 {
     Camera::Camera() : _entity(nullptr)
     {
-        _projectionMatrix = makeProjectionMatrix(90);
+        _projectionMatrix = makeProjectionMatrix(60);
         _viewMatrix = glm::mat4(1.0);
         _projViewMatrix = glm::mat4(1.0);
 
