@@ -14,7 +14,7 @@ namespace acid
 
         void loadProjectionViewMatrix(const glm::mat4& pvMatrix);
         void loadModelMatrix(const glm::mat4& modelMatrix);
-    private:
+    protected:
         virtual void getUniforms() override;
 
         GLuint _locationProjectionViewMatrix;

@@ -2,9 +2,9 @@
 
 namespace acid 
 {
-    Model::Model(const std::vector<GLfloat>& vertexPosition, const std::vector<GLfloat>& textureCoords, const std::vector<GLuint>& indices) 
+    Model::Model(const Mesh& mesh) 
     {
-        addData(vertexPosition, textureCoords, indices);
+        addData(mesh);
     }
 
     Model::~Model() 
@@ -12,21 +12,21 @@ namespace acid
         deleteData();
     }
 
-    void Model::addData(const std::vector<GLfloat>& vertexPosition, const std::vector<GLfloat>& textureCoords, const std::vector<GLuint>& indices) 
+    void Model::addData(const Mesh& mesh) 
     {
         if (_vao != 0) 
         {
             deleteData();
         }
 
-        _indicesCount = indices.size();
+        _indicesCount = mesh.indices.size();
 
         glGenVertexArrays(1, &_vao);
         glBindVertexArray(_vao);
 
-        addVBO(3, vertexPosition);
-        addVBO(2, textureCoords);
-        addEBO(indices);
+        addVBO(3, mesh.vertexPosition);
+        addVBO(2, mesh.textureCoords);
+        addEBO(mesh.indices);
     }
 
     void Model::deleteData() 

@@ -4,6 +4,7 @@
 
 #include "../Renderer/RenderMaster.h"
 #include "../Source/Application.h"
+#include "../World/Chunk/ChunkMeshBuilder.h"
 
 namespace acid 
 {
@@ -11,6 +12,11 @@ namespace acid
         StateBase(app)
     {
         app.getCamera().hookEntity(_player);
+
+        ChunkMeshBuilder builder(_chunkTest);
+        builder.buildMesh(_chunkTest.mesh);
+
+        _chunkTest.mesh.bufferMesh();
     }
 
     void StatePlaying::handleEvent(sf::Event e) 
@@ -29,6 +35,7 @@ namespace acid
 
     void StatePlaying::render(RenderMaster& renderer) 
     {
-        renderer.drawCube({ 0, 0, 0 });
+        //renderer.drawCube({ -1.1, 0, -1.1 });
+        renderer.drawChunk(_chunkTest.mesh);
     }
 }

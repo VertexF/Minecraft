@@ -10,7 +10,7 @@ namespace acid
     {
         _basicTexture.loadFromFile("Test");
 
-        _quadModel.addData(
+        _quadModel.addData({
             {
                 -0.5,  0.5, 0.0,
                  0.5,  0.5, 0.0,
@@ -26,7 +26,7 @@ namespace acid
             {
                 0, 1, 2,
                 2, 3, 0
-            });
+            } });
     }
 
     void QuadRenderer::add(const glm::vec3& position) 

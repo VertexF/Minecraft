@@ -22,19 +22,19 @@ namespace acid
                 inFile >> x >> y;
                 _data.texTopCoord = { x, y };
             }
-            else if (line == "TexTop")
-            {
-                int x, y;
-                inFile >> x >> y;
-                _data.texBottomCoord = { x, y };
-            }
-            else if (line == "TexTop")
+            else if (line == "TexSide")
             {
                 int x, y;
                 inFile >> x >> y;
                 _data.texSideCoord = { x, y };
             }
-            else if (line == "TexTop")
+            else if (line == "TexBottom")
+            {
+                int x, y;
+                inFile >> x >> y;
+                _data.texBottomCoord = { x, y };
+            }
+            else if (line == "TexAll")
             {
                 int x, y;
                 inFile >> x >> y;

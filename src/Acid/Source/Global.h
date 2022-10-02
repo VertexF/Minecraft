@@ -3,11 +3,13 @@
 
 #include "../Util/Singleton.h"
 #include "../Util/Random.h"
+#include "../World/Block/BlockDatabase.h"
 
 namespace acid
 {
 
 #define RANDOM_GENERATOR (Singleton<RandomSingleton>::getInstance())
+#define BLOCK_DATABASE (Singleton<BlockDatabase>::getInstance())
 
 }
 

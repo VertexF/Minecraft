@@ -5,6 +5,9 @@
 
 namespace acid 
 {
+    class BlockData;
+    class BlockType;
+
     struct ChunkBlock 
     {
         ChunkBlock() = default;
@@ -12,7 +15,16 @@ namespace acid
         ChunkBlock(uint8_t id);
         ChunkBlock(BlockID id);
 
-        uint8_t id = 0;
+        const BlockData& getData() const;
+        const BlockType& getType() const;
+        BlockID getBlockID() const;
+
+        bool operator==(ChunkBlock other) 
+        {
+            return (id == other.id);
+        }
+
+        uint8_t id = 1;
     };
 }
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 
+#include "Mesh.h"
 #include "../Util/NonCopyable.h"
 
 namespace acid 
@@ -13,10 +14,10 @@ namespace acid
     {
     public:
         Model() = default;
-        Model(const std::vector<GLfloat>& vertexPosition, const std::vector<GLfloat>& textureCoords, const std::vector<GLuint>& indices);
+        Model(const Mesh& mesh);
         virtual ~Model();
 
-        void addData(const std::vector<GLfloat>& vertexPosition, const std::vector<GLfloat>& textureCoords, const std::vector<GLuint>& indices);
+        void addData(const Mesh& mesh);
 
         void deleteData();
         void addVBO(int dimensions, const std::vector<GLfloat>& data);

@@ -84,7 +84,7 @@ namespace acid
         texCoords.insert(texCoords.end(), top.begin(), top.end());
         texCoords.insert(texCoords.end(), bottom.begin(), bottom.end());
 
-        _cubeModel.addData(vertexCoords, texCoords, indices);
+        _cubeModel.addData({ vertexCoords, texCoords, indices });
     }
 
     void CubeRenderer::add(const glm::vec3& position)
