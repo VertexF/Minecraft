@@ -5,6 +5,8 @@
 #include "../Renderer/RenderMaster.h"
 #include "../Source/Application.h"
 #include "../World/Chunk/ChunkMeshBuilder.h"
+#include "../Source/Global.h"
+#include "../Maths/Ray.h"
 
 namespace acid 
 {
@@ -12,11 +14,6 @@ namespace acid
         StateBase(app)
     {
         app.getCamera().hookEntity(_player);
-
-        ChunkMeshBuilder builder(_chunkTest);
-        builder.buildMesh(_chunkTest.mesh);
-
-        _chunkTest.mesh.bufferMesh();
     }
 
     void StatePlaying::handleEvent(sf::Event e) 
@@ -26,6 +23,33 @@ namespace acid
     void StatePlaying::handleInput() 
     {
         _player.handleInput(_application->getWindow());
+
+        static sf::Clock timer;
+        glm::vec3 lastPosition;
+
+        for (Ray ray(_player.position, _player.rotation); ray.getLenght() < 6; ray.step(0.1)) 
+        {
+            int x = ray.getEnd().x;
+            int y = ray.getEnd().y;
+            int z = ray.getEnd().z;
+
+            auto block = WORLD.getBlock(x, y, z);
+
+            if (block != 0) 
+            {
+                if (timer.getElapsedTime().asSeconds() > 0.2) 
+                {
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
+                    {
+                        timer.restart();
+                        WORLD.editBlock(x, y, z, 0);
+                        break;
+                    }
+                }
+            }
+
+            lastPosition = ray.getEnd();
+        }
     }
 
     void StatePlaying::update(float deltaTime) 
@@ -35,7 +59,6 @@ namespace acid
 
     void StatePlaying::render(RenderMaster& renderer) 
     {
-        //renderer.drawCube({ -1.1, 0, -1.1 });
-        renderer.drawChunk(_chunkTest.mesh);
+        WORLD.renderWorld(renderer);
     }
 }

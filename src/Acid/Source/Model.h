@@ -10,12 +10,15 @@
 
 namespace acid 
 {
-    class Model : public NonCopyable
+    class Model
     {
     public:
         Model() = default;
         Model(const Mesh& mesh);
         virtual ~Model();
+
+        Model(Model&& other) noexcept;
+        Model& operator=(Model&& other) noexcept;
 
         void addData(const Mesh& mesh);
 

@@ -24,7 +24,12 @@ namespace acid
             return (id == other.id);
         }
 
-        uint8_t id = 1;
+        bool operator!=(ChunkBlock other)
+        {
+            return (id != other.id);
+        }
+
+        uint8_t id = 0;
     };
 }
 

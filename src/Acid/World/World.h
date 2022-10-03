@@ -2,6 +2,7 @@
 #define WORLD_HDR
 
 #include <vector>
+#include <memory>
 #include "Chunk/ChunkBase.h"
 #include "Chunk/Chunk.h"
 
@@ -18,9 +19,11 @@ namespace acid
         virtual ChunkBlock getBlock(int x, int y, int z) const override;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
 
+        void editBlock(int x, int y, int z, const ChunkBlock& block);
+
         void renderWorld(RenderMaster& master);
     private:
-        Chunk _chunk;
+        std::vector<std::unique_ptr<Chunk>> _chunks;
     };
 }
 

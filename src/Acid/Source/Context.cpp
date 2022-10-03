@@ -30,6 +30,6 @@ namespace acid
 
         glCullFace(GL_BACK);
 
-        window.setFramerateLimit(60);
+        window.setFramerateLimit(90);
     }
 }

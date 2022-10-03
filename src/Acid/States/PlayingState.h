@@ -3,7 +3,6 @@
 
 #include "StateBase.h"
 #include "../Player/Player.h"
-#include "../World/Chunk/ChunkSection.h"
 
 namespace acid 
 {
@@ -20,7 +19,6 @@ namespace acid
         virtual void render(RenderMaster& renderer);
     private:
         Player _player;
-        ChunkSection _chunkTest;
     };
 }
 

@@ -12,6 +12,26 @@ namespace acid
         deleteData();
     }
 
+    Model::Model(Model&& other) noexcept : 
+        _vao(other._vao), _vboCount(other._vboCount), _indicesCount(other._indicesCount),
+        _buffers(std::move(other._buffers))
+    {
+    }
+    
+    Model& Model::operator=(Model&& other) noexcept
+    {
+        _vao = other._vao;
+        _vboCount = other._vboCount;
+        _indicesCount = other._indicesCount;
+        _buffers = std::move(other._buffers);
+
+        other._vao = 0;
+        other._vboCount = 0;
+        other._indicesCount = 0;
+
+        return *this;
+    }
+
     void Model::addData(const Mesh& mesh) 
     {
         if (_vao != 0) 

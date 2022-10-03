@@ -98,7 +98,7 @@ namespace acid
                 {
                     sf::Vector3i position(x, y, z);
                     ChunkBlock block = _chunk->getBlock(x, y, z);
-                    if (block.getBlockID() == BlockID::AIR)
+                    if (block == BlockID::AIR)
                     {
                         continue;
                     }
@@ -135,7 +135,7 @@ namespace acid
     {
         auto block = _chunk->getBlock(adjBlock.x, adjBlock.y, adjBlock.z);
 
-        if (block.getBlockID() == BlockID::AIR)
+        if (block == BlockID::AIR)
         {
             return true;
         }
