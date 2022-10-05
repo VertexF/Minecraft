@@ -35,7 +35,7 @@ namespace acid
         _quads.push_back(position);
     }
 
-    void QuadRenderer::renderQuads(const Camera& camera) 
+    void QuadRenderer::render(const Camera& camera) 
     {
         _shader.useProgram();
         _quadModel.bindVAO();

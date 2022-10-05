@@ -25,12 +25,13 @@ namespace acid
 
         void deleteData();
         void addVBO(int dimensions, const std::vector<GLfloat>& data);
+        void genVAO();
         void bindVAO() const;
+        void addEBO(const std::vector<GLuint>& indices);
 
         int getIndicesCount() const;
 
     private:
-        void addEBO(const std::vector<GLuint>& indices);
 
         GLuint _vao = 0;
         int _vboCount = 0;

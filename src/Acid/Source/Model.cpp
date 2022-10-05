@@ -60,16 +60,7 @@ namespace acid
 
     void Model::addData(const Mesh& mesh) 
     {
-        if (_vao != 0) 
-        {
-            deleteData();
-        }
-
-        _indicesCount = mesh.indices.size();
-
-        glGenVertexArrays(1, &_vao);
-        glBindVertexArray(_vao);
-
+        genVAO();
         addVBO(3, mesh.vertexPosition);
         addVBO(2, mesh.textureCoords);
         addEBO(mesh.indices);
@@ -85,6 +76,17 @@ namespace acid
         _vboCount = 0;
         _vao = 0;
         _indicesCount = 0;
+    }
+
+    void Model::genVAO() 
+    {
+        if (_vao != 0)
+        {
+            deleteData();
+        }
+
+        glGenVertexArrays(1, &_vao);
+        glBindVertexArray(_vao);
     }
 
     void Model::addVBO(int dimensions, const std::vector<GLfloat>& data) 
@@ -112,6 +114,7 @@ namespace acid
 
     void Model::addEBO(const std::vector<GLuint>& indices) 
     {
+        _indicesCount = indices.size();
         GLuint ebo;
         glGenBuffers(1, &ebo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);

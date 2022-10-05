@@ -22,15 +22,27 @@ namespace acid
         _chunkRenderer.add(mesh);
     }
 
+    void RenderMaster::drawSky() 
+    {
+        _drawSky = true;
+    }
+
     void RenderMaster::finishRender(sf::RenderWindow& window, const Camera& camera) 
     {
         glClearColor(0.1, 0.5, 1.0, 1.0);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
-        //_quadRenderer.renderQuads(camera);
+        //_quadRenderer.render(camera);
         //_cubeRenderer.render(camera);
         _chunkRenderer.render(camera);
+
+        if (_drawSky) 
+        {
+            glDisable(GL_CULL_FACE);
+            //_skyRenderer.render(camera);
+            _drawSky = false;
+        }
 
         window.display();
     }
