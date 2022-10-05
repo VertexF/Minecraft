@@ -20,10 +20,12 @@ namespace acid
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
 
         void editBlock(int x, int y, int z, const ChunkBlock& block);
+        void addChunk(int x, int z);
 
         void renderWorld(RenderMaster& master);
     private:
-        std::vector<std::unique_ptr<Chunk>> _chunks;
+        std::vector<std::shared_ptr<Chunk>> _chunks;
+        std::vector<std::shared_ptr<Chunk>> _changeChunks;
     };
 }
 

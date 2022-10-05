@@ -3,6 +3,50 @@
 namespace 
 {
     constexpr int TEMP_WORLD_SIZE = 8;
+
+    struct VectorXZ 
+    {
+        int x, z;
+    };
+
+    VectorXZ getBlockXZ(int x, int z) 
+    {
+        return 
+        {
+            x % acid::CHUNK_SIZE,
+            z % acid::CHUNK_SIZE
+        };
+    }
+
+    VectorXZ getChunkXZ(int x, int z)
+    {
+        return
+        {
+            static_cast<int>(x / acid::CHUNK_SIZE),
+            static_cast<int>(z / acid::CHUNK_SIZE)
+        };
+    }
+
+    bool isOutOfBounds(const VectorXZ& chunkPosition)
+    {
+        if (chunkPosition.x < 0) 
+        {
+            return true;
+        }
+        if (chunkPosition.z < 0)
+        {
+            return true;
+        }
+        if (chunkPosition.x >= TEMP_WORLD_SIZE)
+        {
+            return true;
+        }
+        if (chunkPosition.z >= TEMP_WORLD_SIZE)
+        {
+            return true;
+        }
+        return false;
+    }
 }
 
 namespace acid
@@ -13,100 +57,68 @@ namespace acid
         {
             for (int z = 0; z < TEMP_WORLD_SIZE; z++) 
             {
-                _chunks.emplace_back(std::make_unique<Chunk>(*this, sf::Vector2i(x, z)));
+                addChunk(x, z);
             }
         }
 
         for(int i = 0; i < _chunks.size(); i++)
         {
-            _chunks.at(i)->makeAllMeshtemp();
+            _chunks.at(i)->makeAllMesh();
         }
     }
 
     ChunkBlock World::getBlock(int x, int y, int z) const
     {
-        int bX = x % CHUNK_SIZE;
-        int bZ = z % CHUNK_SIZE;
+        auto blockPosition = getBlockXZ(x, z);
+        auto chunkPosition = getChunkXZ(x, z);
 
-        int cX = static_cast<int>(x / CHUNK_SIZE);
-        int cZ = static_cast<int>(z / CHUNK_SIZE);
-
-        if (cX < 0) 
-        {
-            return BlockID::AIR;
-        }
-        if (cZ < 0)
-        {
-            return BlockID::AIR;
-        }
-        if (cX >= TEMP_WORLD_SIZE)
-        {
-            return BlockID::AIR;
-        }
-        if (cZ >= TEMP_WORLD_SIZE)
+        if (isOutOfBounds(chunkPosition)) 
         {
             return BlockID::AIR;
         }
 
-        return _chunks.at(cX * TEMP_WORLD_SIZE + cZ)->getBlock(bX, y, bZ);
+        return _chunks.at(chunkPosition.x * TEMP_WORLD_SIZE + chunkPosition.z)->getBlock(blockPosition.x, y, blockPosition.z);
     }
 
     void World::setBlock(int x, int y, int z, const ChunkBlock& block)
     {
-        int bX = x % CHUNK_SIZE;
-        int bZ = z % CHUNK_SIZE;
+        auto blockPosition = getBlockXZ(x, z);
+        auto chunkPosition = getChunkXZ(x, z);
 
-        int cX = static_cast<int>(x / CHUNK_SIZE);
-        int cZ = static_cast<int>(z / CHUNK_SIZE);
-
-        if (cX < 0)
-        {
-            return;
-        }
-        if (cZ < 0)
-        {
-            return;
-        }
-        if (cX >= TEMP_WORLD_SIZE)
-        {
-            return;
-        }
-        if (cZ >= TEMP_WORLD_SIZE)
+        if (isOutOfBounds(chunkPosition))
         {
             return;
         }
 
-        _chunks.at(cX * TEMP_WORLD_SIZE + cZ)->setBlock(bX, y, bZ, block);
+        _chunks.at(chunkPosition.x * TEMP_WORLD_SIZE + chunkPosition.z)->setBlock(blockPosition.x, y, blockPosition.z, block);
     }
 
     void World::editBlock(int x, int y, int z, const ChunkBlock& block)
     {
-        int cX = static_cast<int>(x / CHUNK_SIZE);
-        int cZ = static_cast<int>(z / CHUNK_SIZE);
+        auto chunkPosition = getChunkXZ(x, z);
 
-        if (cX < 0)
-        {
-            return;
-        }
-        if (cZ < 0)
-        {
-            return;
-        }
-        if (cX >= TEMP_WORLD_SIZE)
-        {
-            return;
-        }
-        if (cZ >= TEMP_WORLD_SIZE)
+        if (isOutOfBounds(chunkPosition))
         {
             return;
         }
 
         setBlock(x, y, z, block);
-        _chunks.at(cX * TEMP_WORLD_SIZE + cZ)->makeAllMeshtemp();
+        _changeChunks.emplace_back(_chunks.at(chunkPosition.x * TEMP_WORLD_SIZE + chunkPosition.z));
+    }
+
+    void World::addChunk(int x, int z) 
+    {
+        _chunks.emplace_back(std::make_shared<Chunk>(*this, sf::Vector2i(x, z)));
     }
 
     void World::renderWorld(RenderMaster& master) 
     {
+        for (int i = 0; i < _changeChunks.size(); i++) 
+        {
+            _changeChunks.at(i)->makeAllMesh();
+        }
+        _changeChunks.clear();
+
         for(int i = 0; i < _chunks.size(); i++)
         {
             _chunks.at(i)->drawChunks(master);

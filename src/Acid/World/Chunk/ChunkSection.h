@@ -16,14 +16,19 @@ namespace acid
 
     class ChunkSection : public BaseChunk
     {
-        friend class Chunk;
     public:
         ChunkSection(const sf::Vector3i& position, World& world);
 
         void setBlock(int x, int y, int z, const ChunkBlock& block) override;
         ChunkBlock getBlock(int x, int y, int z) const override;
 
-        const sf::Vector3i getLocation() const;
+        void bufferMesh();
+
+        const sf::Vector3i getLocation() const noexcept;
+        bool hasMesh() const noexcept;
+        void setHasMesh(bool meshBool);
+
+        ChunkMesh &getMesh();
     private:
         sf::Vector3i toWorldPosition(int x, int y, int z) const;
 
@@ -35,6 +40,8 @@ namespace acid
         ChunkMesh _mesh;
 
         World* _world;
+
+        bool _hasMesh;
     };
 }
 

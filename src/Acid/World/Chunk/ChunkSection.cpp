@@ -6,7 +6,7 @@
 namespace acid
 {
     ChunkSection::ChunkSection(const sf::Vector3i& position, World& world) : 
-        _location(position), _world(&world)
+        _location(position), _world(&world), _hasMesh(false)
     {
         static_assert(sizeof(_blocks) == CHUNK_VOLUME, "Too many blocks for the chunk size.");
     }
@@ -35,9 +35,29 @@ namespace acid
         return _blocks.at(index);
     }
 
-    const sf::Vector3i ChunkSection::getLocation() const
+    void ChunkSection::bufferMesh()
+    {
+        _mesh.bufferMesh();
+    }
+
+    const sf::Vector3i ChunkSection::getLocation() const noexcept
     {
         return _location;
+    }
+
+    bool ChunkSection::hasMesh() const noexcept
+    {
+        return _hasMesh;
+    }
+
+    void ChunkSection::setHasMesh(bool meshBool)
+    {
+        _hasMesh = meshBool;
+    }
+
+    ChunkMesh &ChunkSection::getMesh()
+    {
+        return _mesh;
     }
 
     sf::Vector3i ChunkSection::toWorldPosition(int x, int y, int z) const

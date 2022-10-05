@@ -1,23 +1,23 @@
 #include "Model.h"
 
-namespace acid 
+namespace acid
 {
-    Model::Model(const Mesh& mesh) 
+    Model::Model(const Mesh& mesh)
     {
         addData(mesh);
     }
 
-    Model::~Model() 
+    Model::~Model()
     {
         deleteData();
     }
 
-    Model::Model(Model&& other) noexcept : 
+    Model::Model(Model&& other) noexcept :
         _vao(other._vao), _vboCount(other._vboCount), _indicesCount(other._indicesCount),
         _buffers(std::move(other._buffers))
     {
     }
-    
+
     Model& Model::operator=(Model&& other) noexcept
     {
         _vao = other._vao;
@@ -28,6 +28,32 @@ namespace acid
         other._vao = 0;
         other._vboCount = 0;
         other._indicesCount = 0;
+
+        return *this;
+    }
+
+    Model::Model(const Model& other)
+    {
+        for (int i = 0; i < other._buffers.size(); i++)
+        {
+            _buffers.push_back(other._buffers.at(i));
+        }
+
+        _vao = other._vao;
+        _vboCount = other._vboCount;
+        _indicesCount = other._indicesCount;
+    }
+
+    Model& Model::operator=(const Model& other)
+    {
+        for (int i = 0; i < other._buffers.size(); i++)
+        {
+            _buffers.push_back(other._buffers.at(i));
+        }
+
+        _vao = other._vao;
+        _vboCount = other._vboCount;
+        _indicesCount = other._indicesCount;
 
         return *this;
     }

@@ -6,7 +6,6 @@
 #include <string>
 
 #include "Mesh.h"
-#include "../Util/NonCopyable.h"
 
 namespace acid 
 {
@@ -19,6 +18,8 @@ namespace acid
 
         Model(Model&& other) noexcept;
         Model& operator=(Model&& other) noexcept;
+        Model(const Model& other);
+        Model& operator=(const Model& other);
 
         void addData(const Mesh& mesh);
 

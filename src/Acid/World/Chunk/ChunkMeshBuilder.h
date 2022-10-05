@@ -11,13 +11,14 @@ namespace acid
     class ChunkMesh;
     class BlockData;
     class BlockDataHolder;
+    class ChunkSection;
 
     class ChunkMeshBuilder 
     {
     public:
-        ChunkMeshBuilder(ChunkSection& chunk);
+        ChunkMeshBuilder(const ChunkSection& chunkSection, ChunkMesh& chunkMesh);
 
-        void buildMesh(ChunkMesh& chunk);
+        void buildMesh();
     private:
         void tryAddFaceToMesh(const std::vector<GLfloat>& blockFace,
                               const sf::Vector2i& textureCoords,
@@ -26,8 +27,9 @@ namespace acid
 
         bool shouldMakeFace(const sf::Vector3i& adjBlock, const BlockDataHolder& blockData);
 
-        ChunkSection* _chunk = nullptr;
-        ChunkMesh* _mesh = nullptr;
+        ChunkSection* _sectionChunk = nullptr;
+        ChunkMesh* _chunkMesh = nullptr;
+        const ChunkSection* _chunkSection = nullptr;
 
         const BlockDataHolder* _blockData = nullptr;
     };

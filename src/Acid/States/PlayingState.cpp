@@ -45,6 +45,12 @@ namespace acid
                         WORLD.editBlock(x, y, z, 0);
                         break;
                     }
+                    else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+                    {
+                        timer.restart();
+                        WORLD.editBlock(lastPosition.x, lastPosition.y, lastPosition.z, 2);
+                        break;
+                    }
                 }
             }
 

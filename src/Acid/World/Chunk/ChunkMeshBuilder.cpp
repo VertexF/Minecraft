@@ -79,14 +79,13 @@ namespace
 
 namespace acid 
 {
-    ChunkMeshBuilder::ChunkMeshBuilder(ChunkSection& chunk) :
-        _chunk(&chunk)
+    ChunkMeshBuilder::ChunkMeshBuilder(const ChunkSection& chunkSection, ChunkMesh& chunkMesh) :
+        _chunkSection(&chunkSection), _chunkMesh(&chunkMesh)
     {
     }
 
-    void ChunkMeshBuilder::buildMesh(ChunkMesh& mesh) 
+    void ChunkMeshBuilder::buildMesh() 
     {
-        _mesh = &mesh;
 
         AdjacentBlockDirections direction;
 
@@ -97,7 +96,7 @@ namespace acid
                 for (int8_t z = 0; z < CHUNK_SIZE; ++z)
                 {
                     sf::Vector3i position(x, y, z);
-                    ChunkBlock block = _chunk->getBlock(x, y, z);
+                    ChunkBlock block = _chunkSection->getBlock(x, y, z);
                     if (block == BlockID::AIR)
                     {
                         continue;
@@ -127,13 +126,13 @@ namespace acid
         {
             auto texCoords = BLOCK_DATABASE.textureAtlas.getTexture(textureCoords);
 
-            _mesh->addFace(blockFace, texCoords, _chunk->getLocation(), blockPosition);
+            _chunkMesh->addFace(blockFace, texCoords, _chunkSection->getLocation(), blockPosition);
         }
     }
 
     bool ChunkMeshBuilder::shouldMakeFace(const sf::Vector3i& adjBlock, const BlockDataHolder& blockData)
     {
-        auto block = _chunk->getBlock(adjBlock.x, adjBlock.y, adjBlock.z);
+        auto block = _chunkSection->getBlock(adjBlock.x, adjBlock.y, adjBlock.z);
 
         if (block == BlockID::AIR)
         {

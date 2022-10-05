@@ -3,19 +3,20 @@
 #include "../../Renderer/RenderMaster.h"
 #include "ChunkMeshBuilder.h"
 #include "../World.h"
+#include "../../Source/Global.h"
 
 namespace acid 
 {
     Chunk::Chunk(World& world, const sf::Vector2i& location) : 
-        _world(&world), _location(location)
+        _world(&world), _location(location), _isLoaded(false)
     {
         for (int y = 0; y < 3; y++) 
         {
-            _chunks.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(location.x, y, location.y), world));
+            _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(location.x, y, location.y), world));
         }
 
-        int h = _chunks.size() * CHUNK_SIZE - 1;
-        for (int y = 0; y < static_cast<int>(_chunks.size() * CHUNK_SIZE); y++) 
+        int h = _chunkSections.size() * CHUNK_SIZE - 1;
+        for (int y = 0; y < static_cast<int>(_chunkSections.size() * CHUNK_SIZE); y++)
         {
             for (int x = 0; x < 16; x++) 
             {
@@ -38,13 +39,18 @@ namespace acid
         }
     }
 
-    void Chunk::makeAllMeshtemp()
+    void Chunk::makeAllMesh()
     {
-        for (int i = 0; i < _chunks.size(); i++)
+        for (int i = 0; i < _chunkSections.size(); i++)
         {
-            ChunkMeshBuilder builder(*_chunks.at(i).get());
-            builder.buildMesh(_chunks.at(i)->_mesh);
-            _chunks.at(i)->_mesh.bufferMesh();
+            if (_chunkSections.at(i)->hasMesh() == false)
+            {
+                ChunkMeshBuilder builder(*_chunkSections.at(i).get(), _chunkSections.at(i)->getMesh());
+                builder.buildMesh();
+
+                _chunkSections.at(i)->bufferMesh();
+                _chunkSections.at(i)->setHasMesh(true);
+            }
         }
     }
 
@@ -57,7 +63,7 @@ namespace acid
 
         int bY = y % CHUNK_SIZE;
 
-        return _chunks.at(y / CHUNK_SIZE)->getBlock(x, bY, z);
+        return _chunkSections.at(y / CHUNK_SIZE)->getBlock(x, bY, z);
     }
 
     void Chunk::setBlock(int x, int y, int z, const ChunkBlock& block) 
@@ -68,14 +74,17 @@ namespace acid
         }
 
         int bY = y % CHUNK_SIZE;
-        _chunks.at(y / CHUNK_SIZE)->setBlock(x, bY, z, block);
+        _chunkSections.at(y / CHUNK_SIZE)->setBlock(x, bY, z, block);
     }
 
     void Chunk::drawChunks(RenderMaster& renderer) 
     {
-        for (int i = 0; i < _chunks.size(); i++)
+        for (int i = 0; i < _chunkSections.size(); i++)
         {
-            renderer.drawChunk(_chunks.at(i)->_mesh);
+            if (_chunkSections.at(i)->hasMesh())
+            {
+                renderer.drawChunk(_chunkSections.at(i)->getMesh());
+            }
         }
     }
 
@@ -103,7 +112,7 @@ namespace acid
             return true;
         }
 
-        if (y >= static_cast<int>(_chunks.size() * CHUNK_SIZE)) 
+        if (y >= static_cast<int>(_chunkSections.size() * CHUNK_SIZE)) 
         {
             return true;
         }

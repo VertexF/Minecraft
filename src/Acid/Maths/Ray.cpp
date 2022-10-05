@@ -16,6 +16,7 @@ namespace acid
 
         point.x -= glm::cos(yaw) * scale;
         point.z -= glm::sin(yaw) * scale;
+
         point.y -= glm::tan(pitch) * scale;
     }
 

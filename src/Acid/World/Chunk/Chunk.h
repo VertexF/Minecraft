@@ -17,7 +17,7 @@ namespace acid
     public:
         Chunk(World& world, const sf::Vector2i& location);
 
-        void makeAllMeshtemp();
+        void makeAllMesh();
 
         virtual ChunkBlock getBlock(int x, int y, int z) const override;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
@@ -26,9 +26,11 @@ namespace acid
     private:
         bool outOfBound(int x, int y, int z) const noexcept;
 
-        std::vector<std::unique_ptr<ChunkSection>> _chunks;
+        std::vector<std::unique_ptr<ChunkSection>> _chunkSections;
         sf::Vector2i _location;
         World* _world;
+
+        bool _isLoaded;
     };
 }
 
