@@ -41,3 +41,4 @@ bin/
 
 #Main build ignore
 VS/
+src/vender/SFML/extlibs/libs-osx/
