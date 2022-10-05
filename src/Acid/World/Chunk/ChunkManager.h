@@ -19,7 +19,7 @@ namespace acid
 
         Chunk& getChunk(int x, int z);
 
-        const std::unordered_map<VectorXZ, Chunk>& getChunks() const;
+        const std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& getChunks() const;
 
         bool makeMesh(int x, int z);
 
@@ -27,7 +27,7 @@ namespace acid
 
         void update();
     private:
-        std::unordered_map<VectorXZ, Chunk> _chunks;
+        std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>> _chunks;
         World* _world;
     };
 }

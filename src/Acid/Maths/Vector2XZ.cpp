@@ -2,8 +2,8 @@
 
 namespace acid 
 {
-    bool operator==(const VectorXZ& left, const VectorXZ& right) 
+    bool operator==(const VectorXZ& lhs, const VectorXZ& rhs)
     {
-        return (left.x == right.x && left.z == right.z);
+        return (lhs.x == rhs.x && lhs.z == rhs.z);
     }
 }

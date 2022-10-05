@@ -12,7 +12,8 @@ namespace acid
         int x, z;
     };
 
-    bool operator==(const VectorXZ& left, const VectorXZ& right);
+    //This is needed for the custom hasher to work with an std::unordered_map data structure.
+    bool operator==(const VectorXZ& lhs, const VectorXZ& rhs);
 
     template<typename T>
     struct hash
@@ -24,12 +25,10 @@ namespace acid
     {
         std::size_t operator()(const VectorXZ& vector) const 
         {
-            std::hash<decltype(vector.x)> hasher;
+            auto hash1 = std::hash<int>{}(vector.x);
+            auto hash2 = std::hash<int>{}(vector.z);
 
-            auto hash1 = hasher(vector.x);
-            auto hash2 = hasher(vector.z);
-
-            return std::hash<decltype(vector.x)>{}((hash1 ^ hash2) >> 2);
+            return std::hash<int>{}(hash1 ^ hash2) >> 2;
         }
     };
 
@@ -38,13 +37,11 @@ namespace acid
     {
         std::size_t operator()(const sf::Vector3i& vector) const
         {
-            std::hash<decltype(vector.x)> hasher;
+            auto hash1 = std::hash<decltype(vector.x)>{}(vector.x);
+            auto hash2 = std::hash<decltype(vector.x)>{}(vector.y);
+            auto hash3 = std::hash<decltype(vector.x)>{}(vector.z);
 
-            auto hash1 = hasher(vector.x);
-            auto hash2 = hasher(vector.y);
-            auto hash3 = hasher(vector.z);
-
-            return std::hash<decltype(vector.x)>{}((hash1 ^ (hash2 << hash3) ^ hash3));
+            return std::hash<decltype(vector.x)>{}(hash1 ^ (hash2 << hash3) ^ hash3);
         }
     };
 }

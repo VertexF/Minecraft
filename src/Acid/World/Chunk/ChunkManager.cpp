@@ -11,9 +11,9 @@ namespace acid
 
     Chunk& ChunkManager::getChunk(int x, int z) 
     {
-        if (_chunks.find({x, z}) == _chunks.end())
+        if (_chunks.find(VectorXZ( x, z )) == _chunks.end())
         {
-            VectorXZ key{x, z};
+            VectorXZ key(x, z);
             Chunk chunk{ *_world, {x, z} };
             _chunks.emplace(key, std::move(chunk));
         }
@@ -21,14 +21,15 @@ namespace acid
         return _chunks.at({ x, z });
     }
 
-    const std::unordered_map<VectorXZ, Chunk>& ChunkManager::getChunks() const 
+    const std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& ChunkManager::getChunks() const
     {
         return _chunks;
     }
 
     bool ChunkManager::makeMesh(int x, int z) 
     {
-        return getChunk(x, z).makeMesh();
+        //return getChunk(x, z).makeMesh();
+        return false;
     }
 
     void ChunkManager::queueChunk(int x, int z) 
