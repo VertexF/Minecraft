@@ -94,7 +94,7 @@ namespace acid
         _cubeTexture.bindTexture();
 
         _shader.loadViewMatrix(camera.getViewMatrix());
-        _shader.loadProjectionMatrix(camera.getProjectionViewMatrix());
+        _shader.loadProjectionMatrix(camera.getProjMatrix());
 
         drawElements(_skyCude.getIndicesCount());
     }

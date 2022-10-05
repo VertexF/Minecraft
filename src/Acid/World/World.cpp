@@ -1,5 +1,7 @@
 #include "World.h"
 
+#include "../Renderer/RenderMaster.h"
+
 namespace 
 {
     constexpr int TEMP_WORLD_SIZE = 8;
@@ -118,6 +120,8 @@ namespace acid
             _changeChunks.at(i)->makeAllMesh();
         }
         _changeChunks.clear();
+
+        master.drawSky();
 
         for(int i = 0; i < _chunks.size(); i++)
         {

@@ -32,6 +32,7 @@ namespace acid
         glClearColor(0.1, 0.5, 1.0, 1.0);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
 
         //_quadRenderer.render(camera);
         //_cubeRenderer.render(camera);
@@ -40,7 +41,7 @@ namespace acid
         if (_drawSky) 
         {
             glDisable(GL_CULL_FACE);
-            //_skyRenderer.render(camera);
+            _skyRenderer.render(camera);
             _drawSky = false;
         }
 
