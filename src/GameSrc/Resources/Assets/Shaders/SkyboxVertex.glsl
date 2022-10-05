@@ -5,7 +5,7 @@ layout(location = 0) in vec3 inVertexPosition;
 out vec2 passTextureCoord;
 
 uniform mat4 projViewMatrix;
-uniform mat viewMatrix;
+uniform mat4 viewMatrix;
 
 void main()
 {
