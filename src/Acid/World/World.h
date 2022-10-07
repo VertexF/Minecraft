@@ -2,13 +2,18 @@
 #define WORLD_HDR
 
 #include <vector>
+#include <set>
 #include <memory>
+
+#include "../Maths/Vector2XZ.h"
 #include "Chunk/ChunkBase.h"
 #include "Chunk/Chunk.h"
+#include "Chunk/ChunkManager.h"
 
 namespace acid 
 {
     class RenderMaster;
+    class Camera;
 
     class World : public BaseChunk
     {
@@ -16,16 +21,17 @@ namespace acid
         World();
         virtual ~World() = default;
 
-        virtual ChunkBlock getBlock(int x, int y, int z) const override;
+        virtual ChunkBlock getBlock(int x, int y, int z) const override {}
+        ChunkBlock getBlock(int x, int y, int z);
+
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
 
-        void editBlock(int x, int y, int z, const ChunkBlock& block);
-        void addChunk(int x, int z);
+        void update(const Camera& camera);
 
         void renderWorld(RenderMaster& master);
     private:
-        std::vector<std::shared_ptr<Chunk>> _chunks;
-        std::vector<std::shared_ptr<Chunk>> _changeChunks;
+        ChunkManager _chunkManager;
+        std::unordered_set<sf::Vector3i> _rebuildChunks;
     };
 }
 

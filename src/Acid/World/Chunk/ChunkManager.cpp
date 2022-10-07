@@ -9,7 +9,7 @@ namespace acid
     {
     }
 
-    Chunk& ChunkManager::getChunk(int x, int z) 
+    Chunk& ChunkManager::getChunk(int x, int z)
     {
         if (_chunks.find(VectorXZ( x, z )) == _chunks.end())
         {
@@ -28,15 +28,6 @@ namespace acid
 
     bool ChunkManager::makeMesh(int x, int z) 
     {
-        //return getChunk(x, z).makeMesh();
-        return false;
-    }
-
-    void ChunkManager::queueChunk(int x, int z) 
-    {
-    }
-
-    void ChunkManager::update() 
-    {
+        return getChunk(x, z).makeMesh();
     }
 }

@@ -22,10 +22,6 @@ namespace acid
         const std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& getChunks() const;
 
         bool makeMesh(int x, int z);
-
-        void queueChunk(int x, int z);
-
-        void update();
     private:
         std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>> _chunks;
         World* _world;

@@ -1,17 +1,14 @@
 #include "World.h"
 
 #include "../Renderer/RenderMaster.h"
+#include "../Source/Camera.h"
+#include "Chunk/Chunk.h"
 
 namespace 
 {
-    constexpr int TEMP_WORLD_SIZE = 8;
+    constexpr int TEMP_WORLD_SIZE = 32;
 
-    struct VectorXZ 
-    {
-        int x, z;
-    };
-
-    VectorXZ getBlockXZ(int x, int z) 
+    acid::VectorXZ getBlockXZ(int x, int z) 
     {
         return 
         {
@@ -20,7 +17,7 @@ namespace
         };
     }
 
-    VectorXZ getChunkXZ(int x, int z)
+    acid::VectorXZ getChunkXZ(int x, int z)
     {
         return
         {
@@ -29,7 +26,7 @@ namespace
         };
     }
 
-    bool isOutOfBounds(const VectorXZ& chunkPosition)
+    bool isOutOfBounds(const acid::VectorXZ& chunkPosition)
     {
         if (chunkPosition.x < 0) 
         {
@@ -53,23 +50,19 @@ namespace
 
 namespace acid
 {
-    World::World()
+    World::World() : 
+        _chunkManager(*this)
     {
         for (int x = 0; x < TEMP_WORLD_SIZE; x++) 
         {
             for (int z = 0; z < TEMP_WORLD_SIZE; z++) 
             {
-                addChunk(x, z);
+                _chunkManager.getChunk(x, z).load();
             }
-        }
-
-        for(int i = 0; i < _chunks.size(); i++)
-        {
-            _chunks.at(i)->makeAllMesh();
         }
     }
 
-    ChunkBlock World::getBlock(int x, int y, int z) const
+    ChunkBlock World::getBlock(int x, int y, int z)
     {
         auto blockPosition = getBlockXZ(x, z);
         auto chunkPosition = getChunkXZ(x, z);
@@ -79,11 +72,16 @@ namespace acid
             return BlockID::AIR;
         }
 
-        return _chunks.at(chunkPosition.x * TEMP_WORLD_SIZE + chunkPosition.z)->getBlock(blockPosition.x, y, blockPosition.z);
+        return _chunkManager.getChunk(chunkPosition.x, chunkPosition.z).getBlock(blockPosition.x, y, blockPosition.z);
     }
 
-    void World::setBlock(int x, int y, int z, const ChunkBlock& block)
+    void World::setBlock(int x, int y, int z, const ChunkBlock& block) 
     {
+        if (y == 0) 
+        {
+            return;
+        }
+
         auto blockPosition = getBlockXZ(x, z);
         auto chunkPosition = getChunkXZ(x, z);
 
@@ -92,40 +90,43 @@ namespace acid
             return;
         }
 
-        _chunks.at(chunkPosition.x * TEMP_WORLD_SIZE + chunkPosition.z)->setBlock(blockPosition.x, y, blockPosition.z, block);
-    }
-
-    void World::editBlock(int x, int y, int z, const ChunkBlock& block)
-    {
-        auto chunkPosition = getChunkXZ(x, z);
-
-        if (isOutOfBounds(chunkPosition))
+        auto& chunk = _chunkManager.getChunk(chunkPosition.x, chunkPosition.x);
+        chunk.setBlock(blockPosition.x, y, blockPosition.z, block);
+        if (chunk.hasLoaded()) 
         {
-            return;
+            _rebuildChunks.emplace(chunkPosition.x, y / CHUNK_SIZE, chunkPosition.z);
         }
-
-        setBlock(x, y, z, block);
-        _changeChunks.emplace_back(_chunks.at(chunkPosition.x * TEMP_WORLD_SIZE + chunkPosition.z));
     }
 
-    void World::addChunk(int x, int z) 
+    void World::update(const Camera& camera)
     {
-        _chunks.emplace_back(std::make_shared<Chunk>(*this, sf::Vector2i(x, z)));
+        for (int x = 0; x < TEMP_WORLD_SIZE; x++) 
+        {
+            for (int y = 0; y < TEMP_WORLD_SIZE; y++) 
+            {
+                if (_chunkManager.makeMesh(x, y)) 
+                {
+                    return;
+                }
+            }
+        }
     }
 
     void World::renderWorld(RenderMaster& master) 
     {
-        for (int i = 0; i < _changeChunks.size(); i++) 
+        for (auto& location : _rebuildChunks) 
         {
-            _changeChunks.at(i)->makeAllMesh();
+            ChunkSection& section = _chunkManager.getChunk(location.x, location.z).getSection(location.y);
+            section.makeMesh();
         }
-        _changeChunks.clear();
+        _rebuildChunks.clear();
 
         master.drawSky();
 
-        for(int i = 0; i < _chunks.size(); i++)
+        const auto& chunkMap = _chunkManager.getChunks();
+        for(auto& chunk : chunkMap)
         {
-            _chunks.at(i)->drawChunks(master);
+            chunk.second.drawChunks(master);
         }
     }
 }

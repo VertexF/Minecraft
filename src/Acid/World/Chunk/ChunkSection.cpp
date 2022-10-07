@@ -2,6 +2,7 @@
 
 #include "../World.h"
 #include "../../Source/Global.h"
+#include "ChunkMeshBuilder.h"
 
 namespace acid
 {
@@ -23,7 +24,7 @@ namespace acid
         _blocks[getIndex(x, y, z)] = block;
     }
 
-    ChunkBlock ChunkSection::getBlock(int x, int y, int z) const 
+    ChunkBlock ChunkSection::getBlock(int x, int y, int z) const
     {
         if (outOfBounds(x) || outOfBounds(y) || outOfBounds(z))
         {
@@ -33,6 +34,13 @@ namespace acid
 
         int index = getIndex(x, y, z);
         return _blocks.at(index);
+    }
+
+    void ChunkSection::makeMesh()
+    {
+        ChunkMeshBuilder(*this, _mesh).buildMesh();
+        bufferMesh();
+        _hasMesh = true;
     }
 
     void ChunkSection::bufferMesh()
