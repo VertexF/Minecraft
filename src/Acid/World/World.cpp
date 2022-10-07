@@ -6,7 +6,7 @@
 
 namespace 
 {
-    constexpr int TEMP_WORLD_SIZE = 32;
+    constexpr int TEMP_WORLD_SIZE = 16;
 
     acid::VectorXZ getBlockXZ(int x, int z) 
     {
@@ -90,7 +90,7 @@ namespace acid
             return;
         }
 
-        auto& chunk = _chunkManager.getChunk(chunkPosition.x, chunkPosition.x);
+        auto& chunk = _chunkManager.getChunk(chunkPosition.x, chunkPosition.z);
         chunk.setBlock(blockPosition.x, y, blockPosition.z, block);
         if (chunk.hasLoaded()) 
         {

@@ -8,6 +8,7 @@
 #include "CubeRenderer.h"
 #include "ChunkRenderer.h"
 #include "SkyboxRenderer.h"
+#include "SFMLRenderer.h"
 
 namespace acid 
 {
@@ -27,6 +28,7 @@ namespace acid
         CubeRenderer _cubeRenderer;
         ChunkRenderer _chunkRenderer;
         SkyRenderer _skyRenderer;
+        SFMLRenderer _sfmlRenderer;
 
         bool _drawSky;
     };

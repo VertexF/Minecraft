@@ -22,6 +22,8 @@ namespace acid
 
         virtual void update(float deltaTime) = 0;
         virtual void render(RenderMaster& renderer) = 0;
+
+        virtual void onOpen() = 0;
     protected:
         Application* _application;
     };

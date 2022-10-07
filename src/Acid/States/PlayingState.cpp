@@ -68,4 +68,9 @@ namespace acid
     {
         WORLD.renderWorld(renderer);
     }
+
+    void StatePlaying::onOpen()
+    {
+        _application->turnOffMouse();
+    }
 }

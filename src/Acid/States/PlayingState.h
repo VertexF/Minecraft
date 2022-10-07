@@ -12,11 +12,13 @@ namespace acid
         StatePlaying(Application& app);
         virtual ~StatePlaying() noexcept = default;
 
-        virtual void handleEvent(sf::Event e);
-        virtual void handleInput();
+        virtual void handleEvent(sf::Event e) override;
+        virtual void handleInput() override;
 
-        virtual void update(float deltaTime);
-        virtual void render(RenderMaster& renderer);
+        virtual void update(float deltaTime) override;
+        virtual void render(RenderMaster& renderer) override;
+
+        virtual void onOpen() override;
     private:
         Player _player;
     };

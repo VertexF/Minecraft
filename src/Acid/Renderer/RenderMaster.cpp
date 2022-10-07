@@ -45,6 +45,7 @@ namespace acid
             _drawSky = false;
         }
 
+        _sfmlRenderer.render(window);
         window.display();
     }
 }

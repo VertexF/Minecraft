@@ -26,12 +26,16 @@ namespace acid
         {
             _states.push_back(std::make_unique<T>(std::forward<Args>(args)...));
             auto& s = _states.back();
+            s->onOpen();
         }
 
         Camera& getCamera() { return _camera; }
         const sf::RenderWindow& getWindow() const { return _context.window; }
 
         void popState();
+
+        void turnOffMouse();
+        void turnOnMouse();
     private:
         void handleEvents();
 

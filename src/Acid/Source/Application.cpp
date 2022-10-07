@@ -41,6 +41,16 @@ namespace acid
         _isPopState = true;
     }
 
+    void Application::turnOffMouse() 
+    {
+        _context.window.setMouseCursorVisible(false);
+    }
+
+    void Application::turnOnMouse() 
+    {
+        _context.window.setMouseCursorVisible(true);
+    }
+
     void Application::handleEvents() 
     {
         sf::Event e;
