@@ -11,9 +11,9 @@ namespace acid
 
     Chunk& ChunkManager::getChunk(int x, int z)
     {
-        if (_chunks.find(VectorXZ( x, z )) == _chunks.end())
+        if (_chunks.find({ x, z }) == _chunks.end())
         {
-            VectorXZ key(x, z);
+            VectorXZ key{ x, z };
             Chunk chunk{ *_world, {x, z} };
             _chunks.emplace(key, std::move(chunk));
         }

@@ -14,6 +14,7 @@ namespace acid
 
     //This is needed for the custom hasher to work with an std::unordered_map data structure.
     bool operator==(const VectorXZ& lhs, const VectorXZ& rhs);
+    bool operator==(const sf::Vector3i& lhs, const sf::Vector3i& rhs);
 
     template<typename T>
     struct hash

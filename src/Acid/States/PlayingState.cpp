@@ -25,7 +25,7 @@ namespace acid
         _player.handleInput(_application->getWindow());
 
         static sf::Clock timer;
-        glm::vec3 lastPosition;
+        glm::vec3 lastPosition(0.f, 0.f, 0.f);
 
         for (Ray ray(_player.position, _player.rotation); ray.getLenght() < 6; ray.step(0.1)) 
         {
@@ -60,6 +60,7 @@ namespace acid
 
     void StatePlaying::update(float deltaTime) 
     {
+        WORLD.update(_application->getCamera());
         _player.update(deltaTime);
     }
 

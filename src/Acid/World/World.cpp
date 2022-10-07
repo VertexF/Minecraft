@@ -123,7 +123,7 @@ namespace acid
 
         master.drawSky();
 
-        const auto& chunkMap = _chunkManager.getChunks();
+        const std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& chunkMap = _chunkManager.getChunks();
         for(auto& chunk : chunkMap)
         {
             chunk.second.drawChunks(master);

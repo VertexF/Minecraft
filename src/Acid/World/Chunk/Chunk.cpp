@@ -15,10 +15,14 @@ namespace acid
     {
         for (int i = 0; i < _chunkSections.size(); i++)
         {
-            _chunkSections.at(i)->makeMesh();
+            if (_chunkSections.at(i)->hasMesh() == false)
+            {
+                _chunkSections.at(i)->makeMesh();
+                return true;
+            }
         }
 
-        return true;
+        return false;
     }
 
     ChunkBlock Chunk::getBlock(int x, int y, int z) const
@@ -64,7 +68,7 @@ namespace acid
     {
         for (int y = 0; y < 3; y++)
         {
-            _chunkSections.emplace_back(std::make_unique<ChunkSection>(_location.x, _chunkSections.size(), _location.y), *_world);
+            _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, _chunkSections.size(), _location.y), * _world));
         }
 
         int h = _chunkSections.size() * CHUNK_SIZE - 1;
@@ -97,7 +101,7 @@ namespace acid
     {
         while (index >= _chunkSections.size()) 
         {
-            _chunkSections.emplace_back(std::make_unique<ChunkSection>(_location.x, _chunkSections.size(), _location.y), *_world);
+            _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, _chunkSections.size(), _location.y), *_world));
         }
 
         return *_chunkSections.at(index);
