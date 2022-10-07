@@ -1,8 +1,12 @@
 #include "Chunk.h"
 
+#include <array>
+
 #include "../../Renderer/RenderMaster.h"
 #include "../World.h"
 #include "../../Source/Global.h"
+#include "../../Maths/NoiseGenerator.h"
+#include "../../Util/Random.h"
 
 namespace acid 
 {
@@ -66,40 +70,68 @@ namespace acid
 
     void Chunk::load() 
     {
-        for (int y = 0; y < 3; y++)
+        static Random<std::minstd_rand> rand(500);
+        NoiseGenerator temp_noiseGen(6345);
+        std::array<int, CHUNK_AREA> heightMap;
+        std::vector<sf::Vector3i> treeLocation;
+
+        int maxValue = 0;
+        for (int x = 0; x < CHUNK_SIZE; x++) 
         {
-            _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, _chunkSections.size(), _location.y), * _world));
+            for (int z = 0; z < CHUNK_SIZE; z++) 
+            {
+                int h = temp_noiseGen.getHeight(x, z, _location.x, _location.y);
+                heightMap[x * CHUNK_SIZE + z] = h;
+
+                maxValue = std::max(maxValue, h);
+            }
         }
 
-        int h = _chunkSections.size() * CHUNK_SIZE - 1;
-        for (int y = 0; y < static_cast<int>(_chunkSections.size() * CHUNK_SIZE); y++)
+        for (int y = 0; y < maxValue / CHUNK_SIZE + 1; y++)
         {
-            for (int x = 0; x < 16; x++)
+            _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, _chunkSections.size(), _location.y), *_world));
+        }
+
+        for (int y = 0; y < maxValue + 1; y++)
+        {
+            for (int x = 0; x < CHUNK_SIZE; x++)
             {
-                for (int z = 0; z < 16; z++)
+                for (int z = 0; z < CHUNK_SIZE; z++)
                 {
-                    if (y == h)
+                    int h = heightMap[x * CHUNK_SIZE + z];
+
+                    if (y > h)
+                    {
+                        setBlock(x, y, z, BlockID::AIR);
+                    }
+                    else if (y == h)
                     {
                         setBlock(x, y, z, BlockID::GRASS);
-                    }
-                    else if (y > h - 3)
-                    {
-                        setBlock(x, y, z, BlockID::DIRT);
+                        if (rand.intInRange(0, 100) == 10) 
+                        {
+                            treeLocation.emplace_back(x, y, z);
+                        }
                     }
                     else
                     {
-                        setBlock(x, y, z, BlockID::STONE);
+                        setBlock(x, y, z, BlockID::DIRT);
                     }
                 }
             }
         }
+
+        //tree
+        //for (auto& tree : treeLocation) 
+        //{
+        //    
+        //}
 
         _isLoaded = true;
     }
 
     ChunkSection& Chunk::getSection(int index) 
     {
-        while (index >= _chunkSections.size()) 
+        while (index >= static_cast<int>(_chunkSections.size()))
         {
             _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, _chunkSections.size(), _location.y), *_world));
         }

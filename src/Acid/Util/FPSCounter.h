@@ -5,12 +5,14 @@
 
 namespace acid 
 {
+    class RenderMaster;
+
     class FPSCounter 
     {
     public:
         FPSCounter();
-        float getFPS() const;
         void update();
+        void draw(RenderMaster& renderer);
     private:
         sf::Text _text;
         sf::Font _font;

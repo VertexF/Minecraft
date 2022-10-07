@@ -3,6 +3,7 @@
 
 #include "StateBase.h"
 #include "../Player/Player.h"
+#include "../Util/FPSCounter.h"
 
 namespace acid 
 {
@@ -21,6 +22,8 @@ namespace acid
         virtual void onOpen() override;
     private:
         Player _player;
+
+        FPSCounter _fpsCounter;
     };
 }
 

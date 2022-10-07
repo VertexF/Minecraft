@@ -62,11 +62,13 @@ namespace acid
     {
         WORLD.update(_application->getCamera());
         _player.update(deltaTime);
+        _fpsCounter.update();
     }
 
     void StatePlaying::render(RenderMaster& renderer) 
     {
         WORLD.renderWorld(renderer);
+        _fpsCounter.draw(renderer);
     }
 
     void StatePlaying::onOpen()

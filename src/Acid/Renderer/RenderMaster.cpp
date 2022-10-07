@@ -19,7 +19,15 @@ namespace acid
 
     void RenderMaster::drawChunk(const ChunkMesh& mesh)
     {
-        _chunkRenderer.add(mesh);
+        if (mesh.getTotalFaces() > 0)
+        {
+            _chunkRenderer.add(mesh);
+        }
+    }
+
+    void RenderMaster::drawSFML(const sf::Drawable& drawable)
+    {
+        _sfmlRenderer.add(drawable);
     }
 
     void RenderMaster::drawSky() 

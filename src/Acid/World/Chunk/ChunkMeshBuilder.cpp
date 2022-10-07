@@ -86,7 +86,6 @@ namespace acid
 
     void ChunkMeshBuilder::buildMesh() 
     {
-
         AdjacentBlockDirections direction;
 
         for (int8_t y = 0; y < CHUNK_SIZE; ++y) 
@@ -107,7 +106,10 @@ namespace acid
                     direction.update(x, y, z);
 
                     tryAddFaceToMesh(topFace, data.texTopCoord, position, direction.up);
-                    tryAddFaceToMesh(bottomFace, data.texBottomCoord, position, direction.down);
+                    if ((y == 0) && (_chunkSection->getLocation().y > 0))
+                    {
+                        tryAddFaceToMesh(bottomFace, data.texBottomCoord, position, direction.down);
+                    }
                     tryAddFaceToMesh(leftFace, data.texSideCoord, position, direction.left);
                     tryAddFaceToMesh(rightFace, data.texSideCoord, position, direction.right);
                     tryAddFaceToMesh(frontFace, data.texSideCoord, position, direction.front);

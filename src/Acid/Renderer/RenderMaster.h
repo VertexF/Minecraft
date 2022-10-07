@@ -20,6 +20,7 @@ namespace acid
         void drawQuad(const glm::vec3& pos);
         void drawCube(const glm::vec3& pos);
         void drawChunk(const ChunkMesh& mesh);
+        void drawSFML(const sf::Drawable& drawable);
         void drawSky();
 
         void finishRender(sf::RenderWindow& window, const Camera& camera);

@@ -4,13 +4,14 @@
 
 namespace acid 
 {
-    ChunkMesh::ChunkMesh() 
+    ChunkMesh::ChunkMesh() : _faces(0)
     {
     }
 
     void ChunkMesh::addFace(const std::vector<GLfloat>& blockFace, const std::vector<GLfloat>& textureCoords,
                             const sf::Vector3i& chunkPosition, const sf::Vector3i& blockPosition) 
     {
+        _faces++;
         auto& vertices = _mesh.vertexPosition;
         auto& texCoords = _mesh.textureCoords;
         auto& indices = _mesh.indices;
@@ -56,5 +57,10 @@ namespace acid
     const Model& ChunkMesh::getModel() const 
     {
         return _model;
+    }
+
+    int ChunkMesh::getTotalFaces() const
+    {
+        return _faces;
     }
 }

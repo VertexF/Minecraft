@@ -17,10 +17,13 @@ namespace acid
 
         void bufferMesh();
         const Model& getModel() const;
+        int getTotalFaces() const;
     private:
         Mesh _mesh;
         Model _model;
         GLuint _indexIndex = 0;
+
+        int _faces;
     };
 }
 

@@ -30,9 +30,9 @@ namespace acid
     class Random 
     {
     public:
-        Random() 
+        Random(int n = std::time(nullptr))
         {
-            _randomEngine.seed(std::time(nullptr));
+            _randomEngine.seed(n);
             for (int i = 0; i < 5; i++) 
             {
                 intInRange(i, i * 5);

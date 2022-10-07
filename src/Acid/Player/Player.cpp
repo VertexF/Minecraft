@@ -4,7 +4,7 @@ namespace acid
 {
     Player::Player() 
     {
-        position = { 50.f, 3.5f * 16, 50.f };
+        position = { 50.f, 150.f, 50.f };
         rotation = { 0.f, 90.f, 0.f };
         _velocity = { 0.f, 0.f, 0.f };
     }
