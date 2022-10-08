@@ -6,6 +6,7 @@
 #include "../Maths/Matrix.h"
 #include "../Source/Entity.h"
 #include "../Source/GL/GLFunctions.h"
+#include "../Source/Entity.h"
 
 namespace acid
 {
@@ -88,15 +89,13 @@ namespace acid
         _cubeModel.addData({ vertexCoords, texCoords, indices });
     }
 
-    void CubeRenderer::add(const glm::vec3& position)
+    void CubeRenderer::add(const Entity& entity)
     {
-        _cubes.push_back(position);
+        _cubes.push_back(&entity);
     }
 
     void CubeRenderer::render(const Camera& camera)
     {
-        glEnable(GL_CULL_FACE);
-
         _shader.useProgram();
         _cubeModel.bindVAO();
         _textureAtlas.bindTexture();
@@ -105,7 +104,7 @@ namespace acid
 
         for (auto& cube : _cubes)
         {
-            _shader.loadModelMatrix(makeModelMatrix({ cube, { 0, 0, 0 } }));
+            _shader.loadModelMatrix(makeModelMatrix(*cube));
             drawElements(_cubeModel.getIndicesCount());
         }
 

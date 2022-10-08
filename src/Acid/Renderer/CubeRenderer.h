@@ -11,6 +11,7 @@
 
 namespace acid 
 {
+    class Entity;
     class Camera;
 
     class CubeRenderer 
@@ -18,11 +19,11 @@ namespace acid
     public:
         CubeRenderer();
 
-        void add(const glm::vec3& position);
+        void add(const Entity& entity);
         void render(const Camera& camera);
 
     private:
-        std::vector<glm::vec3> _cubes;
+        std::vector<const Entity*> _cubes;
 
         Model _cubeModel;
         BasicShader _shader;

@@ -43,6 +43,7 @@ namespace acid
 
     void Chunk::setBlock(int x, int y, int z, const ChunkBlock& block)
     {
+        addSectionsBlockTarget(y);
         if (outOfBound(x, y, z))
         {
             return;
@@ -52,12 +53,17 @@ namespace acid
         _chunkSections.at(y / CHUNK_SIZE)->setBlock(x, bY, z, block);
     }
 
-    void Chunk::drawChunks(RenderMaster& renderer) const
+    void Chunk::drawChunks(RenderMaster& renderer)
     {
         for (int i = 0; i < _chunkSections.size(); i++)
         {
             if (_chunkSections.at(i)->hasMesh())
             {
+                if (_chunkSections.at(i)->hasBuffered() == false) 
+                {
+                    _chunkSections.at(i)->bufferMesh();
+                }
+
                 renderer.drawChunk(_chunkSections.at(i)->getMesh());
             }
         }
@@ -70,8 +76,14 @@ namespace acid
 
     void Chunk::load() 
     {
-        static Random<std::minstd_rand> rand(500);
-        NoiseGenerator temp_noiseGen(6345);
+        static int seed = RANDOM_GENERATOR.intInRange(444, 444444);
+        if (hasLoaded()) 
+        {
+            return;
+        }
+
+        Random<std::minstd_rand> rand((_location.x ^ _location.y) << 2);
+        NoiseGenerator temp_noiseGen(seed);
         std::array<int, CHUNK_AREA> heightMap;
         std::vector<sf::Vector3i> treeLocation;
 
@@ -80,16 +92,11 @@ namespace acid
         {
             for (int z = 0; z < CHUNK_SIZE; z++) 
             {
-                int h = temp_noiseGen.getHeight(x, z, _location.x, _location.y);
+                int h = temp_noiseGen.getHeight(x, z, _location.x + 10, _location.y + 10);
                 heightMap[x * CHUNK_SIZE + z] = h;
 
                 maxValue = std::max(maxValue, h);
             }
-        }
-
-        for (int y = 0; y < maxValue / CHUNK_SIZE + 1; y++)
-        {
-            _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, _chunkSections.size(), _location.y), *_world));
         }
 
         for (int y = 0; y < maxValue + 1; y++)
@@ -102,41 +109,82 @@ namespace acid
 
                     if (y > h)
                     {
-                        setBlock(x, y, z, BlockID::AIR);
+                        continue;
                     }
                     else if (y == h)
                     {
-                        setBlock(x, y, z, BlockID::GRASS);
-                        if (rand.intInRange(0, 100) == 10) 
+                        if (y > WATER_LEVEL) 
                         {
-                            treeLocation.emplace_back(x, y, z);
+                            setBlock(x, y, z, BlockID::GRASS);
+                            if (rand.intInRange(0, 150) == 0) 
+                            {
+                                treeLocation.emplace_back(x, y, z);
+                            }
+                        }
+                        else 
+                        {
+                            setBlock(x, y, z, BlockID::GRASS);
                         }
                     }
-                    else
+                    else if(y > h - 3)
                     {
                         setBlock(x, y, z, BlockID::DIRT);
+                    }
+                    else 
+                    {
+                        setBlock(x, y, z, BlockID::STONE);
                     }
                 }
             }
         }
 
         //tree
-        //for (auto& tree : treeLocation) 
-        //{
-        //    
-        //}
+        for (auto& tree : treeLocation) 
+        {
+            int h = rand.intInRange(5, 9);
+            for (int y = 0; y < h; y++)
+            {
+                setBlock(tree.x, tree.y + y, tree.z, BlockID::OAK_BARK);
+
+                for (int x = -2; x < 2; x++) 
+                {
+                    for (int z = -2; z < 2; z++)
+                    {
+                        for (int y = 0; y < 3; y++)
+                        {
+                            setBlock(tree.x + x, tree.y + h + y, tree.z + z, BlockID::OAK_LEAF);
+                        }
+                    }
+                }
+            }
+        }
 
         _isLoaded = true;
     }
 
     ChunkSection& Chunk::getSection(int index) 
     {
-        while (index >= static_cast<int>(_chunkSections.size()))
-        {
-            _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, _chunkSections.size(), _location.y), *_world));
-        }
-
         return *_chunkSections.at(index);
+    }
+
+    void Chunk::addSection() 
+    {
+        int y = _chunkSections.size();
+        _chunkSections.emplace_back(std::make_unique<ChunkSection>(sf::Vector3i(_location.x, y, _location.y), *_world));
+    }
+
+    void Chunk::addSectionsBlockTarget(int blockY) 
+    {
+        int index = blockY / CHUNK_SIZE;
+        addSectionsIndexTarget(index);
+    }
+
+    void Chunk::addSectionsIndexTarget(int index) 
+    {
+        while (_chunkSections.size() < index + 1) 
+        {
+            addSection();
+        }
     }
 
     bool Chunk::outOfBound(int x, int y, int z) const noexcept 
@@ -163,7 +211,7 @@ namespace acid
             return true;
         }
 
-        if (y >= static_cast<int>(_chunkSections.size() * CHUNK_SIZE)) 
+        if (y >= static_cast<int>(_chunkSections.size()) * CHUNK_SIZE) 
         {
             return true;
         }

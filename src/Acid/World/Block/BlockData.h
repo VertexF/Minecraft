@@ -5,14 +5,18 @@
 #include <string>
 
 #include "../../Util/NonCopyable.h"
+#include "BlockID.h"
 
 namespace acid 
 {
     struct BlockDataHolder : public NonCopyable
     {
+        BlockID id;
         sf::Vector2i texTopCoord;
         sf::Vector2i texSideCoord;
         sf::Vector2i texBottomCoord;
+
+        bool isOpaque;
     };
 
     class BlockData : public NonCopyable 

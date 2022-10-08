@@ -101,15 +101,12 @@ namespace acid
                         continue;
                     }
 
-                    _blockData = &block.getData().getBlockData();
+                    _blockData = &block.getData();
                     auto& data = *_blockData;
                     direction.update(x, y, z);
 
                     tryAddFaceToMesh(topFace, data.texTopCoord, position, direction.up);
-                    if ((y == 0) && (_chunkSection->getLocation().y > 0))
-                    {
-                        tryAddFaceToMesh(bottomFace, data.texBottomCoord, position, direction.down);
-                    }
+                    tryAddFaceToMesh(bottomFace, data.texBottomCoord, position, direction.down);
                     tryAddFaceToMesh(leftFace, data.texSideCoord, position, direction.left);
                     tryAddFaceToMesh(rightFace, data.texSideCoord, position, direction.right);
                     tryAddFaceToMesh(frontFace, data.texSideCoord, position, direction.front);
@@ -136,13 +133,16 @@ namespace acid
     {
         auto block = _chunkSection->getBlock(adjBlock.x, adjBlock.y, adjBlock.z);
 
+        auto& data = block.getData();
         if (block == BlockID::AIR)
         {
             return true;
         }
-        else 
+        else if((data.isOpaque) && (data.id != _blockData->id))
         {
-            return false;
+            return true;
         }
+
+        return false;
     }
 }

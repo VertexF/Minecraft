@@ -14,11 +14,12 @@ namespace acid
 {
     class Camera;
     class ChunkMesh;
+    class Entity;
     class RenderMaster 
     {
     public:
         void drawQuad(const glm::vec3& pos);
-        void drawCube(const glm::vec3& pos);
+        void drawCube(const Entity& entity);
         void drawChunk(const ChunkMesh& mesh);
         void drawSFML(const sf::Drawable& drawable);
         void drawSky();

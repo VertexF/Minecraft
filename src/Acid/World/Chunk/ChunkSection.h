@@ -27,6 +27,7 @@ namespace acid
 
         const sf::Vector3i getLocation() const noexcept;
         bool hasMesh() const noexcept;
+        bool hasBuffered() const noexcept;
         void setHasMesh(bool meshBool);
 
         ChunkMesh &getMesh();
@@ -43,6 +44,7 @@ namespace acid
         World* _world;
 
         bool _hasMesh;
+        bool _hasBufferedMesh;
     };
 }
 

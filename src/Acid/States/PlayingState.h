@@ -23,6 +23,9 @@ namespace acid
     private:
         Player _player;
 
+        sf::RectangleShape _crossHair;
+        sf::Texture _crossHairTexture;
+
         FPSCounter _fpsCounter;
     };
 }

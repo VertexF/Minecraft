@@ -1,5 +1,17 @@
 Name
 OakLeaf
 
-TexAll
-0 0
+Id
+4
+
+TexTop
+5 0
+
+TexSide
+4 0
+
+TexBottom
+5 0
+
+Opaque
+1

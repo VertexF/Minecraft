@@ -5,7 +5,7 @@
 
 namespace acid 
 {
-    class BlockData;
+    class BlockDataHolder;
     class BlockType;
 
     struct ChunkBlock 
@@ -15,7 +15,7 @@ namespace acid
         ChunkBlock(uint8_t id);
         ChunkBlock(BlockID id);
 
-        const BlockData& getData() const;
+        const BlockDataHolder& getData() const;
         const BlockType& getType() const;
         BlockID getBlockID() const;
 

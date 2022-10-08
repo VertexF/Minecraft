@@ -10,16 +10,21 @@ namespace acid
         _seed(seed)
     {
         _noiseParameters.octaves = 7;
-        _noiseParameters.amplitude = 85;
+        _noiseParameters.amplitude = 70;
         _noiseParameters.smoothness = 235;
-        _noiseParameters.heightOffset = -10;
-        _noiseParameters.roughness = 0.51;
+        _noiseParameters.heightOffset = -5;
+        _noiseParameters.roughness = 0.53;
     }
 
     double NoiseGenerator::getHeight(int x, int z, int chunkX, int chunkZ) const 
     {
         auto newX = (x + (chunkX * CHUNK_SIZE));
         auto newZ = (z + (chunkZ * CHUNK_SIZE));
+
+        if (newX < 0 || newZ < 0) 
+        {
+            return WATER_LEVEL - 1;
+        }
 
         auto totalValue = 0.0;
 

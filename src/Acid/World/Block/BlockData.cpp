@@ -42,6 +42,16 @@ namespace acid
                 _data.texSideCoord = { x, y };
                 _data.texBottomCoord = { x, y };
             }
+            else if (line == "id")
+            {
+                int id;
+                inFile >> id;
+                _data.id = static_cast<BlockID>(id);
+            }
+            else if(line == "Opaque") 
+            {
+                inFile >> _data.isOpaque;
+            }
         }
     }
 

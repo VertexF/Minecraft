@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../World/Chunk/ChunkMesh.h"
+#include "../Source/Entity.h"
 
 namespace acid
 {
@@ -12,9 +13,9 @@ namespace acid
         _quadRenderer.add(pos);
     }
 
-    void RenderMaster::drawCube(const glm::vec3& pos)
+    void RenderMaster::drawCube(const Entity& entity)
     {
-        _cubeRenderer.add(pos);
+        _cubeRenderer.add(entity);
     }
 
     void RenderMaster::drawChunk(const ChunkMesh& mesh)
@@ -42,8 +43,8 @@ namespace acid
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
-        //_quadRenderer.render(camera);
-        //_cubeRenderer.render(camera);
+        _quadRenderer.render(camera);
+        _cubeRenderer.render(camera);
         _chunkRenderer.render(camera);
 
         if (_drawSky) 

@@ -14,8 +14,6 @@ namespace acid
 
     void ChunkRenderer::render(const Camera& camera)
     {
-        glEnable(GL_CULL_FACE);
-
         _shader.useProgram();
         BLOCK_DATABASE.textureAtlas.bindTexture();
 

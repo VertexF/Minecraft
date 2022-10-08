@@ -11,6 +11,8 @@ namespace acid
         GRASS,
         DIRT,
         STONE,
+        OAK_BARK,
+        OAK_LEAF,
 
         NUM_TYPES
     };

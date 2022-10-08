@@ -7,7 +7,7 @@
 namespace acid
 {
     ChunkSection::ChunkSection(const sf::Vector3i& position, World& world) : 
-        _location(position), _world(&world), _hasMesh(false)
+        _location(position), _world(&world), _hasMesh(false), _hasBufferedMesh(false)
     {
         static_assert(sizeof(_blocks) == CHUNK_VOLUME, "Too many blocks for the chunk size.");
     }
@@ -39,13 +39,14 @@ namespace acid
     void ChunkSection::makeMesh()
     {
         ChunkMeshBuilder(*this, _mesh).buildMesh();
-        bufferMesh();
         _hasMesh = true;
+        _hasBufferedMesh = false;
     }
 
     void ChunkSection::bufferMesh()
     {
         _mesh.bufferMesh();
+        _hasBufferedMesh = true;
     }
 
     const sf::Vector3i ChunkSection::getLocation() const noexcept
@@ -56,6 +57,11 @@ namespace acid
     bool ChunkSection::hasMesh() const noexcept
     {
         return _hasMesh;
+    }
+
+    bool ChunkSection::hasBuffered() const noexcept
+    {
+        return _hasBufferedMesh;
     }
 
     void ChunkSection::setHasMesh(bool meshBool)

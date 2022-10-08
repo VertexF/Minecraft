@@ -14,9 +14,9 @@ namespace acid
     {
     }
 
-    const BlockData& ChunkBlock::getData() const
+    const BlockDataHolder& ChunkBlock::getData() const
     {
-        return BLOCK_DATABASE.getData(static_cast<BlockID>(id));
+        return BLOCK_DATABASE.getData(static_cast<BlockID>(id)).getBlockData();
     }
 
     const BlockType& ChunkBlock::getType() const 

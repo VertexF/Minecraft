@@ -22,13 +22,17 @@ namespace acid
         virtual ChunkBlock getBlock(int x, int y, int z) const override;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
 
-        void drawChunks(RenderMaster& renderer) const;
+        void drawChunks(RenderMaster& renderer);
 
         bool hasLoaded() const;
         void load();
 
         ChunkSection& getSection(int index);
     private:
+        void addSection();
+        void addSectionsBlockTarget(int blockY);
+        void addSectionsIndexTarget(int index);
+
         bool outOfBound(int x, int y, int z) const noexcept;
 
         std::vector<std::unique_ptr<ChunkSection>> _chunkSections;

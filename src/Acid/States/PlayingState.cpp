@@ -1,12 +1,15 @@
 #include "PlayingState.h"
 
+#include <stdexcept>
+
 #include <glm/glm.hpp>
 
 #include "../Renderer/RenderMaster.h"
 #include "../Source/Application.h"
-#include "../World/Chunk/ChunkMeshBuilder.h"
 #include "../Source/Global.h"
 #include "../Maths/Ray.h"
+#include "../World/Event/PlayerDigEvent.h"
+#include "../Source/Entity.h"
 
 namespace acid 
 {
@@ -14,6 +17,16 @@ namespace acid
         StateBase(app)
     {
         app.getCamera().hookEntity(_player);
+
+        if (_crossHairTexture.loadFromFile("Assets/Textures/ch.png") == false) 
+        {
+            throw std::runtime_error("Could not load the cross hair texture.");
+        }
+        _crossHair.setTexture(&_crossHairTexture);
+        _crossHair.setSize({21, 21});
+        _crossHair.setOrigin({ _crossHair.getGlobalBounds().width / 2, _crossHair.getGlobalBounds().height / 2 });
+        sf::Vector2f position(_application->getWindow().getSize().x / 2, _application->getWindow().getSize().y / 2);
+        _crossHair.setPosition(position);
     }
 
     void StatePlaying::handleEvent(sf::Event e) 
@@ -42,13 +55,13 @@ namespace acid
                     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
                     {
                         timer.restart();
-                        WORLD.setBlock(x, y, z, 0);
+                        WORLD.addEvent<PlayerDigEvent>(sf::Mouse::Left, ray.getEnd(), _player);
                         break;
                     }
                     else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
                     {
                         timer.restart();
-                        WORLD.setBlock(lastPosition.x, lastPosition.y, lastPosition.z, 2);
+                        WORLD.addEvent<PlayerDigEvent>(sf::Mouse::Right, lastPosition, _player);
                         break;
                     }
                 }
@@ -61,14 +74,20 @@ namespace acid
     void StatePlaying::update(float deltaTime) 
     {
         WORLD.update(_application->getCamera());
-        _player.update(deltaTime);
+        _player.update(deltaTime, WORLD);
         _fpsCounter.update();
     }
 
     void StatePlaying::render(RenderMaster& renderer) 
     {
-        WORLD.renderWorld(renderer);
+        static Entity cubeTest({ 0, 150, 0 }, { 50, 70, 25 });
+
+        renderer.drawSFML(_crossHair);
         _fpsCounter.draw(renderer);
+        //renderer.drawCube(cubeTest);
+        WORLD.renderWorld(renderer);
+
+        _player.draw(renderer);
     }
 
     void StatePlaying::onOpen()
