@@ -11,7 +11,7 @@
 
 namespace acid 
 {
-    class Entity;
+    struct Entity;
     class Camera;
 
     class CubeRenderer 

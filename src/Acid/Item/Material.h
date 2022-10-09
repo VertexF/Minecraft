@@ -16,10 +16,12 @@ namespace acid
             DIRT,
             STONE,
             OAK_BARK,
-            OAK_LEAF
+            OAK_LEAF,
+            SAND,
+            CACTUS
         };
 
-        const static Material NOTHING_BLOCK, GRASS_BLOCK, DIRT_BLOCK, STONE_BLOCK, OAK_BARK_BLOCK, OAK_LEAF_BLOCK;
+        const static Material NOTHING_BLOCK, GRASS_BLOCK, DIRT_BLOCK, STONE_BLOCK, OAK_BARK_BLOCK, OAK_LEAF_BLOCK, SAND_BLOCK, CACTUS_BLOCK;
 
         Material(Material::ID id, int maxStack, bool isBlock, std::string&& name);
 

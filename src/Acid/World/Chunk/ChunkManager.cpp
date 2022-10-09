@@ -11,14 +11,20 @@ namespace acid
 
     Chunk& ChunkManager::getChunk(int x, int z)
     {
+        VectorXZ key{ x, z };
         if (chunkExistsAt(x, z) == false)
         {
-            VectorXZ key{ x, z };
             Chunk chunk({ *_world, {x, z} });
             _chunks.emplace(key, std::move(chunk));
         }
 
-        return _chunks.at({ x, z });
+        return _chunks.at(key);
+    }
+
+    Chunk& ChunkManager::qGetChunk(int x, int z)
+    {
+        VectorXZ key{x, z};
+        return _chunks.at(key);
     }
 
     std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& ChunkManager::getChunks()

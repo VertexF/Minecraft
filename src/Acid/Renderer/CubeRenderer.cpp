@@ -96,6 +96,11 @@ namespace acid
 
     void CubeRenderer::render(const Camera& camera)
     {
+        if (_cubes.empty()) 
+        {
+            return;
+        }
+
         _shader.useProgram();
         _cubeModel.bindVAO();
         _textureAtlas.bindTexture();

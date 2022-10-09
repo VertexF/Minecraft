@@ -47,6 +47,11 @@ namespace acid
             return dist(_randomEngine);
         }
 
+        void setSeed(int seed)
+        {
+            _randomEngine.seed(seed);
+        }
+
     private:
         REngine _randomEngine;
     };

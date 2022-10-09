@@ -8,6 +8,8 @@ namespace acid
     const Material Material::STONE_BLOCK(Material::ID::STONE, 99, true, "Stone Block");
     const Material Material::OAK_BARK_BLOCK(Material::ID::OAK_BARK, 99, true, "Oak Bark Block");
     const Material Material::OAK_LEAF_BLOCK(Material::ID::OAK_LEAF, 99, true, "Oak Leaf Block");
+    const Material Material::SAND_BLOCK(Material::ID::SAND, 99, true, "Sand Block");
+    const Material Material::CACTUS_BLOCK(Material::ID::CACTUS, 99, true, "Cactus Block");
 
     Material::Material(Material::ID id, int maxStack, bool isBlock, std::string&& name) :
         id(id), maxStackSize(maxStack), isBlock(isBlock), name(std::move(name))
@@ -30,7 +32,11 @@ namespace acid
             return BlockID::OAK_BARK;
         case ID::OAK_LEAF:
             return BlockID::OAK_LEAF;
-        defualt:
+        case ID::SAND:
+            return BlockID::SAND;
+        case ID::CACTUS:
+            return BlockID::CACTUS;
+        default:
             return BlockID::NUM_TYPES;
         }
     }
@@ -39,6 +45,7 @@ namespace acid
     {
         switch (id)
         {
+        case BlockID::NUM_TYPES:
         case BlockID::AIR:
             return NOTHING_BLOCK;
         case BlockID::GRASS:
@@ -51,6 +58,12 @@ namespace acid
             return OAK_BARK_BLOCK;
         case BlockID::OAK_LEAF:
             return OAK_LEAF_BLOCK;
+        case BlockID::SAND:
+            return SAND_BLOCK;
+        case BlockID::CACTUS:
+            return CACTUS_BLOCK;
+        default:
+            return NOTHING_BLOCK;
         }
     }
 }

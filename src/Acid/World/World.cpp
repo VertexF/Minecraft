@@ -1,5 +1,7 @@
 #include "World.h"
 
+#include <algorithm>
+
 #include "../Renderer/RenderMaster.h"
 #include "../Source/Camera.h"
 #include "Chunk/Chunk.h"
@@ -7,14 +9,14 @@
 
 namespace 
 {
-    constexpr int RENDER_DISTACE = 20;
+    constexpr int RENDER_DISTACE = 16;
     constexpr float GRAV = -3;
 }
 
 namespace acid
 {
     World::World() : 
-        _chunkManager(*this)
+        _chunkManager(*this), _loadDistance(2)
     {
     }
 
@@ -44,15 +46,47 @@ namespace acid
 
         updateChunks();
 
-        for (int x = 0; x < RENDER_DISTACE; x++)
+        bool isMeshMade = false;
+        int cameraX = camera.position.x / CHUNK_SIZE;
+        int cameraZ = camera.position.z / CHUNK_SIZE;
+
+        for (int i = 0; i < _loadDistance; i++)
         {
-            for (int z = 0; z < RENDER_DISTACE; z++) 
+            int minX = std::max(cameraX - i, 0);
+            int minZ = std::max(cameraZ - i, 0);
+            int maxX = cameraX + i;
+            int maxZ = cameraZ + i;
+
+            for (int x = minX; x < maxX; x++)
             {
-                if (_chunkManager.makeMesh(x, z)) 
+                for (int z = minZ; z < maxZ; z++)
                 {
-                    return;
+                    if (_chunkManager.makeMesh(x, z))
+                    {
+                        isMeshMade = true;
+                        break;
+                    }
+                }
+
+                if (isMeshMade) 
+                {
+                    break;
                 }
             }
+
+            if (isMeshMade)
+            {
+                break;
+            }
+        }
+
+        if (isMeshMade == false) 
+        {
+            _loadDistance++;
+        }
+        if (_loadDistance >= RENDER_DISTACE) 
+        {
+            _loadDistance = 2;
         }
     }
 
@@ -106,18 +140,40 @@ namespace acid
         }
     }
 
-    void World::renderWorld(RenderMaster& master) 
+    void World::renderWorld(RenderMaster& master, const Camera& camera)
     {
         master.drawSky();
 
         std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& chunkMap = _chunkManager.getChunks();
-        for(auto& chunk : chunkMap)
+        for(auto iterator = chunkMap.begin(); iterator != chunkMap.end();)
         {
-            chunk.second.drawChunks(master);
+            Chunk& chunk = iterator->second;
+
+            int cameraX = camera.position.x;
+            int cameraZ = camera.position.z;
+
+            int minX = (cameraX / CHUNK_SIZE) - RENDER_DISTACE;
+            int minZ = (cameraZ / CHUNK_SIZE) - RENDER_DISTACE;
+            int maxX = (cameraX / CHUNK_SIZE) + RENDER_DISTACE;
+            int maxZ = (cameraZ / CHUNK_SIZE) + RENDER_DISTACE;
+
+            auto location = chunk.getLocation();
+
+            if(minX > location.x || minZ > location.y ||
+               maxX < location.x || maxZ < location.y)
+            {
+                iterator = chunkMap.erase(iterator);
+                continue;
+            }
+            else 
+            {
+                chunk.drawChunks(master, camera);
+                iterator++;
+            }
         }
     }
 
-    const ChunkManager& World::getChunkManager() const 
+    ChunkManager& World::getChunkManager() 
     {
         return _chunkManager;
     }

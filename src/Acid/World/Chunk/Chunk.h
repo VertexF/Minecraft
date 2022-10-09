@@ -11,6 +11,7 @@ namespace acid
 {
     class RenderMaster;
     class World;
+    class Camera;
 
     class Chunk : public BaseChunk
     {
@@ -22,12 +23,14 @@ namespace acid
         virtual ChunkBlock getBlock(int x, int y, int z) const override;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
 
-        void drawChunks(RenderMaster& renderer);
+        void drawChunks(RenderMaster& renderer, const Camera& camera);
 
         bool hasLoaded() const;
         void load();
 
         ChunkSection& getSection(int index);
+
+        const sf::Vector2i& getLocation() const { return _location; }
     private:
         void addSection();
         void addSectionsBlockTarget(int blockY);

@@ -16,7 +16,7 @@ namespace acid
     class ChunkMeshBuilder 
     {
     public:
-        ChunkMeshBuilder(const ChunkSection& chunkSection, ChunkMesh& chunkMesh);
+        ChunkMeshBuilder(ChunkSection& chunkSection, ChunkMesh& chunkMesh);
 
         void buildMesh();
     private:
@@ -26,10 +26,11 @@ namespace acid
                               const sf::Vector3i& blockFacing);
 
         bool shouldMakeFace(const sf::Vector3i& adjBlock, const BlockDataHolder& blockData);
+        bool shouldMakeLayer(int layer);
 
         ChunkSection* _sectionChunk = nullptr;
         ChunkMesh* _chunkMesh = nullptr;
-        const ChunkSection* _chunkSection = nullptr;
+        ChunkSection* _chunkSection = nullptr;
 
         const BlockDataHolder* _blockData = nullptr;
     };

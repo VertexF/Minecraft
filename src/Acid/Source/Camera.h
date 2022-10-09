@@ -3,6 +3,7 @@
 
 #include <glm/glm.hpp>
 
+#include "../Maths/Frustum.h"
 #include "Entity.h"
 
 namespace acid 
@@ -17,8 +18,12 @@ namespace acid
         const glm::mat4& getViewMatrix() const noexcept;
         const glm::mat4& getProjMatrix() const noexcept;
         const glm::mat4& getProjectionViewMatrix() const noexcept;
+
+        const ViewFrustum& getViewFrustum() const noexcept;
     private:
         const Entity* _entity;
+
+        ViewFrustum _viewFrustum;
 
         glm::mat4 _projectionMatrix;
         glm::mat4 _viewMatrix;

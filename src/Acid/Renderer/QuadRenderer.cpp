@@ -37,6 +37,11 @@ namespace acid
 
     void QuadRenderer::render(const Camera& camera) 
     {
+        if (_quads.empty())
+        {
+            return;
+        }
+
         _shader.useProgram();
         _quadModel.bindVAO();
         _basicTexture.bindTexture();

@@ -8,7 +8,7 @@
 namespace acid 
 {
     Player::Player() : _isOnGround(false),
-        Entity({ 25.f, 125.f, 25.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}), _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up)
+        Entity({ 2500.f, 125.f, 2500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}), _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up)
     {
         if (font.loadFromFile("Assets/Fonts/rs.ttf") == false)
         {
@@ -16,6 +16,11 @@ namespace acid
         }
 
         for (int i = 0; i < 5; i++) 
+        {
+            _items.emplace_back(Material::NOTHING_BLOCK, 0);
+        }
+
+        for (float i = 0.f; i < 5.f; i++) 
         {
             sf::Text text;
             text.setFont(font);
@@ -31,6 +36,23 @@ namespace acid
     {
         keyboardInput();
         mouseInput(window);
+
+        if (_itemDown.isKeyPressed()) 
+        {
+            _heldItem++;
+            if(_heldItem == _items.size())
+            {
+                _heldItem = 0;
+            }
+        }
+        else if (_itemUp.isKeyPressed()) 
+        {
+            _heldItem--;
+            if (_heldItem == -1) 
+            {
+                _heldItem = _items.size() - 1;
+            }
+        }
     }
 
     void Player::update(float dt, World &world) 
@@ -107,9 +129,9 @@ namespace acid
     {
         Material::ID id = material.id;
 
-        for (int i = 0; i < _items.size(); i++)
+        for (unsigned int i = 0; i < _items.size(); i++)
         {
-            if(_items[i].getMaterial().id == id)
+            if (_items[i].getMaterial().id == id)
             {
                 int leftOver = _items[i].add(1);
             }
@@ -123,10 +145,10 @@ namespace acid
 
     void Player::draw(RenderMaster& master)
     {
-        for (int i = 0; i < _items.size(); i++)
+        for (unsigned int i = 0; i < _items.size(); i++)
         {
             sf::Text& text = _itemText[i];
-            if (i == _heldItem) 
+            if (i == static_cast<unsigned int>(_heldItem))
             {
                 text.setFillColor(sf::Color::Red);
             }
@@ -134,7 +156,7 @@ namespace acid
             {
                 text.setFillColor(sf::Color::Black);
             }
-            text.setString(_item[i].getMaterial().name);
+            text.setString(_items[i].getMaterial().name + " " + std::to_string(_items[i].getNumInStack()));
             master.drawSFML(text);
         }
     }
@@ -176,7 +198,7 @@ namespace acid
         }
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
         {
-            change.y -= 8;
+            change.y -= speed;
         }
 
         velocity += change;

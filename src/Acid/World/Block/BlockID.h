@@ -13,6 +13,9 @@ namespace acid
         STONE,
         OAK_BARK,
         OAK_LEAF,
+        SAND,
+        WATER,
+        CACTUS,
 
         NUM_TYPES
     };

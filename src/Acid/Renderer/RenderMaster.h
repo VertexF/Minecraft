@@ -14,7 +14,7 @@ namespace acid
 {
     class Camera;
     class ChunkMesh;
-    class Entity;
+    struct Entity;
     class RenderMaster 
     {
     public:

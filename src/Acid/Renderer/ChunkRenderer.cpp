@@ -14,6 +14,11 @@ namespace acid
 
     void ChunkRenderer::render(const Camera& camera)
     {
+        if (_chunks.empty()) 
+        {
+            return;
+        }
+
         _shader.useProgram();
         BLOCK_DATABASE.textureAtlas.bindTexture();
 

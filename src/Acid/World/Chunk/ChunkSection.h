@@ -9,6 +9,8 @@
 #include "../Block/ChunkBlock.h"
 #include "ChunkMesh.h"
 #include "ChunkBase.h"
+#include "../../Physics/AABB.h"
+#include "../Block/BlockData.h"
 
 namespace acid 
 {
@@ -16,6 +18,30 @@ namespace acid
 
     class ChunkSection : public BaseChunk
     {
+        class Layer
+        {
+        public:
+            void update(ChunkBlock chunk)
+            {
+                if (chunk.getData().isOpaque)
+                {
+                    _solidBlockCount--;
+                }
+                else
+                {
+                    _solidBlockCount++;
+                }
+            }
+
+            bool isAllSolid() const
+            {
+                return _solidBlockCount == CHUNK_AREA;
+            }
+
+        private:
+            int _solidBlockCount = 0;
+        };
+
     public:
         ChunkSection(const sf::Vector3i& position, World& world);
 
@@ -30,7 +56,11 @@ namespace acid
         bool hasBuffered() const noexcept;
         void setHasMesh(bool meshBool);
 
+        const Layer& getLayer(int layer) const;
+        ChunkSection& getAdjacent(int dx, int dz);
+
         ChunkMesh &getMesh();
+        AABB getCurrentAABB() const;
     private:
         sf::Vector3i toWorldPosition(int x, int y, int z) const;
 
@@ -38,8 +68,10 @@ namespace acid
         static int getIndex(int x, int y, int z);
 
         sf::Vector3i _location;
+        std::array<Layer, CHUNK_SIZE> _layers;
         std::array<ChunkBlock, CHUNK_VOLUME> _blocks;
         ChunkMesh _mesh;
+        AABB _aabb;
 
         World* _world;
 

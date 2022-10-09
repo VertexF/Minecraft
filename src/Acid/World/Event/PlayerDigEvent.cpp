@@ -2,6 +2,7 @@
 
 #include "../World.h"
 #include "../../Player/Player.h"
+#include "../../Item/Material.h"
 
 namespace acid 
 {
@@ -25,15 +26,28 @@ namespace acid
         {
         case sf::Mouse::Button::Left: 
         {
+            auto block = world.getBlock(_digSpot.x, _digSpot.y, _digSpot.z);
+            const auto& material = Material::toMaterial(static_cast<BlockID>(block.id));
+            _player->addItem(material);
             world.updateChunk(_digSpot.x, _digSpot.y, _digSpot.z);
             world.setBlock(_digSpot.x, _digSpot.y, _digSpot.z, 0);
             break;
         }
         case sf::Mouse::Button::Right:
         {
-            world.updateChunk(_digSpot.x, _digSpot.y, _digSpot.z);
-            world.setBlock(_digSpot.x, _digSpot.y, _digSpot.z, 1);
-            break;
+            auto& stack = _player->getHelpItem();
+            auto& material = stack.getMaterial();
+            if (material.id == Material::ID::NOTHING)
+            {
+                return;
+            }
+            else
+            {
+                stack.remove();
+                world.updateChunk(_digSpot.x, _digSpot.y, _digSpot.z);
+                world.setBlock(_digSpot.x, _digSpot.y, _digSpot.z, material.toBlockID());
+                break;
+            }
         }
         default:
             break;

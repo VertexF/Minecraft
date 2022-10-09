@@ -17,7 +17,7 @@ namespace acid
 {
     class RenderMaster;
     class Camera;
-    class Entity;
+    struct Entity;
 
     class World
     {
@@ -31,8 +31,8 @@ namespace acid
         void update(const Camera& camera);
         void updateChunk(int blockX, int blockY, int blockZ);
 
-        void renderWorld(RenderMaster& master);
-        const ChunkManager& getChunkManager() const;
+        void renderWorld(RenderMaster& master, const Camera& camera);
+        ChunkManager& getChunkManager();
 
         static VectorXZ getBlockXZ(int x, int z);
         static VectorXZ getChunkXZ(int x, int z);
@@ -51,6 +51,8 @@ namespace acid
         std::vector<std::unique_ptr<IWorldEvent>> _events;
         std::unordered_map<sf::Vector3i, ChunkSection*, hash<sf::Vector3i>> _chunkUpdates;
         ChunkManager _chunkManager;
+
+        int _loadDistance;
     };
 }
 

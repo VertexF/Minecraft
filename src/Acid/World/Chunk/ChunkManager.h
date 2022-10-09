@@ -19,6 +19,7 @@ namespace acid
 
         std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& getChunks();
         Chunk& getChunk(int x, int z);
+        Chunk& qGetChunk(int x, int z);
 
         bool makeMesh(int x, int z);
 

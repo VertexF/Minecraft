@@ -7,6 +7,10 @@
 #include "../../Source/Global.h"
 #include "../../Maths/NoiseGenerator.h"
 #include "../../Util/Random.h"
+#include "../../Source/Camera.h"
+#include "../../Physics/AABB.h"
+#include "../../Maths/Frustum.h"
+#include "../Generation/TerrainGenerator.h"
 
 namespace acid 
 {
@@ -53,7 +57,7 @@ namespace acid
         _chunkSections.at(y / CHUNK_SIZE)->setBlock(x, bY, z, block);
     }
 
-    void Chunk::drawChunks(RenderMaster& renderer)
+    void Chunk::drawChunks(RenderMaster& renderer, const Camera& camera)
     {
         for (int i = 0; i < _chunkSections.size(); i++)
         {
@@ -64,7 +68,10 @@ namespace acid
                     _chunkSections.at(i)->bufferMesh();
                 }
 
-                renderer.drawChunk(_chunkSections.at(i)->getMesh());
+                if (camera.getViewFrustum().isBoxInFrustum(_chunkSections.at(i)->getCurrentAABB()))
+                {
+                    renderer.drawChunk(_chunkSections.at(i)->getMesh());
+                }
             }
         }
     }
@@ -76,6 +83,16 @@ namespace acid
 
     void Chunk::load() 
     {
+        if (hasLoaded()) 
+        {
+            return;
+        }
+
+        TerrianGenerator gen;
+        gen.generateTerrianFor(*this);
+        _isLoaded = true;
+        return;
+
         static int seed = RANDOM_GENERATOR.intInRange(444, 444444);
         if (hasLoaded()) 
         {
@@ -93,7 +110,7 @@ namespace acid
             for (int z = 0; z < CHUNK_SIZE; z++) 
             {
                 int h = temp_noiseGen.getHeight(x, z, _location.x + 10, _location.y + 10);
-                heightMap[x * CHUNK_SIZE + z] = h;
+                heightMap.at(x * CHUNK_SIZE + z) = h;
 
                 maxValue = std::max(maxValue, h);
             }
@@ -105,7 +122,7 @@ namespace acid
             {
                 for (int z = 0; z < CHUNK_SIZE; z++)
                 {
-                    int h = heightMap[x * CHUNK_SIZE + z];
+                    int h = heightMap.at(x * CHUNK_SIZE + z);
 
                     if (y > h)
                     {
@@ -164,6 +181,12 @@ namespace acid
 
     ChunkSection& Chunk::getSection(int index) 
     {
+        static ChunkSection errorSection({ 444, 444, 444 }, *_world);
+        if(index >= static_cast<int>(_chunkSections.size()) || index < 0)
+        {
+            return errorSection;
+        }
+
         return *_chunkSections.at(index);
     }
 
@@ -181,7 +204,7 @@ namespace acid
 
     void Chunk::addSectionsIndexTarget(int index) 
     {
-        while (_chunkSections.size() < index + 1) 
+        while (static_cast<int>(_chunkSections.size()) < index + 1)
         {
             addSection();
         }

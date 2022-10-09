@@ -44,6 +44,11 @@ namespace acid
         return value > 0 ? value : 1;
     }
 
+    void NoiseGenerator::setParameters(const NoiseParameters& params) 
+    {
+        _noiseParameters = params;
+    }
+
     double NoiseGenerator::getNoise(int n) const 
     {
         n += _seed;

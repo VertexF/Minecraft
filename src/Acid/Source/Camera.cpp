@@ -28,6 +28,7 @@ namespace acid
 
         _viewMatrix = makeViewMatrix(*this);
         _projViewMatrix = _projectionMatrix * _viewMatrix;
+        _viewFrustum.update(_projViewMatrix);
     }
 
     const glm::mat4& Camera::getViewMatrix() const noexcept 
@@ -43,5 +44,10 @@ namespace acid
     const glm::mat4& Camera::getProjectionViewMatrix() const noexcept 
     {
         return _projViewMatrix;
+    }
+
+    const ViewFrustum& Camera::getViewFrustum() const noexcept
+    {
+        return _viewFrustum;
     }
 }

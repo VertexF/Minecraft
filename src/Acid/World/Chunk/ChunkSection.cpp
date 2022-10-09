@@ -7,8 +7,9 @@
 namespace acid
 {
     ChunkSection::ChunkSection(const sf::Vector3i& position, World& world) : 
-        _location(position), _world(&world), _hasMesh(false), _hasBufferedMesh(false)
+        _location(position), _world(&world), _hasMesh(false), _hasBufferedMesh(false), _aabb({ CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE })
     {
+        _aabb.update({_location.x * CHUNK_SIZE, _location.y * CHUNK_SIZE, _location.z * CHUNK_SIZE });
         static_assert(sizeof(_blocks) == CHUNK_VOLUME, "Too many blocks for the chunk size.");
     }
 
@@ -21,6 +22,7 @@ namespace acid
             return;
         }
 
+        _layers[y].update(block);
         _blocks[getIndex(x, y, z)] = block;
     }
 
@@ -69,9 +71,38 @@ namespace acid
         _hasMesh = meshBool;
     }
 
+    const ChunkSection::Layer& ChunkSection::getLayer(int layer) const 
+    {
+        if (layer == -1)
+        {
+            return (_world->getChunkManager().getChunk(_location.x, _location.z).getSection(_location.y - 1).getLayer(CHUNK_SIZE - 1));
+        }
+        else if (layer == CHUNK_SIZE) 
+        {
+            return (_world->getChunkManager().getChunk(_location.x, _location.z).getSection(_location.y - 1).getLayer(0));
+        }
+        else 
+        {
+            return _layers[layer];
+        }
+    }
+
+    ChunkSection& ChunkSection::getAdjacent(int dx, int dz) 
+    {
+        int newX = _location.x + dx;
+        int newZ = _location.z + dz;
+
+        return _world->getChunkManager().getChunk(newX, newZ).getSection(_location.y);
+    }
+
     ChunkMesh &ChunkSection::getMesh()
     {
         return _mesh;
+    }
+
+    AABB ChunkSection::getCurrentAABB() const
+    {
+        return _aabb;
     }
 
     sf::Vector3i ChunkSection::toWorldPosition(int x, int y, int z) const

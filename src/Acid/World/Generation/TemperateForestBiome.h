@@ -1,0 +1,9 @@
+#ifndef TEMPERATE_FOREST_BIOME_HDR
+#define TEMPERATE_FOREST_BIOME_HDR
+
+namespace acid 
+{
+
+}
+
+#endif // !TEMPERATE_FOREST_BIOME_HDR

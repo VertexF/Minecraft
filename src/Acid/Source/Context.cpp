@@ -31,6 +31,6 @@ namespace acid
         glCullFace(GL_BACK);
 
         //window.setFramerateLimit(90);
-        window.setVerticalSyncEnabled(true);
+        //window.setVerticalSyncEnabled(true);
     }
 }

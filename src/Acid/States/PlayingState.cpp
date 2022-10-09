@@ -47,8 +47,9 @@ namespace acid
             int z = ray.getEnd().z;
 
             auto block = WORLD.getBlock(x, y, z);
+            auto id = static_cast<BlockID>(block.id);
 
-            if (block != 0) 
+            if (id != BlockID::AIR && id != BlockID::WATER) 
             {
                 if (timer.getElapsedTime().asSeconds() > 0.2) 
                 {
@@ -73,6 +74,16 @@ namespace acid
 
     void StatePlaying::update(float deltaTime) 
     {
+        if (_player.position.x < 0) 
+        {
+            _player.position.x = 0;
+        }
+
+        if (_player.position.z < 0) 
+        {
+            _player.position.z = 0;
+        }
+
         WORLD.update(_application->getCamera());
         _player.update(deltaTime, WORLD);
         _fpsCounter.update();
@@ -85,7 +96,7 @@ namespace acid
         renderer.drawSFML(_crossHair);
         _fpsCounter.draw(renderer);
         //renderer.drawCube(cubeTest);
-        WORLD.renderWorld(renderer);
+        WORLD.renderWorld(renderer, _application->getCamera());
 
         _player.draw(renderer);
     }

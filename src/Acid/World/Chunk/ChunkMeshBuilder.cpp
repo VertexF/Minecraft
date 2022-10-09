@@ -79,7 +79,7 @@ namespace
 
 namespace acid 
 {
-    ChunkMeshBuilder::ChunkMeshBuilder(const ChunkSection& chunkSection, ChunkMesh& chunkMesh) :
+    ChunkMeshBuilder::ChunkMeshBuilder(ChunkSection& chunkSection, ChunkMesh& chunkMesh) :
         _chunkSection(&chunkSection), _chunkMesh(&chunkMesh)
     {
     }
@@ -90,6 +90,11 @@ namespace acid
 
         for (int8_t y = 0; y < CHUNK_SIZE; ++y) 
         {
+            if (shouldMakeLayer(y) == false)
+            {
+                continue;
+            }
+
             for (int8_t x = 0; x < CHUNK_SIZE; ++x)
             {
                 for (int8_t z = 0; z < CHUNK_SIZE; ++z)
@@ -138,11 +143,28 @@ namespace acid
         {
             return true;
         }
-        else if((data.isOpaque) && (data.id != _blockData->id))
+        else if((data.isOpaque == false) && (data.id != _blockData->id))
         {
             return true;
         }
 
         return false;
+    }
+
+    bool ChunkMeshBuilder::shouldMakeLayer(int layer)
+    {
+        auto adjIsSolid = [&](int dx, int dz)
+        {
+            const ChunkSection& sect = _chunkSection->getAdjacent(dx, dz);
+            return sect.getLayer(layer).isAllSolid();
+        };
+
+        return ((_chunkSection->getLayer(layer).isAllSolid() == false) ||
+            (_chunkSection->getLayer(layer + 1).isAllSolid() == false) ||
+            (_chunkSection->getLayer(layer - 1).isAllSolid() == false) ||
+            (adjIsSolid(1, 0) == false) ||
+            (adjIsSolid(0, 1) == false) ||
+            (adjIsSolid(-1, 0) == false) ||
+            (adjIsSolid(0, -1) == false));
     }
 }
