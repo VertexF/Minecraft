@@ -10,7 +10,7 @@ namespace acid
         StructureBuilder builder;
 
         int hieght = rand.intInRange(4, 7);
-        int leafSize = 2;
+        int leafSize = rand.intInRange(1, 3);
 
         int newY = hieght + y;
         builder.fill(newY, x - leafSize, x + leafSize, z - leafSize, z + leafSize, BlockID::OAK_LEAF);
