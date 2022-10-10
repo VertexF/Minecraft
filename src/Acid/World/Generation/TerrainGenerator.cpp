@@ -19,7 +19,7 @@ namespace acid
 
     NoiseGenerator TerrianGenerator::_biomeNoiseGen(seed * 2);
 
-    TerrianGenerator::TerrianGenerator() : _grassBiome(seed), _lightForest(seed), _desertBiome(seed)
+    TerrianGenerator::TerrianGenerator() : _grassBiome(seed), _lightForest(seed), _desertBiome(seed), _oceanBiome(seed)
     {
         setUpNoise();
     }
@@ -34,7 +34,7 @@ namespace acid
         getBiomeMap();
         getHeightMap();
 
-        auto maxHeight = *std::max_element(_heightMap.begin(), _heightMap.end());
+        auto maxHeight = _heightMap.getMaxValue();
         maxHeight = std::max(maxHeight, WATER_LEVEL);
         setBlock(maxHeight);
     }
@@ -43,7 +43,7 @@ namespace acid
     {
         auto getHeightAt = [&](int x, int z)
         {
-            const IBoime& biome = getBiome(x, z);
+            const Biome& biome = getBiome(x, z);
 
             return biome.getHeight(x, z, _chunk->getLocation().x, _chunk->getLocation().y);
         };
@@ -69,7 +69,7 @@ namespace acid
                 int height = bilinearInterpolation(bottomLeft, topLeft, bottomRight, topRight,
                                                    xMin, xMax, zMin, zMax, x, z);
 
-                _heightMap[x * CHUNK_SIZE + z] = height;
+                _heightMap.get(x, z) = height;
             }
         }
     }
@@ -84,7 +84,7 @@ namespace acid
             {
                 for (int z = 0; z < CHUNK_SIZE; z++)
                 {
-                    int height = _heightMap[x * CHUNK_SIZE + z];
+                    int height = _heightMap.get(x, z);
                     auto& biome = getBiome(x, z);
 
                     if (y > height) 
@@ -131,21 +131,25 @@ namespace acid
         }
     }
 
-    const IBoime& TerrianGenerator::getBiome(int x, int z) const
+    const Biome& TerrianGenerator::getBiome(int x, int z) const
     {
-        int biomeValue = _biomeMap[x * (CHUNK_SIZE + 1) + z];
+        int biomeValue = _biomeMap.get(x, z);
 
         if(biomeValue > 155)
         {
-            return _desertBiome;
+            return _oceanBiome;
         }
-        else if (biomeValue > 135) 
+        else if (biomeValue > 145) 
         {
             return _lightForest;
         }
-        else 
+        else if (biomeValue > 110)
         {
             return _grassBiome;
+        }
+        else 
+        {
+            return _desertBiome;
         }
     }
 
@@ -174,7 +178,7 @@ namespace acid
             for (int z = 0; z < CHUNK_SIZE + 1; z++)
             {
                 int height = _biomeNoiseGen.getHeight(x, z, location.x + 10, location.y + 10);
-                _biomeMap[x * (CHUNK_SIZE + 1) + z] = height;
+                _biomeMap.get(x, z) = height;
             }
         }
     }

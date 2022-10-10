@@ -42,7 +42,7 @@ namespace acid
                 _data.texSideCoord = { x, y };
                 _data.texBottomCoord = { x, y };
             }
-            else if (line == "id")
+            else if (line == "Id")
             {
                 int id;
                 inFile >> id;

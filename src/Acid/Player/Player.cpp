@@ -8,7 +8,7 @@
 namespace acid 
 {
     Player::Player() : _isOnGround(false),
-        Entity({ 2500.f, 125.f, 2500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}), _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up)
+        Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}), _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up)
     {
         if (font.loadFromFile("Assets/Fonts/rs.ttf") == false)
         {
@@ -169,7 +169,7 @@ namespace acid
     void Player::keyboardInput() 
     {
         glm::vec3 change(0.0);
-        float speed = 0.8;
+        float speed = 0.5;
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {

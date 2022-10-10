@@ -76,7 +76,7 @@ namespace acid
         }
     }
 
-    bool Chunk::hasLoaded() const 
+    bool Chunk::hasLoaded() const
     {
         return _isLoaded;
     }
@@ -90,92 +90,6 @@ namespace acid
 
         TerrianGenerator gen;
         gen.generateTerrianFor(*this);
-        _isLoaded = true;
-        return;
-
-        static int seed = RANDOM_GENERATOR.intInRange(444, 444444);
-        if (hasLoaded()) 
-        {
-            return;
-        }
-
-        Random<std::minstd_rand> rand((_location.x ^ _location.y) << 2);
-        NoiseGenerator temp_noiseGen(seed);
-        std::array<int, CHUNK_AREA> heightMap;
-        std::vector<sf::Vector3i> treeLocation;
-
-        int maxValue = 0;
-        for (int x = 0; x < CHUNK_SIZE; x++) 
-        {
-            for (int z = 0; z < CHUNK_SIZE; z++) 
-            {
-                int h = temp_noiseGen.getHeight(x, z, _location.x + 10, _location.y + 10);
-                heightMap.at(x * CHUNK_SIZE + z) = h;
-
-                maxValue = std::max(maxValue, h);
-            }
-        }
-
-        for (int y = 0; y < maxValue + 1; y++)
-        {
-            for (int x = 0; x < CHUNK_SIZE; x++)
-            {
-                for (int z = 0; z < CHUNK_SIZE; z++)
-                {
-                    int h = heightMap.at(x * CHUNK_SIZE + z);
-
-                    if (y > h)
-                    {
-                        continue;
-                    }
-                    else if (y == h)
-                    {
-                        if (y > WATER_LEVEL) 
-                        {
-                            setBlock(x, y, z, BlockID::GRASS);
-                            if (rand.intInRange(0, 150) == 0) 
-                            {
-                                treeLocation.emplace_back(x, y, z);
-                            }
-                        }
-                        else 
-                        {
-                            setBlock(x, y, z, BlockID::GRASS);
-                        }
-                    }
-                    else if(y > h - 3)
-                    {
-                        setBlock(x, y, z, BlockID::DIRT);
-                    }
-                    else 
-                    {
-                        setBlock(x, y, z, BlockID::STONE);
-                    }
-                }
-            }
-        }
-
-        //tree
-        for (auto& tree : treeLocation) 
-        {
-            int h = rand.intInRange(5, 9);
-            for (int y = 0; y < h; y++)
-            {
-                setBlock(tree.x, tree.y + y, tree.z, BlockID::OAK_BARK);
-
-                for (int x = -2; x < 2; x++) 
-                {
-                    for (int z = -2; z < 2; z++)
-                    {
-                        for (int y = 0; y < 3; y++)
-                        {
-                            setBlock(tree.x + x, tree.y + h + y, tree.z + z, BlockID::OAK_LEAF);
-                        }
-                    }
-                }
-            }
-        }
-
         _isLoaded = true;
     }
 

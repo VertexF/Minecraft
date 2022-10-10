@@ -1,13 +1,17 @@
 #ifndef TERRAIN_GENERATOR_HDR
 #define TERRAIN_GENERATOR_HDR
 
-#include <array>
-
 #include "../../Maths/NoiseGenerator.h"
 #include "../WorldConstants.h"
+
+#include "../../Util/Array2D.h"
 #include "../../Util/Random.h"
 
 #include "Biome.h"
+#include "GrasslandBiome.h"
+#include "DesertBiome.h"
+#include "TemperateForestBiome.h"
+#include "OceanBiome.h"
 
 namespace acid 
 {
@@ -29,18 +33,19 @@ namespace acid
         void getHeightMap();
         void getBiomeMap();
 
-        const IBoime& getBiome(int x, int z) const;
+        const Biome& getBiome(int x, int z) const;
 
         static NoiseGenerator _biomeNoiseGen;
 
         Random<std::minstd_rand> _random;
 
-        std::array<int, CHUNK_AREA> _heightMap;
-        std::array<int, (CHUNK_SIZE + 1) * (CHUNK_SIZE + 1)> _biomeMap;
+        Array2D<int, CHUNK_SIZE> _heightMap;
+        Array2D<int, CHUNK_SIZE + 1> _biomeMap;
 
         GrasslandBiome _grassBiome;
-        LightForestBiome _lightForest;
+        TemperateForestBiome _lightForest;
         DesertBoime _desertBiome;
+        OceanBiome _oceanBiome;
 
         Chunk* _chunk = nullptr;
     };

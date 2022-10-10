@@ -4,6 +4,7 @@
 #include "StateBase.h"
 #include "../Player/Player.h"
 #include "../Util/FPSCounter.h"
+#include "../World/World.h"
 
 namespace acid 
 {
@@ -11,7 +12,7 @@ namespace acid
     {
     public:
         StatePlaying(Application& app);
-        virtual ~StatePlaying() noexcept = default;
+        virtual ~StatePlaying() = default;
 
         virtual void handleEvent(sf::Event e) override;
         virtual void handleInput() override;
@@ -27,6 +28,7 @@ namespace acid
         sf::Texture _crossHairTexture;
 
         FPSCounter _fpsCounter;
+        World _world;
     };
 }
 

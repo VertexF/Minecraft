@@ -75,6 +75,11 @@ namespace
             back =  { x,     y,     z - 1 };
         }
     };
+
+    constexpr GLfloat LIGHT_TOP = 1.f;
+    constexpr GLfloat LIGHT_X = 0.8f;
+    constexpr GLfloat LIGHT_Z = 0.6f;
+    constexpr GLfloat LIGHT_BOT = 0.4f;
 }
 
 namespace acid 
@@ -110,12 +115,12 @@ namespace acid
                     auto& data = *_blockData;
                     direction.update(x, y, z);
 
-                    tryAddFaceToMesh(topFace, data.texTopCoord, position, direction.up);
-                    tryAddFaceToMesh(bottomFace, data.texBottomCoord, position, direction.down);
-                    tryAddFaceToMesh(leftFace, data.texSideCoord, position, direction.left);
-                    tryAddFaceToMesh(rightFace, data.texSideCoord, position, direction.right);
-                    tryAddFaceToMesh(frontFace, data.texSideCoord, position, direction.front);
-                    tryAddFaceToMesh(backFace, data.texSideCoord, position, direction.back);
+                    tryAddFaceToMesh(topFace, data.texTopCoord, position, direction.up, LIGHT_TOP);
+                    tryAddFaceToMesh(bottomFace, data.texBottomCoord, position, direction.down, LIGHT_BOT);
+                    tryAddFaceToMesh(leftFace, data.texSideCoord, position, direction.left, LIGHT_X);
+                    tryAddFaceToMesh(rightFace, data.texSideCoord, position, direction.right, LIGHT_X);
+                    tryAddFaceToMesh(frontFace, data.texSideCoord, position, direction.front, LIGHT_Z);
+                    tryAddFaceToMesh(backFace, data.texSideCoord, position, direction.back, LIGHT_Z);
                 }
             }
         }
@@ -124,13 +129,14 @@ namespace acid
     void ChunkMeshBuilder::tryAddFaceToMesh(const std::vector<GLfloat>& blockFace,
                                             const sf::Vector2i& textureCoords,
                                             const sf::Vector3i& blockPosition,
-                                            const sf::Vector3i& blockFacing) 
+                                            const sf::Vector3i& blockFacing,
+                                            GLfloat cardinalLight) 
     {
         if (shouldMakeFace(blockFacing, *_blockData))
         {
             auto texCoords = BLOCK_DATABASE.textureAtlas.getTexture(textureCoords);
 
-            _chunkMesh->addFace(blockFace, texCoords, _chunkSection->getLocation(), blockPosition);
+            _chunkMesh->addFace(blockFace, texCoords, _chunkSection->getLocation(), blockPosition, cardinalLight);
         }
     }
 

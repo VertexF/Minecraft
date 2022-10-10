@@ -20,7 +20,7 @@ namespace acid
 
         TextureAtlas textureAtlas;
     private:
-        std::array<std::unique_ptr<BlockType>, static_cast<size_t>(BlockID::NUM_TYPES)> _blocks;
+        std::array<std::unique_ptr<BlockType>, static_cast<unsigned>(BlockID::NUM_TYPES)> _blocks;
     };
 }
 

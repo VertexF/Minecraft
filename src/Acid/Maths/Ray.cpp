@@ -7,7 +7,7 @@ namespace acid
     {
     }
 
-    void Ray::step(float scale) 
+    void Ray::step(float scale)
     {
         float yaw = glm::radians(_direction.y + 90);
         float pitch = glm::radians(_direction.x);
@@ -20,12 +20,12 @@ namespace acid
         point.y -= glm::tan(pitch) * scale;
     }
 
-    const glm::vec3& Ray::getEnd() const 
+    const glm::vec3& Ray::getEnd() const
     {
         return _rayEnd;
     }
 
-    float Ray::getLenght() const 
+    float Ray::getLenght() const
     {
         return glm::distance(_rayStart, _rayEnd);
     }

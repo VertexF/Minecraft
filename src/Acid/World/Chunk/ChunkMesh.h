@@ -13,7 +13,11 @@ namespace acid
     {
     public:
         ChunkMesh();
-        void addFace(const std::vector<GLfloat>& blockFace, const std::vector<GLfloat>& textureCoords, const sf::Vector3i& chunkPosition, const sf::Vector3i& blockPosition);
+        void addFace(const std::vector<GLfloat>& blockFace, 
+                     const std::vector<GLfloat>& textureCoords, 
+                     const sf::Vector3i& chunkPosition, 
+                     const sf::Vector3i& blockPosition,
+                     GLfloat cardinalLight);
 
         void bufferMesh();
         const Model& getModel() const;
@@ -22,6 +26,8 @@ namespace acid
         Mesh _mesh;
         Model _model;
         GLuint _indexIndex = 0;
+
+        std::vector<GLfloat> _light;
 
         int _faces;
     };

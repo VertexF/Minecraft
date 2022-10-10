@@ -10,7 +10,6 @@ namespace acid
         _location(position), _world(&world), _hasMesh(false), _hasBufferedMesh(false), _aabb({ CHUNK_SIZE, CHUNK_SIZE, CHUNK_SIZE })
     {
         _aabb.update({_location.x * CHUNK_SIZE, _location.y * CHUNK_SIZE, _location.z * CHUNK_SIZE });
-        static_assert(sizeof(_blocks) == CHUNK_VOLUME, "Too many blocks for the chunk size.");
     }
 
     void ChunkSection::setBlock(int x, int y, int z, const ChunkBlock& block) 
@@ -51,17 +50,17 @@ namespace acid
         _hasBufferedMesh = true;
     }
 
-    const sf::Vector3i ChunkSection::getLocation() const noexcept
+    const sf::Vector3i ChunkSection::getLocation() const
     {
         return _location;
     }
 
-    bool ChunkSection::hasMesh() const noexcept
+    bool ChunkSection::hasMesh() const
     {
         return _hasMesh;
     }
 
-    bool ChunkSection::hasBuffered() const noexcept
+    bool ChunkSection::hasBuffered() const
     {
         return _hasBufferedMesh;
     }

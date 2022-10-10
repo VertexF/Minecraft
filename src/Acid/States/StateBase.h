@@ -15,7 +15,7 @@ namespace acid
             _application(&app) 
         {
         }
-        virtual ~StateBase() noexcept = default;
+        virtual ~StateBase() = default;
 
         virtual void handleEvent(sf::Event e) = 0;
         virtual void handleInput() = 0;

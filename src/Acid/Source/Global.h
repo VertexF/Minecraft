@@ -12,7 +12,6 @@ namespace acid
 
 #define RANDOM_GENERATOR (Singleton<RandomSingleton>::getInstance())
 #define BLOCK_DATABASE (Singleton<BlockDatabase>::getInstance())
-#define WORLD (Singleton<World>::getInstance())
 #define CHUNK_MESH (Singleton<ChunkMesh>::getInstance())
 
 }

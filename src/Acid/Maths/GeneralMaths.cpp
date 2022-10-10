@@ -5,7 +5,7 @@ namespace acid
     float bilinearInterpolation(float bottonLeft, float topLeft, float bottonRight, float topRight,
         float xMin, float xMax,
         float zMin, float zMax,
-        float xToCalc, float zToCalc) 
+        float xToCalc, float zToCalc)
     {
         float width = xMax - xMin;
         float height = zMax - zMin;

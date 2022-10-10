@@ -10,7 +10,7 @@
 
 namespace acid
 {
-    CubeRenderer::CubeRenderer() : _textureAtlas("DefaultPack")
+    CubeRenderer::CubeRenderer() : _textureAtlas("DefaultPack2")
     {
         _basicTexture.loadFromFile("Test");
 

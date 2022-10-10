@@ -78,12 +78,18 @@ namespace acid
 
         _cubeTexture.loadFromFile(
             {
-                "right",
-                "left",
-                "top",
-                "bottom",
-                "back",
-                "front"
+                //right
+                "dm",
+                //left
+                "dm",
+                //top
+                "dt",
+                //bottom
+                "db",
+                //back
+                "dm",
+                //front
+                "dm"
             });
     }
 

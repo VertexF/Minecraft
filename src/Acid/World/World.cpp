@@ -5,17 +5,16 @@
 #include "../Renderer/RenderMaster.h"
 #include "../Source/Camera.h"
 #include "Chunk/Chunk.h"
-#include "../Source/Camera.h"
 
 namespace 
 {
-    constexpr int RENDER_DISTACE = 16;
+    constexpr int RENDER_DISTACE = 12;
     constexpr float GRAV = -3;
 }
 
 namespace acid
 {
-    World::World() : 
+    World::World(const Camera& camera) :
         _chunkManager(*this), _loadDistance(2)
     {
     }
@@ -45,49 +44,7 @@ namespace acid
         _events.clear();
 
         updateChunks();
-
-        bool isMeshMade = false;
-        int cameraX = camera.position.x / CHUNK_SIZE;
-        int cameraZ = camera.position.z / CHUNK_SIZE;
-
-        for (int i = 0; i < _loadDistance; i++)
-        {
-            int minX = std::max(cameraX - i, 0);
-            int minZ = std::max(cameraZ - i, 0);
-            int maxX = cameraX + i;
-            int maxZ = cameraZ + i;
-
-            for (int x = minX; x < maxX; x++)
-            {
-                for (int z = minZ; z < maxZ; z++)
-                {
-                    if (_chunkManager.makeMesh(x, z))
-                    {
-                        isMeshMade = true;
-                        break;
-                    }
-                }
-
-                if (isMeshMade) 
-                {
-                    break;
-                }
-            }
-
-            if (isMeshMade)
-            {
-                break;
-            }
-        }
-
-        if (isMeshMade == false) 
-        {
-            _loadDistance++;
-        }
-        if (_loadDistance >= RENDER_DISTACE) 
-        {
-            _loadDistance = 2;
-        }
+        loadChunks(camera);
     }
 
     void World::updateChunk(int blockX, int blockY, int blockZ)
@@ -198,6 +155,52 @@ namespace acid
 
     void World::collisionTest(Entity& entity) 
     {
+    }
+
+    void World::loadChunks(const Camera& camera) 
+    {
+        bool isMeshMade = false;
+        int cameraX = camera.position.x / CHUNK_SIZE;
+        int cameraZ = camera.position.z / CHUNK_SIZE;
+
+        for (int i = 0; i < _loadDistance; i++)
+        {
+            int minX = std::max(cameraX - i, 0);
+            int minZ = std::max(cameraZ - i, 0);
+            int maxX = cameraX + i;
+            int maxZ = cameraZ + i;
+
+            for (int x = minX; x < maxX; x++)
+            {
+                for (int z = minZ; z < maxZ; z++)
+                {
+                    if (_chunkManager.makeMesh(x, z))
+                    {
+                        isMeshMade = true;
+                        break;
+                    }
+                }
+
+                if (isMeshMade)
+                {
+                    break;
+                }
+            }
+
+            if (isMeshMade)
+            {
+                break;
+            }
+        }
+
+        if (isMeshMade == false)
+        {
+            _loadDistance++;
+        }
+        if (_loadDistance >= RENDER_DISTACE)
+        {
+            _loadDistance = 2;
+        }
     }
 
     void World::updateChunks() 

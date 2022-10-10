@@ -1,5 +1,5 @@
-#ifndef TEMPERATE_FOREST_BIOME_HDR
-#define TEMPERATE_FOREST_BIOME_HDR
+#ifndef OCEAN_BIOME_HDR
+#define OCAEN_BIOME_HDR
 
 #include "../../Maths/NoiseGenerator.h"
 #include "../../Util/Random.h"
@@ -8,17 +8,18 @@
 
 namespace acid 
 {
-    class TemperateForestBiome : public Biome
+    class OceanBiome : public Biome
     {
     public:
-        TemperateForestBiome(int seed);
-        virtual ~TemperateForestBiome() = default;
+        OceanBiome(int seed);
+        virtual ~OceanBiome() = default;
 
         virtual BlockID getTopBlock(Random<std::minstd_rand>& rand) const override;
         virtual void makeTree(Random<std::minstd_rand>& rand, Chunk& chunk, int x, int y, int z) const override;
+
     private:
         virtual NoiseParameters getNoiseParameters() override;
     };
 }
 
-#endif // !TEMPERATE_FOREST_BIOME_HDR
+#endif // !OCEAN_BIOME_HDR

@@ -15,11 +15,11 @@ namespace acid
         void update();
         void hookEntity(const Entity& entity);
 
-        const glm::mat4& getViewMatrix() const noexcept;
-        const glm::mat4& getProjMatrix() const noexcept;
-        const glm::mat4& getProjectionViewMatrix() const noexcept;
+        const glm::mat4& getViewMatrix() const;
+        const glm::mat4& getProjMatrix() const;
+        const glm::mat4& getProjectionViewMatrix() const;
 
-        const ViewFrustum& getViewFrustum() const noexcept;
+        const ViewFrustum& getViewFrustum() const;
     private:
         const Entity* _entity;
 

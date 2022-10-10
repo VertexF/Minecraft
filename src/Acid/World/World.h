@@ -22,7 +22,7 @@ namespace acid
     class World
     {
     public:
-        World();
+        World(const Camera& camera);
         ~World() = default;
 
         ChunkBlock getBlock(int x, int y, int z);
@@ -46,6 +46,7 @@ namespace acid
         }
 
     private:
+        void loadChunks(const Camera& camera);
         void updateChunks();
 
         std::vector<std::unique_ptr<IWorldEvent>> _events;

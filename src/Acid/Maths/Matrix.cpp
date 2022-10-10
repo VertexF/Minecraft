@@ -4,7 +4,7 @@
 
 namespace acid 
 {
-    glm::mat4 makeModelMatrix(const Entity& entity) 
+    glm::mat4 makeModelMatrix(const Entity& entity)
     {
         glm::mat4 matrix = glm::mat4(1.0);
 
@@ -17,7 +17,7 @@ namespace acid
         return matrix;
     }
 
-    glm::mat4 makeViewMatrix(const Camera& camera) 
+    glm::mat4 makeViewMatrix(const Camera& camera)
     {
         glm::mat4 matrix = glm::mat4(1.0);
 

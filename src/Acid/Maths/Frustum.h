@@ -32,7 +32,7 @@ namespace acid
     public:
         void update(const glm::mat4& projectionViewMatrix);
 
-        bool isBoxInFrustum(const AABB& box) const noexcept 
+        bool isBoxInFrustum(const AABB& box) const 
         {
             bool result = true;
             for (auto& plane : _planes)

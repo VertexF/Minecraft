@@ -51,9 +51,9 @@ namespace acid
         void makeMesh();
         void bufferMesh();
 
-        const sf::Vector3i getLocation() const noexcept;
-        bool hasMesh() const noexcept;
-        bool hasBuffered() const noexcept;
+        const sf::Vector3i getLocation() const;
+        bool hasMesh() const;
+        bool hasBuffered() const;
         void setHasMesh(bool meshBool);
 
         const Layer& getLayer(int layer) const;

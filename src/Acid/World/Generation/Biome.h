@@ -9,59 +9,22 @@ namespace acid
 {
     class Chunk;
 
-    struct IBoime 
+    struct Biome 
     {
-        virtual ~IBoime() = default;
+    public:
+        Biome(const NoiseParameters& paramters, int treeFreq, int seed);
+        virtual ~Biome() = default;
+
         virtual BlockID getTopBlock(Random<std::minstd_rand>& rand) const = 0;
         virtual void makeTree(Random<std::minstd_rand>& rand, Chunk& chunk, int x, int y, int z) const = 0;
 
-        virtual int getHeight(int x, int z, int chunkX, int chunkZ) const = 0;
-        virtual int getTreeFrequency() const = 0;
-    };
-
-    class GrasslandBiome : public IBoime 
-    {
-    public:
-        GrasslandBiome(int seed);
-        virtual ~GrasslandBiome() = default;
-
-        virtual BlockID getTopBlock(Random<std::minstd_rand>& rand) const override;
-        virtual void makeTree(Random<std::minstd_rand>& rand, Chunk& chunk, int x, int y, int z) const override;
-
-        virtual int getHeight(int x, int z, int chunkX, int chunkZ) const override;
-        virtual int getTreeFrequency() const override;
+        int getHeight(int x, int z, int chunkX, int chunkZ) const;
+        int getTreeFrequency() const;
+    protected:
+        virtual NoiseParameters getNoiseParameters() = 0;
     private:
         NoiseGenerator _heightGenerator;
-    };
-
-    class LightForestBiome : public IBoime
-    {
-    public:
-        LightForestBiome(int seed);
-        virtual ~LightForestBiome() = default;
-
-        virtual BlockID getTopBlock(Random<std::minstd_rand>& rand) const override;
-        virtual void makeTree(Random<std::minstd_rand>& rand, Chunk& chunk, int x, int y, int z) const override;
-
-        virtual int getHeight(int x, int z, int chunkX, int chunkZ) const override;
-        virtual int getTreeFrequency() const override;
-    private:
-        NoiseGenerator _heightGenerator;
-    };
-
-    class DesertBoime : public IBoime
-    {
-    public:
-        DesertBoime(int seed);
-        virtual ~DesertBoime() = default;
-
-        virtual BlockID getTopBlock(Random<std::minstd_rand>& rand) const override;
-        virtual void makeTree(Random<std::minstd_rand>& rand, Chunk& chunk, int x, int y, int z) const override;
-
-        virtual int getHeight(int x, int z, int chunkX, int chunkZ) const override;
-        virtual int getTreeFrequency() const override;
-    private:
-        NoiseGenerator _heightGenerator;
+        int _treeFreq;
     };
 }
 

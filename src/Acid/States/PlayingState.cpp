@@ -14,7 +14,7 @@
 namespace acid 
 {
     StatePlaying::StatePlaying(Application& app) :
-        StateBase(app)
+        StateBase(app), _world(app.getCamera())
     {
         app.getCamera().hookEntity(_player);
 
@@ -46,7 +46,7 @@ namespace acid
             int y = ray.getEnd().y;
             int z = ray.getEnd().z;
 
-            auto block = WORLD.getBlock(x, y, z);
+            auto block = _world.getBlock(x, y, z);
             auto id = static_cast<BlockID>(block.id);
 
             if (id != BlockID::AIR && id != BlockID::WATER) 
@@ -56,13 +56,13 @@ namespace acid
                     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
                     {
                         timer.restart();
-                        WORLD.addEvent<PlayerDigEvent>(sf::Mouse::Left, ray.getEnd(), _player);
+                        _world.addEvent<PlayerDigEvent>(sf::Mouse::Left, ray.getEnd(), _player);
                         break;
                     }
                     else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
                     {
                         timer.restart();
-                        WORLD.addEvent<PlayerDigEvent>(sf::Mouse::Right, lastPosition, _player);
+                        _world.addEvent<PlayerDigEvent>(sf::Mouse::Right, lastPosition, _player);
                         break;
                     }
                 }
@@ -84,8 +84,8 @@ namespace acid
             _player.position.z = 0;
         }
 
-        WORLD.update(_application->getCamera());
-        _player.update(deltaTime, WORLD);
+        _world.update(_application->getCamera());
+        _player.update(deltaTime, _world);
         _fpsCounter.update();
     }
 
@@ -96,7 +96,7 @@ namespace acid
         renderer.drawSFML(_crossHair);
         _fpsCounter.draw(renderer);
         //renderer.drawCube(cubeTest);
-        WORLD.renderWorld(renderer, _application->getCamera());
+        _world.renderWorld(renderer, _application->getCamera());
 
         _player.draw(renderer);
     }

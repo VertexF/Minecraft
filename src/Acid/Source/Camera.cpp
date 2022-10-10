@@ -31,22 +31,22 @@ namespace acid
         _viewFrustum.update(_projViewMatrix);
     }
 
-    const glm::mat4& Camera::getViewMatrix() const noexcept 
+    const glm::mat4& Camera::getViewMatrix() const 
     {
         return _viewMatrix;
     }
 
-    const glm::mat4& Camera::getProjMatrix() const noexcept 
+    const glm::mat4& Camera::getProjMatrix() const 
     {
         return _projectionMatrix;
     }
 
-    const glm::mat4& Camera::getProjectionViewMatrix() const noexcept 
+    const glm::mat4& Camera::getProjectionViewMatrix() const 
     {
         return _projViewMatrix;
     }
 
-    const ViewFrustum& Camera::getViewFrustum() const noexcept
+    const ViewFrustum& Camera::getViewFrustum() const
     {
         return _viewFrustum;
     }

@@ -7,7 +7,7 @@ namespace acid
     {
     }
 
-    const BlockData& BlockType::getData() const 
+    const BlockData& BlockType::getData() const
     {
         return _data;
     }
