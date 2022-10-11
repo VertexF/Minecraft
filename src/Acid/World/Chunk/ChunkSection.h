@@ -59,8 +59,9 @@ namespace acid
         const Layer& getLayer(int layer) const;
         ChunkSection& getAdjacent(int dx, int dz);
 
-        ChunkMesh &getMesh();
         AABB getCurrentAABB() const;
+
+        const ChunkMeshCollection& getMeshes() const;
     private:
         sf::Vector3i toWorldPosition(int x, int y, int z) const;
 
@@ -70,7 +71,7 @@ namespace acid
         sf::Vector3i _location;
         std::array<Layer, CHUNK_SIZE> _layers;
         std::array<ChunkBlock, CHUNK_VOLUME> _blocks;
-        ChunkMesh _mesh;
+        ChunkMeshCollection _meshes;
         AABB _aabb;
 
         World* _world;

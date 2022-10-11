@@ -8,19 +8,20 @@
 #include "CubeRenderer.h"
 #include "ChunkRenderer.h"
 #include "SkyboxRenderer.h"
+#include "WaterRenderer.h"
 #include "SFMLRenderer.h"
 
 namespace acid 
 {
     class Camera;
-    class ChunkMesh;
+    class ChunkSection;
     struct Entity;
     class RenderMaster 
     {
     public:
         void drawQuad(const glm::vec3& pos);
         void drawCube(const Entity& entity);
-        void drawChunk(const ChunkMesh& mesh);
+        void drawChunk(const ChunkSection& chunk);
         void drawSFML(const sf::Drawable& drawable);
         void drawSky();
 
@@ -30,6 +31,7 @@ namespace acid
         CubeRenderer _cubeRenderer;
         ChunkRenderer _chunkRenderer;
         SkyRenderer _skyRenderer;
+        WaterRender _waterRender;
         SFMLRenderer _sfmlRenderer;
 
         bool _drawSky;

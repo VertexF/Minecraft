@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <SFML/Graphics.hpp>
 
-#include "../World/Chunk/ChunkMesh.h"
+#include "../World/Chunk/ChunkSection.h"
 #include "../Source/Entity.h"
 
 namespace acid
@@ -18,11 +18,23 @@ namespace acid
         _cubeRenderer.add(entity);
     }
 
-    void RenderMaster::drawChunk(const ChunkMesh& mesh)
+    void RenderMaster::drawChunk(const ChunkSection& chunk)
     {
-        if (mesh.getTotalFaces() > 0)
+        //if (mesh.getTotalFaces() > 0)
+        //{
+        //    _chunkRenderer.add(mesh);
+        //}
+
+        const ChunkMesh& solidMesh = chunk.getMeshes().solidMesh();
+        const ChunkMesh& waterMesh = chunk.getMeshes().waterMesh();
+
+        if (solidMesh.getTotalFaces() > 0) 
         {
-            _chunkRenderer.add(mesh);
+            _chunkRenderer.add(solidMesh);
+        }
+        if (waterMesh.getTotalFaces() > 0)
+        {
+            _chunkRenderer.add(waterMesh);
         }
     }
 
@@ -43,9 +55,10 @@ namespace acid
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
-        _quadRenderer.render(camera);
-        _cubeRenderer.render(camera);
+        //_quadRenderer.render(camera);
+        //_cubeRenderer.render(camera);
         _chunkRenderer.render(camera);
+        _waterRender.render(camera);
 
         if (_drawSky) 
         {

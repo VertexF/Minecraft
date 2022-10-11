@@ -22,6 +22,7 @@ namespace acid
         void bufferMesh();
         const Model& getModel() const;
         int getTotalFaces() const;
+
     private:
         Mesh _mesh;
         Model _model;
@@ -30,6 +31,12 @@ namespace acid
         std::vector<GLfloat> _light;
 
         int _faces;
+    };
+
+    struct ChunkMeshCollection
+    {
+        ChunkMesh solidMesh;
+        ChunkMesh waterMesh;
     };
 }
 

@@ -1,4 +1,4 @@
-#include "ChunkRenderer.h"
+#include "WaterRenderer.h"
 
 #include "../Source/Global.h"
 #include "../Source/Camera.h"
@@ -7,14 +7,14 @@
 
 namespace acid 
 {
-    void ChunkRenderer::add(const ChunkMesh& mesh) 
+    void WaterRenderer::add(const ChunkMesh& mesh)
     {
         _chunks.push_back(&mesh);
     }
 
-    void ChunkRenderer::render(const Camera& camera)
+    void WaterRenderer::render(const Camera& camera)
     {
-        if (_chunks.empty()) 
+        if (_chunks.empty())
         {
             return;
         }
@@ -22,10 +22,11 @@ namespace acid
         _shader.useProgram();
         BLOCK_DATABASE.textureAtlas.bindTexture();
 
-        glDisable(GL_BLEND);
-        glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glDisable(GL_CULL_FACE);
 
         _shader.loadProjectionViewMatrix(camera.getProjectionViewMatrix());
+        _shader.addTime(_timer.getElapsedTime().asSeconds());
 
         for (const ChunkMesh* mesh : _chunks)
         {

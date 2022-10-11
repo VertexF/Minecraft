@@ -39,14 +39,15 @@ namespace acid
 
     void ChunkSection::makeMesh()
     {
-        ChunkMeshBuilder(*this, _mesh).buildMesh();
+        ChunkMeshBuilder(*this, _meshes).buildMesh();
         _hasMesh = true;
         _hasBufferedMesh = false;
     }
 
     void ChunkSection::bufferMesh()
     {
-        _mesh.bufferMesh();
+        _meshes.solidMesh.bufferMesh();
+        _meshes.waterMesh.bufferMesh();
         _hasBufferedMesh = true;
     }
 
@@ -94,14 +95,14 @@ namespace acid
         return _world->getChunkManager().getChunk(newX, newZ).getSection(_location.y);
     }
 
-    ChunkMesh &ChunkSection::getMesh()
-    {
-        return _mesh;
-    }
-
     AABB ChunkSection::getCurrentAABB() const
     {
         return _aabb;
+    }
+
+    const ChunkMeshCollection& ChunkSection::getMeshes() const 
+    {
+        return _meshes;
     }
 
     sf::Vector3i ChunkSection::toWorldPosition(int x, int y, int z) const
