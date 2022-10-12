@@ -5,6 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include <GL/glew.h>
 
+#include "../Block/ChunkBlock.h"
+#include "../Chunk/ChunkMesh.h"
+
 namespace acid 
 {
     class ChunkSection;
@@ -16,10 +19,12 @@ namespace acid
     class ChunkMeshBuilder 
     {
     public:
-        ChunkMeshBuilder(ChunkSection& chunkSection, ChunkMesh& chunkMesh);
+        ChunkMeshBuilder(ChunkSection& chunkSection, ChunkMeshCollection& chunkMeshes);
 
         void buildMesh();
     private:
+        void setActiveMesh(ChunkBlock block);
+
         void tryAddFaceToMesh(const std::vector<GLfloat>& blockFace,
                               const sf::Vector2i& textureCoords,
                               const sf::Vector3i& blockPosition,
@@ -28,9 +33,9 @@ namespace acid
 
         bool shouldMakeFace(const sf::Vector3i& adjBlock, const BlockDataHolder& blockData);
         bool shouldMakeLayer(int layer);
-
-        ChunkSection* _sectionChunk = nullptr;
-        ChunkMesh* _chunkMesh = nullptr;
+        
+        ChunkMeshCollection* _chunkMeshes = nullptr;
+        ChunkMesh* _activeMesh = nullptr;
         ChunkSection* _chunkSection = nullptr;
 
         const BlockDataHolder* _blockData = nullptr;

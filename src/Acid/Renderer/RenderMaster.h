@@ -31,7 +31,7 @@ namespace acid
         CubeRenderer _cubeRenderer;
         ChunkRenderer _chunkRenderer;
         SkyRenderer _skyRenderer;
-        WaterRender _waterRender;
+        WaterRenderer _waterRender;
         SFMLRenderer _sfmlRenderer;
 
         bool _drawSky;

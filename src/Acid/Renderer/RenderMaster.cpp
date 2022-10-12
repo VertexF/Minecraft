@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../World/Chunk/ChunkSection.h"
+#include "../World/Chunk/ChunkMesh.h"
 #include "../Source/Entity.h"
 
 namespace acid
@@ -20,13 +21,8 @@ namespace acid
 
     void RenderMaster::drawChunk(const ChunkSection& chunk)
     {
-        //if (mesh.getTotalFaces() > 0)
-        //{
-        //    _chunkRenderer.add(mesh);
-        //}
-
-        const ChunkMesh& solidMesh = chunk.getMeshes().solidMesh();
-        const ChunkMesh& waterMesh = chunk.getMeshes().waterMesh();
+        const ChunkMesh& solidMesh = chunk.getMeshes().solidMesh;
+        const ChunkMesh& waterMesh = chunk.getMeshes().waterMesh;
 
         if (solidMesh.getTotalFaces() > 0) 
         {

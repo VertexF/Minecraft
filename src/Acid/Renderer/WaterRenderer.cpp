@@ -19,12 +19,10 @@ namespace acid
             return;
         }
 
-        _shader.useProgram();
-        BLOCK_DATABASE.textureAtlas.bindTexture();
-
         glEnable(GL_BLEND);
         glDisable(GL_CULL_FACE);
 
+        _shader.useProgram();
         _shader.loadProjectionViewMatrix(camera.getProjectionViewMatrix());
         _shader.addTime(_timer.getElapsedTime().asSeconds());
 

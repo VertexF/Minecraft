@@ -10,7 +10,7 @@ namespace acid
 
     void WaterShader::addTime(float time)
     {
-        Shader::loadFloat(time);
+        Shader::loadFloat(_locationTime, time);
     }
 
     void WaterShader::getUniforms()

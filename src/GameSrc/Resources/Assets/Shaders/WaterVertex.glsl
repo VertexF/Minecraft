@@ -14,7 +14,7 @@ vec4 getWorldPosition()
 {
     vec3 vertexPosition = inVertexPosition;
     vertexPosition.y += sin((time + vertexPosition.x) * 1.5) / 8.8f;
-    vertexPosition.y += cos((time + vertexPosition.z) * 1.5) / 8.1f
+    vertexPosition.y += cos((time + vertexPosition.z) * 1.5) / 8.1f;
     vertexPosition.y -= 0.2;
 
     return vec4(vertexPosition, 1);

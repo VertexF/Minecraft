@@ -70,7 +70,7 @@ namespace acid
 
                 if (camera.getViewFrustum().isBoxInFrustum(_chunkSections.at(i)->getCurrentAABB()))
                 {
-                    renderer.drawChunk(_chunkSections.at(i)->getMesh());
+                    renderer.drawChunk(*_chunkSections.at(i));
                 }
             }
         }

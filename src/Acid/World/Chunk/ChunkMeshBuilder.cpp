@@ -84,8 +84,8 @@ namespace
 
 namespace acid 
 {
-    ChunkMeshBuilder::ChunkMeshBuilder(ChunkSection& chunkSection, ChunkMesh& chunkMesh) :
-        _chunkSection(&chunkSection), _chunkMesh(&chunkMesh)
+    ChunkMeshBuilder::ChunkMeshBuilder(ChunkSection& chunkSection, ChunkMeshCollection& chunkMeshes) :
+        _chunkSection(&chunkSection), _chunkMeshes(&chunkMeshes)
     {
     }
 
@@ -106,6 +106,8 @@ namespace acid
                 {
                     sf::Vector3i position(x, y, z);
                     ChunkBlock block = _chunkSection->getBlock(x, y, z);
+                    setActiveMesh(block);
+
                     if (block == BlockID::AIR)
                     {
                         continue;
@@ -126,6 +128,18 @@ namespace acid
         }
     }
 
+    void ChunkMeshBuilder::setActiveMesh(ChunkBlock block)
+    {
+        if(block.id == static_cast<int>(BlockID::WATER)) 
+        {
+            _activeMesh = &_chunkMeshes->waterMesh;
+        }
+        else 
+        {
+            _activeMesh = &_chunkMeshes->solidMesh;
+        }
+    }
+
     void ChunkMeshBuilder::tryAddFaceToMesh(const std::vector<GLfloat>& blockFace,
                                             const sf::Vector2i& textureCoords,
                                             const sf::Vector3i& blockPosition,
@@ -136,7 +150,7 @@ namespace acid
         {
             auto texCoords = BLOCK_DATABASE.textureAtlas.getTexture(textureCoords);
 
-            _chunkMesh->addFace(blockFace, texCoords, _chunkSection->getLocation(), blockPosition, cardinalLight);
+            _activeMesh->addFace(blockFace, texCoords, _chunkSection->getLocation(), blockPosition, cardinalLight);
         }
     }
 

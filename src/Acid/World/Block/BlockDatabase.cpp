@@ -3,7 +3,7 @@
 namespace acid 
 {
     BlockDatabase::BlockDatabase() :
-        textureAtlas("DefaultPack2")
+        textureAtlas("DefaultPack")
     {
         _blocks[static_cast<int>(BlockID::AIR)] = std::make_unique<DefaultBlock>("Air");
         _blocks[static_cast<int>(BlockID::GRASS)] = std::make_unique<DefaultBlock>("Grass");
