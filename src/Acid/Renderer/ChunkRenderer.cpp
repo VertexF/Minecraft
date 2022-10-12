@@ -22,8 +22,8 @@ namespace acid
         _shader.useProgram();
         BLOCK_DATABASE.textureAtlas.bindTexture();
 
-        //glDisable(GL_BLEND);
-        //glEnable(GL_CULL_FACE);
+        glDisable(GL_BLEND);
+        glDisable(GL_CULL_FACE);
 
         _shader.loadProjectionViewMatrix(camera.getProjectionViewMatrix());
 

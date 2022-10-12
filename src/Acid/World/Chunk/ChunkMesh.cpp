@@ -9,8 +9,9 @@ namespace acid
     }
 
     void ChunkMesh::addFace(const std::vector<GLfloat>& blockFace, const std::vector<GLfloat>& textureCoords,
-                            const sf::Vector3i& chunkPosition, const sf::Vector3i& blockPosition, GLfloat cardinalLight)
+                            const sf::Vector3i& chunkPosition, const sf::Vector3i& blockPosition, GLfloat cardinalLight, bool isXMesh)
     {
+        _isXMesh = isXMesh;
         _faces++;
         auto& vertices = _mesh.vertexPosition;
         auto& texCoords = _mesh.textureCoords;
@@ -66,5 +67,10 @@ namespace acid
     int ChunkMesh::getTotalFaces() const
     {
         return _faces;
+    }
+
+    bool ChunkMesh::isXMesh() const
+    {
+        return _isXMesh;
     }
 }

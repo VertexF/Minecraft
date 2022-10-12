@@ -4,8 +4,13 @@
 
 namespace acid 
 {
-    TemperateForestBiome::TemperateForestBiome(int seed) : Biome(getNoiseParameters(), 100, seed)
+    TemperateForestBiome::TemperateForestBiome(int seed) : Biome(getNoiseParameters(), 55, 75, seed)
     {
+    }
+
+    BlockID TemperateForestBiome::getPlant(Random<std::minstd_rand>& rand) const
+    {
+        return BlockID::TALLGRASS;
     }
 
     BlockID TemperateForestBiome::getTopBlock(Random<std::minstd_rand>& rand) const
@@ -21,11 +26,11 @@ namespace acid
     NoiseParameters TemperateForestBiome::getNoiseParameters()
     {
         NoiseParameters heightParams;
-        heightParams.octaves = 9;
+        heightParams.octaves = 5;
         heightParams.amplitude = 100;
         heightParams.smoothness = 195;
-        heightParams.heightOffset = -15;
-        heightParams.roughness = 0.50;
+        heightParams.heightOffset = -30;
+        heightParams.roughness = 0.52;
 
         return heightParams;
     }

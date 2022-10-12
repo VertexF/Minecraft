@@ -18,10 +18,15 @@ namespace acid
             OAK_BARK,
             OAK_LEAF,
             SAND,
-            CACTUS
+            CACTUS,
+            ROSE,
+            TALLGRASS,
+            DEADSHRUB
         };
 
-        const static Material NOTHING_BLOCK, GRASS_BLOCK, DIRT_BLOCK, STONE_BLOCK, OAK_BARK_BLOCK, OAK_LEAF_BLOCK, SAND_BLOCK, CACTUS_BLOCK;
+        const static Material NOTHING_BLOCK, GRASS_BLOCK, DIRT_BLOCK, STONE_BLOCK, 
+                              OAK_BARK_BLOCK, OAK_LEAF_BLOCK, SAND_BLOCK, CACTUS_BLOCK,
+                              ROSE_FLOWER, DEAD_SHRUB, TALL_GRASS;
 
         Material(Material::ID id, int maxStack, bool isBlock, std::string&& name);
 

@@ -2,20 +2,20 @@
 
 namespace acid 
 {
-    WaterShader::WaterShader(const std::string& vertexFile, const std::string& fragmentFile) :
-        BasicShader(vertexFile, fragmentFile)
-    {
-        getUniforms();
-    }
+    //WaterShader::WaterShader(const std::string& vertexFile, const std::string& fragmentFile) :
+    //    BasicShader(vertexFile, fragmentFile)
+    //{
+    //    getUniforms();
+    //}
 
-    void WaterShader::addTime(float time)
-    {
-        Shader::loadFloat(_locationTime, time);
-    }
+    //void WaterShader::addTime(float time)
+    //{
+    //    Shader::loadFloat(_locationTime, time);
+    //}
 
-    void WaterShader::getUniforms()
-    {
-        BasicShader::getUniforms();
-        _locationTime = glGetUniformLocation(_id, "time");
-    }
+    //void WaterShader::getUniforms()
+    //{
+    //    BasicShader::getUniforms();
+    //    _locationTime = glGetUniformLocation(_id, "time");
+    //}
 }

@@ -16,6 +16,9 @@ namespace acid
         SAND,
         WATER,
         CACTUS,
+        ROSE,
+        TALLGRASS,
+        DEADSHRUB,
 
         NUM_TYPES
     };

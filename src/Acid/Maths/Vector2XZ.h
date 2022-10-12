@@ -13,8 +13,8 @@ namespace acid
     };
 
     //This is needed for the custom hasher to work with an std::unordered_map data structure.
-    bool operator==(const VectorXZ& lhs, const VectorXZ& rhs);
-    bool operator==(const sf::Vector3i& lhs, const sf::Vector3i& rhs);
+    bool operator==(const VectorXZ& lhs, const VectorXZ& rhs) noexcept;
+    bool operator==(const sf::Vector3i& lhs, const sf::Vector3i& rhs) noexcept;
 
     template<typename T>
     struct hash
@@ -24,7 +24,7 @@ namespace acid
     template<>
     struct hash<VectorXZ>
     {
-        std::size_t operator()(const VectorXZ& vector) const 
+        std::size_t operator()(const VectorXZ& vector) const noexcept
         {
             auto hash1 = std::hash<int>{}(vector.x);
             auto hash2 = std::hash<int>{}(vector.z);
@@ -36,7 +36,7 @@ namespace acid
     template<>
     struct hash<sf::Vector3i>
     {
-        std::size_t operator()(const sf::Vector3i& vector) const
+        std::size_t operator()(const sf::Vector3i& vector) const noexcept
         {
             auto hash1 = std::hash<decltype(vector.x)>{}(vector.x);
             auto hash2 = std::hash<decltype(vector.x)>{}(vector.y);

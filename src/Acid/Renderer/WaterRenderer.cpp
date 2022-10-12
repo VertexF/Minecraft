@@ -24,7 +24,7 @@ namespace acid
 
         _shader.useProgram();
         _shader.loadProjectionViewMatrix(camera.getProjectionViewMatrix());
-        _shader.addTime(_timer.getElapsedTime().asSeconds());
+        //_shader.addTime(_timer.getElapsedTime().asSeconds());
 
         for (const ChunkMesh* mesh : _chunks)
         {

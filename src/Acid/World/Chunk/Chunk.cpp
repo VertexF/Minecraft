@@ -33,7 +33,7 @@ namespace acid
         return false;
     }
 
-    ChunkBlock Chunk::getBlock(int x, int y, int z) const
+    ChunkBlock Chunk::getBlock(int x, int y, int z) const noexcept
     {
         if (outOfBound(x, y, z))
         {
@@ -76,7 +76,7 @@ namespace acid
         }
     }
 
-    bool Chunk::hasLoaded() const
+    bool Chunk::hasLoaded() const noexcept
     {
         return _isLoaded;
     }

@@ -25,7 +25,7 @@ namespace acid
         _blocks[getIndex(x, y, z)] = block;
     }
 
-    ChunkBlock ChunkSection::getBlock(int x, int y, int z) const
+    ChunkBlock ChunkSection::getBlock(int x, int y, int z) const noexcept
     {
         if (outOfBounds(x) || outOfBounds(y) || outOfBounds(z))
         {

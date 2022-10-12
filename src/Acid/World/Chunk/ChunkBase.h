@@ -10,7 +10,7 @@ namespace acid
     public:
         virtual ~BaseChunk() = default;
     protected:
-        virtual ChunkBlock getBlock(int x, int y, int z) const = 0;
+        virtual ChunkBlock getBlock(int x, int y, int z) const noexcept = 0;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) = 0;
     };
 }

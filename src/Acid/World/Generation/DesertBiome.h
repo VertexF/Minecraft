@@ -14,6 +14,7 @@ namespace acid
         DesertBoime(int seed);
         virtual ~DesertBoime() = default;
 
+        virtual BlockID getPlant(Random<std::minstd_rand>& rand) const override;
         virtual BlockID getTopBlock(Random<std::minstd_rand>& rand) const override;
         virtual void makeTree(Random<std::minstd_rand>& rand, Chunk& chunk, int x, int y, int z) const override;
 

@@ -4,7 +4,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "../Shaders/WaterShader.h"
+#include "../Shaders/ChunkShader.h"
 
 namespace acid 
 {
@@ -20,7 +20,7 @@ namespace acid
         sf::Clock _timer;
 
         std::vector<const ChunkMesh* > _chunks;
-        WaterShader _shader;
+        ChunkShader _shader;
     };
 }
 

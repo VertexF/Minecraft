@@ -4,8 +4,13 @@
 
 namespace acid 
 {
-    DesertBoime::DesertBoime(int seed) : Biome(getNoiseParameters(), 175, seed)
+    DesertBoime::DesertBoime(int seed) : Biome(getNoiseParameters(), 175, 150, seed)
     {
+    }
+
+    BlockID DesertBoime::getPlant(Random<std::minstd_rand>& rand) const
+    {
+        return BlockID::DEADSHRUB;
     }
 
     BlockID DesertBoime::getTopBlock(Random<std::minstd_rand>& rand) const
@@ -24,7 +29,7 @@ namespace acid
         heightParams.octaves = 9;
         heightParams.amplitude = 80;
         heightParams.smoothness = 335;
-        heightParams.heightOffset = 0;
+        heightParams.heightOffset = -10;
         heightParams.roughness = 0.53;
 
         return heightParams;

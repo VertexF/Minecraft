@@ -14,6 +14,9 @@ namespace acid
         _blocks[static_cast<int>(BlockID::SAND)] = std::make_unique<DefaultBlock>("Sand");
         _blocks[static_cast<int>(BlockID::WATER)] = std::make_unique<DefaultBlock>("Water");
         _blocks[static_cast<int>(BlockID::CACTUS)] = std::make_unique<DefaultBlock>("Cactus");
+        _blocks[static_cast<int>(BlockID::ROSE)] = std::make_unique<DefaultBlock>("Rose");
+        _blocks[static_cast<int>(BlockID::DEADSHRUB)] = std::make_unique<DefaultBlock>("DeadShrub");
+        _blocks[static_cast<int>(BlockID::TALLGRASS)] = std::make_unique<DefaultBlock>("TallGrass");
     }
 
     const BlockType& BlockDatabase::getBlock(BlockID id) const 

@@ -20,12 +20,12 @@ namespace acid
 
         bool makeMesh();
 
-        virtual ChunkBlock getBlock(int x, int y, int z) const override;
+        virtual ChunkBlock getBlock(int x, int y, int z) const noexcept override;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
 
         void drawChunks(RenderMaster& renderer, const Camera& camera);
 
-        bool hasLoaded() const;
+        bool hasLoaded() const noexcept;
         void load();
 
         ChunkSection& getSection(int index);

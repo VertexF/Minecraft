@@ -5,7 +5,7 @@
 
 namespace acid 
 {
-    Context::Context() 
+    Context::Context()
     {
         sf::ContextSettings settings;
         settings.antialiasingLevel = 0;

@@ -17,12 +17,13 @@ namespace acid
                      const std::vector<GLfloat>& textureCoords, 
                      const sf::Vector3i& chunkPosition, 
                      const sf::Vector3i& blockPosition,
-                     GLfloat cardinalLight);
+                     GLfloat cardinalLight, bool isXMesh);
 
         void bufferMesh();
         const Model& getModel() const;
         int getTotalFaces() const;
 
+        bool isXMesh() const;
     private:
         Mesh _mesh;
         Model _model;
@@ -31,6 +32,7 @@ namespace acid
         std::vector<GLfloat> _light;
 
         int _faces;
+        bool _isXMesh;
     };
 
     struct ChunkMeshCollection

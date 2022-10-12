@@ -52,6 +52,12 @@ namespace acid
             {
                 inFile >> _data.isOpaque;
             }
+            else if(line == "MeshType")
+            {
+                int id;
+                inFile >> id;
+                _data.meshType = static_cast<BlockMeshType>(id);
+            }
         }
     }
 

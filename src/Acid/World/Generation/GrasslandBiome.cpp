@@ -4,8 +4,13 @@
 
 namespace acid 
 {
-    GrasslandBiome::GrasslandBiome(int seed) : Biome(getNoiseParameters(), 100, seed)
+    GrasslandBiome::GrasslandBiome(int seed) : Biome(getNoiseParameters(), 100, 50, seed)
     {
+    }
+
+    BlockID GrasslandBiome::getPlant(Random<std::minstd_rand>& rand) const
+    {
+        return rand.intInRange(0,10) > 6 ? BlockID::ROSE : BlockID::TALLGRASS;
     }
 
     BlockID GrasslandBiome::getTopBlock(Random<std::minstd_rand>& rand) const
@@ -22,10 +27,10 @@ namespace acid
     {
         NoiseParameters heightParams;
         heightParams.octaves = 9;
-        heightParams.amplitude = 90;
-        heightParams.smoothness = 335;
-        heightParams.heightOffset = -5;
-        heightParams.roughness = 0.50;
+        heightParams.amplitude = 85;
+        heightParams.smoothness = 235;
+        heightParams.heightOffset = -20;
+        heightParams.roughness = 0.51;
 
         return heightParams;
     }

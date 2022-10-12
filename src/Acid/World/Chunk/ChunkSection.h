@@ -46,7 +46,7 @@ namespace acid
         ChunkSection(const sf::Vector3i& position, World& world);
 
         void setBlock(int x, int y, int z, const ChunkBlock& block) override;
-        ChunkBlock getBlock(int x, int y, int z) const override;
+        ChunkBlock getBlock(int x, int y, int z) const noexcept override;
 
         void makeMesh();
         void bufferMesh();

@@ -77,6 +77,7 @@ namespace acid
     void TerrianGenerator::setBlock(int height) 
     {
         std::vector<sf::Vector3i> trees;
+        std::vector<sf::Vector3i> plants;
 
         for (int y = 0; y < height + 1; y++)
         {
@@ -99,9 +100,19 @@ namespace acid
                     {
                         if (y >= WATER_LEVEL) 
                         {
+                            if (y < WATER_LEVEL + 5) 
+                            {
+                                _chunk->setBlock(x, y, z, BlockID::SAND);
+                                continue;
+                            }
+
                             if (_random.intInRange(0, biome.getTreeFrequency()) == 5)
                             {
-                                trees.emplace_back(x, y, z);
+                                trees.emplace_back(x, y + 1, z);
+                            }
+                            if (_random.intInRange(0, biome.getPlantFrequency()) == 5)
+                            {
+                                plants.emplace_back(x, y + 1, z);
                             }
                             setTopBlock(x, y, z);
                         }
@@ -128,6 +139,15 @@ namespace acid
             int z = tree.z;
 
             getBiome(x, z).makeTree(_random, *_chunk, x, tree.y, z);
+        }
+
+        for (auto& plant : plants)
+        {
+            int x = plant.x;
+            int z = plant.z;
+
+            auto block = getBiome(x, z).getPlant(_random);
+            _chunk->setBlock(x, plant.y, z, block);
         }
     }
 

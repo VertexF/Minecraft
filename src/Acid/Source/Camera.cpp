@@ -6,7 +6,7 @@
 
 namespace acid 
 {
-    Camera::Camera() : _entity(nullptr)
+    Camera::Camera() noexcept : _entity(nullptr)
     {
         _projectionMatrix = makeProjectionMatrix(60);
         _viewMatrix = glm::mat4(1.0);
@@ -16,12 +16,12 @@ namespace acid
         rotation = { 0.f, 0.f, 0.f };
     }
 
-    void Camera::hookEntity(const Entity& entity)
+    void Camera::hookEntity(const Entity& entity) noexcept
     {
         _entity = &entity;
     }
 
-    void Camera::update() 
+    void Camera::update() noexcept
     {
         position = _entity->position;
         rotation = _entity->rotation;
@@ -31,22 +31,22 @@ namespace acid
         _viewFrustum.update(_projViewMatrix);
     }
 
-    const glm::mat4& Camera::getViewMatrix() const 
+    const glm::mat4& Camera::getViewMatrix() const noexcept
     {
         return _viewMatrix;
     }
 
-    const glm::mat4& Camera::getProjMatrix() const 
+    const glm::mat4& Camera::getProjMatrix() const noexcept
     {
         return _projectionMatrix;
     }
 
-    const glm::mat4& Camera::getProjectionViewMatrix() const 
+    const glm::mat4& Camera::getProjectionViewMatrix() const noexcept
     {
         return _projViewMatrix;
     }
 
-    const ViewFrustum& Camera::getViewFrustum() const
+    const ViewFrustum& Camera::getViewFrustum() const noexcept
     {
         return _viewFrustum;
     }
