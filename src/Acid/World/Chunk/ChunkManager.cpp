@@ -1,6 +1,7 @@
 #include "ChunkManager.h"
 
 #include "../World.h"
+#include "../../Source/Camera.h"
 
 namespace acid 
 {
@@ -32,7 +33,7 @@ namespace acid
         return _chunks;
     }
 
-    bool ChunkManager::makeMesh(int x, int z) 
+    bool ChunkManager::makeMesh(int x, int z, const Camera& camera) 
     {
         for (int nx = -1; nx <= 1; nx++) 
         {
@@ -42,7 +43,7 @@ namespace acid
             }
         }
 
-        return getChunk(x, z).makeMesh();
+        return getChunk(x, z).makeMesh(camera);
     }
 
     bool ChunkManager::chunkLoadedAt(int x, int z) const 

@@ -4,11 +4,13 @@
 #include <SFML/Graphics.hpp>
 
 #include "../States/PlayingState.h"
+#include "Global.h"
 
 namespace acid 
 {
     Application::Application(std::string&& title) 
     {
+        BLOCK_DATABASE;
         pushState<StatePlaying>(*this);
     }
 

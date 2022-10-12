@@ -8,7 +8,7 @@
 namespace acid 
 {
     Player::Player() : _isOnGround(false),
-        Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}), _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up)
+        Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}), _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up), _speed(0.25f), _acceleration(0, 0, 0)
     {
         if (font.loadFromFile("Assets/Fonts/rs.ttf") == false)
         {
@@ -57,25 +57,27 @@ namespace acid
 
     void Player::update(float dt, World &world) 
     {
-        //if (_isOnGround == false) 
-        //{
-        //    velocity.y -= 55 * dt;
-        //}
-        //_isOnGround = false;
+        velocity += _acceleration;
+        _acceleration = { 0, 0, 0 };
+
+        if (_isOnGround == false) 
+        {
+            velocity.y -= 55 * dt;
+        }
+        _isOnGround = false;
+
+        position.x += velocity.x * dt;
+        collide(world, { velocity.x, 0, 0 }, dt);
+
+        position.y += velocity.y * dt;
+        collide(world, { 0, velocity.y, 0 }, dt);
+
+        position.z += velocity.z * dt;
+        collide(world, { 0, 0, velocity.z }, dt);
 
         box.update(position);
         velocity.x *= 0.95;
         velocity.z *= 0.95;
-        velocity.y *= 0.95;
-
-        position.x += velocity.x * dt;
-        //collide(world, { velocity.x, 0, 0 }, dt);
-
-        position.y += velocity.y * dt;
-        //collide(world, { 0, velocity.y, 0 }, dt);
-
-        position.z += velocity.z * dt;
-        //collide(world, { 0, 0, velocity.z }, dt);
     }
 
     void Player::collide(World& world, const glm::vec3& vel, float dt)
@@ -90,33 +92,37 @@ namespace acid
 
                     if(block != 0)
                     {
-                        if (vel.x > 0)
-                        {
-                            position.x = x - box.dimension.x;
-                        }
-                        if (vel.x < 0)
-                        {
-                            position.x = x + box.dimension.x + 1;
-                        }
-
                         if (vel.y > 0)
                         {
                             position.y = y - box.dimension.y;
                             velocity.y = 0;
                         }
-                        if (vel.y < 0)
+                        else if (vel.y < 0)
                         {
                             position.y = y + box.dimension.y + 1;
                             velocity.y = 0;
                             _isOnGround = true;
                         }
 
+                        if (vel.x > 0)
+                        {
+                            //jump();
+                            position.x = x - box.dimension.x;
+                        }
+                        else if (vel.x < 0)
+                        {
+                            //jump();
+                            position.x = x + box.dimension.x + 1;
+                        }
+
                         if (vel.z > 0)
                         {
+                            //jump();
                             position.z = z - box.dimension.z;
                         }
-                        if (vel.z < 0)
+                        else if (vel.z < 0)
                         {
+                            //jump();
                             position.z = z + box.dimension.z + 1;
                         }
                     }
@@ -166,42 +172,46 @@ namespace acid
         return _items[_heldItem];
     }
 
+    void Player::jump()
+    {
+        if (_isOnGround) 
+        {
+            _isOnGround = false;
+            _acceleration.y += _speed * 50;
+        }
+    }
+
     void Player::keyboardInput() 
     {
-        glm::vec3 change(0.0);
-        float speed = 0.5;
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {
-            change.x += -glm::cos(glm::radians(rotation.y + 90)) * speed;
-            change.z += -glm::sin(glm::radians(rotation.y + 90)) * speed;
+            _acceleration.x += -glm::cos(glm::radians(rotation.y + 90)) * _speed;
+            _acceleration.z += -glm::sin(glm::radians(rotation.y + 90)) * _speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            change.x += glm::cos(glm::radians(rotation.y + 90)) * speed;
-            change.z += glm::sin(glm::radians(rotation.y + 90)) * speed;
+            _acceleration.x += glm::cos(glm::radians(rotation.y + 90)) * _speed;
+            _acceleration.z += glm::sin(glm::radians(rotation.y + 90)) * _speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            change.x += -glm::cos(glm::radians(rotation.y)) * speed;
-            change.z += -glm::sin(glm::radians(rotation.y)) * speed;
+            _acceleration.x += -glm::cos(glm::radians(rotation.y)) * _speed;
+            _acceleration.z += -glm::sin(glm::radians(rotation.y)) * _speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            change.x += glm::cos(glm::radians(rotation.y)) * speed;
-            change.z += glm::sin(glm::radians(rotation.y)) * speed;
+            _acceleration.x += glm::cos(glm::radians(rotation.y)) * _speed;
+            _acceleration.z += glm::sin(glm::radians(rotation.y)) * _speed;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
         {
-            change.y += speed;
+            jump();
         }
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
         {
-            change.y -= speed;
+            _acceleration.y -= _speed;
         }
-
-        velocity += change;
     }
 
     void Player::mouseInput(const sf::RenderWindow& window)

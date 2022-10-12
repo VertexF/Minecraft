@@ -11,6 +11,7 @@
 #include "../../Physics/AABB.h"
 #include "../../Maths/Frustum.h"
 #include "../Generation/TerrainGenerator.h"
+#include "../../Source/Camera.h"
 
 namespace acid 
 {
@@ -19,11 +20,11 @@ namespace acid
     {
     }
 
-    bool Chunk::makeMesh()
+    bool Chunk::makeMesh(const Camera& camera)
     {
         for (int i = 0; i < _chunkSections.size(); i++)
         {
-            if (_chunkSections.at(i)->hasMesh() == false)
+            if (_chunkSections.at(i)->hasMesh() == false /* && camera.getViewFrustum().isBoxInFrustum(_chunkSections.at(i)->getCurrentAABB())*/)
             {
                 _chunkSections.at(i)->makeMesh();
                 return true;

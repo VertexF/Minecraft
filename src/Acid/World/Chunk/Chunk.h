@@ -18,7 +18,7 @@ namespace acid
     public:
         Chunk(World& world, const sf::Vector2i& location);
 
-        bool makeMesh();
+        bool makeMesh(const Camera& camera);
 
         virtual ChunkBlock getBlock(int x, int y, int z) const noexcept override;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;

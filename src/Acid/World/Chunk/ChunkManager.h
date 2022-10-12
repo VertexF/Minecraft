@@ -11,6 +11,7 @@
 namespace acid 
 {
     class World;
+    class Camera;
 
     class ChunkManager 
     {
@@ -21,7 +22,7 @@ namespace acid
         Chunk& getChunk(int x, int z);
         Chunk& qGetChunk(int x, int z);
 
-        bool makeMesh(int x, int z);
+        bool makeMesh(int x, int z, const Camera& camera);
 
         bool chunkLoadedAt(int x, int z) const;
         bool chunkExistsAt(int x, int z) const;

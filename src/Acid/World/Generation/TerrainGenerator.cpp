@@ -133,18 +133,25 @@ namespace acid
             }
         }
 
+        int treeX = 0;
+        int treeZ = 0;
         for (auto& tree : trees) 
         {
-            int x = tree.x;
-            int z = tree.z;
+            treeX = tree.x;
+            treeZ = tree.z;
 
-            getBiome(x, z).makeTree(_random, *_chunk, x, tree.y, z);
+            getBiome(treeX, treeZ).makeTree(_random, *_chunk, treeX, tree.y, treeZ);
         }
 
         for (auto& plant : plants)
         {
             int x = plant.x;
             int z = plant.z;
+
+            if (treeX == x && treeZ == z)
+            {
+                continue;
+            }
 
             auto block = getBiome(x, z).getPlant(_random);
             _chunk->setBlock(x, plant.y, z, block);

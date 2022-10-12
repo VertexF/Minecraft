@@ -174,7 +174,7 @@ namespace acid
             {
                 for (int z = minZ; z < maxZ; z++)
                 {
-                    if (_chunkManager.makeMesh(x, z))
+                    if (_chunkManager.makeMesh(x, z, camera))
                     {
                         isMeshMade = true;
                         break;

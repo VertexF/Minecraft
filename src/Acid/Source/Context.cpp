@@ -32,6 +32,6 @@ namespace acid
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         //window.setFramerateLimit(90);
-        //window.setVerticalSyncEnabled(true);
+        window.setVerticalSyncEnabled(true);
     }
 }

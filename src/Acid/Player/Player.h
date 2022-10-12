@@ -29,6 +29,8 @@ namespace acid
 
         ItemStack& getHelpItem();
     private:
+        void jump();
+
         void keyboardInput();
         void mouseInput(const sf::RenderWindow& window);
 
@@ -41,6 +43,9 @@ namespace acid
 
         bool _isOnGround;
         int _heldItem;
+        float _speed;
+
+        glm::vec3 _acceleration;
     };
 }
 
