@@ -1,10 +1,11 @@
 #include "DesertBiome.h"
 
 #include "TreeGenerator.h"
+#include "../WorldConstants.h"
 
 namespace acid 
 {
-    DesertBoime::DesertBoime(int seed) : Biome(getNoiseParameters(), 175, 150, seed)
+    DesertBoime::DesertBoime(int seed) : Biome(getNoiseParameters(), 250, 150, seed)
     {
     }
 
@@ -20,7 +21,21 @@ namespace acid
 
     void DesertBoime::makeTree(Random<std::minstd_rand>& rand, Chunk& chunk, int x, int y, int z) const
     {
-        makeCactus(chunk, rand, x, y, z);
+        if(y < WATER_LEVEL)
+        {
+            if(rand.intInRange(0, 100) > 95)
+            {
+                makePalmTree(chunk, rand, x, y, z);
+            }
+            else 
+            {
+                makeCactus(chunk, rand, x, y, z);
+            }
+        }
+        else 
+        {
+            makeCactus(chunk, rand, x, y, z);
+        }
     }
 
     NoiseParameters DesertBoime::getNoiseParameters()

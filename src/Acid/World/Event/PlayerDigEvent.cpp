@@ -35,7 +35,7 @@ namespace acid
         }
         case sf::Mouse::Button::Right:
         {
-            auto& stack = _player->getHelpItem();
+            auto& stack = _player->getHeldItem();
             auto& material = stack.getMaterial();
             if (material.id == Material::ID::NOTHING)
             {
@@ -46,6 +46,7 @@ namespace acid
                 stack.remove();
                 world.updateChunk(_digSpot.x, _digSpot.y, _digSpot.z);
                 world.setBlock(_digSpot.x, _digSpot.y, _digSpot.z, material.toBlockID());
+                world.playBlockSound();
                 break;
             }
         }

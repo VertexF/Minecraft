@@ -8,6 +8,7 @@
 #include "../Item/ItemStack.h"
 #include "../Item/Material.h"
 #include "../Source/ToggleKey.h"
+#include "../Audio/SoundEffects.h"
 
 namespace acid 
 {
@@ -27,7 +28,7 @@ namespace acid
         void addItem(const Material& material);
         void draw(RenderMaster& master);
 
-        ItemStack& getHelpItem();
+        ItemStack& getHeldItem();
     private:
         void jump();
 
@@ -37,12 +38,14 @@ namespace acid
         std::vector<ItemStack> _items;
         std::vector<sf::Text> _itemText;
         sf::Font font;
+        SoundEffects _grassWalkingSound;
 
         ToggleKey _itemDown;
         ToggleKey _itemUp;
 
         bool _isOnGround;
         bool _isFlying;
+        bool _isWalking;
         int _heldItem;
         float _speed;
 

@@ -11,7 +11,7 @@ namespace acid
         return glm::dot(point, normal) + distanceToOrigin;
     }
 
-    void ViewFrustum::update(const glm::mat4& projectionViewMatrix) 
+    void ViewFrustum::update(const glm::mat4& projectionViewMatrix) noexcept
     {
         //Left
         _planes.at(Planes::LEFT).normal.x = projectionViewMatrix[0][3] + projectionViewMatrix[0][0];

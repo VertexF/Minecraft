@@ -30,9 +30,9 @@ namespace acid
     class ViewFrustum 
     {
     public:
-        void update(const glm::mat4& projectionViewMatrix);
+        void update(const glm::mat4& projectionViewMatrix) noexcept;
 
-        bool isBoxInFrustum(const AABB& box) const 
+        bool isBoxInFrustum(const AABB& box) const noexcept
         {
             bool result = true;
             for (auto& plane : _planes)

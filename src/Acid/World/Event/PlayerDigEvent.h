@@ -6,6 +6,8 @@
 
 #include "IWorldEvent.h"
 
+#include "../../Audio/SoundEffects.h"
+
 
 namespace acid 
 {

@@ -39,7 +39,7 @@ namespace acid
         {
             for (int nz = -1; nz <= 1; nz++) 
             {
-                getChunk(x + nx, z + nz).load();
+                getChunk(x + nx, z + nz).load(_terrianGenerator);
             }
         }
 
@@ -63,12 +63,16 @@ namespace acid
 
     void ChunkManager::loadChunk(int x, int z) 
     {
-        getChunk(x, z).load();
+        getChunk(x, z).load(_terrianGenerator);
     }
 
     void ChunkManager::unloadChunk(int x, int z) 
     {
         //Save to a file or something.
+        if (chunkExistsAt(x, z)) 
+        {
+            _chunks.erase({x, z});
+        }
     }
 
     void ChunkManager::deleteMeshes()

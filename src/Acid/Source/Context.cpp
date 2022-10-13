@@ -16,7 +16,7 @@ namespace acid
 
         sf::VideoMode videoMode;
         videoMode.size = { 1280, 720 };
-        window.create(videoMode, "Minecraft", sf::Style::Close, settings);
+        window.create(videoMode, "Minecraft", sf::Style::Fullscreen, settings);
 
         // Make the window the active window for OpenGL calls
         if (window.setActive(true) == false)
@@ -24,9 +24,12 @@ namespace acid
             throw std::runtime_error("Failed to set window to active");
         }
 
+        int width = window.getSize().x;
+        int height = window.getSize().y;
+
         glewExperimental = GL_TRUE;
         glewInit();
-        glViewport(0, 0, 1280, 720);
+        glViewport(0, 0, width, height);
 
         glCullFace(GL_BACK);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

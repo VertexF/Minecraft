@@ -24,6 +24,11 @@ namespace acid
         {
             return *std::max_element(_array.begin(), _array.end());
         }
+
+        void setAll(T val) 
+        {
+            _array.fill(val);
+        }
     private:
         std::array<T, WIDTH* WIDTH> _array;
     };

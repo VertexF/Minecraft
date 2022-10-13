@@ -10,12 +10,15 @@ namespace acid
     Player::Player() : _isOnGround(false),
         Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}),
         _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up), 
-        _speed(0.25f), _isFlying(false), _acceleration(0, 0, 0)
+        _speed(0.25f), _isFlying(false), _isWalking(false), _acceleration(0, 0, 0)
     {
         if (font.loadFromFile("Assets/Fonts/rs.ttf") == false)
         {
             throw std::runtime_error("Could not load TTF file.");
         }
+
+        _grassWalkingSound.load("Assets/Audio/walking_grass.ogg", false, true);
+        _grassWalkingSound.setVolume(50.f);
 
         for (int i = 0; i < 5; i++) 
         {
@@ -108,23 +111,19 @@ namespace acid
 
                         if (vel.x > 0)
                         {
-                            //jump();
                             position.x = x - box.dimension.x;
                         }
                         else if (vel.x < 0)
                         {
-                            //jump();
                             position.x = x + box.dimension.x + 1;
                         }
 
                         if (vel.z > 0)
                         {
-                            //jump();
                             position.z = z - box.dimension.z;
                         }
                         else if (vel.z < 0)
                         {
-                            //jump();
                             position.z = z + box.dimension.z + 1;
                         }
                     }
@@ -142,6 +141,7 @@ namespace acid
             if (_items[i].getMaterial().id == id)
             {
                 int leftOver = _items[i].add(1);
+                return;
             }
             else if (_items[i].getMaterial().id == Material::ID::NOTHING)
             {
@@ -169,7 +169,7 @@ namespace acid
         }
     }
 
-    ItemStack& Player::getHelpItem() 
+    ItemStack& Player::getHeldItem() 
     {
         return _items[_heldItem];
     }
@@ -187,6 +187,8 @@ namespace acid
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {
+            _grassWalkingSound.play();
+            _isWalking = true;
             float newSpeed = _speed;
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
             {
@@ -198,28 +200,39 @@ namespace acid
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
+            _isWalking = true;
             _acceleration.x += glm::cos(glm::radians(rotation.y + 90)) * _speed;
             _acceleration.z += glm::sin(glm::radians(rotation.y + 90)) * _speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
+            _isWalking = true;
             _acceleration.x += -glm::cos(glm::radians(rotation.y)) * _speed;
             _acceleration.z += -glm::sin(glm::radians(rotation.y)) * _speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
+            _isWalking = true;
             _acceleration.x += glm::cos(glm::radians(rotation.y)) * _speed;
             _acceleration.z += glm::sin(glm::radians(rotation.y)) * _speed;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
         {
+            _isWalking = false;
             jump();
         }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && _isFlying)
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && _isFlying)
         {
             _acceleration.y -= _speed * 3;
         }
+
+        if (_isWalking == false)
+        {
+            _grassWalkingSound.stop();
+        }
+
+        _isWalking = false;
     }
 
     void Player::mouseInput(const sf::RenderWindow& window)

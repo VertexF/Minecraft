@@ -5,7 +5,7 @@
 
 namespace acid 
 {
-    void drawElements(GLuint indicesCount);
+    void drawElements(GLuint indicesCount) noexcept;
 }
 
 #endif // !GL_FUNCTIONS_HDR

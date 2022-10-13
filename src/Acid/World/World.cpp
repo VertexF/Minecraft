@@ -6,6 +6,7 @@
 #include "../Source/Camera.h"
 #include "Chunk/Chunk.h"
 #include "../Player/Player.h"
+#include "../Source/Global.h"
 
 namespace 
 {
@@ -16,8 +17,12 @@ namespace
 namespace acid
 {
     World::World(const Camera& camera, Player& player) :
-        _chunkManager(*this), _loadDistance(2)
+        _chunkManager(*this), _loadDistance(2), _playerSpawnPoint(0.f, 0.f, 0.f)
     {
+        setSpwanPoint();
+        player.position = _playerSpawnPoint;
+        _block.load("Assets/Audio/block_place2.ogg", true, false);
+
         for (int i = 0; i < 2; i++) 
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -252,6 +257,32 @@ namespace acid
     {
         sf::Clock timer;
 
-        //auto h = _chunkManager.get
+        int chunkX = 0;
+        int chunkZ = 0;
+        int blockX = 0;
+        int blockZ = 0;
+        int blockY = 0;
+
+        while (blockY <= WATER_LEVEL) 
+        {
+            _chunkManager.unloadChunk(chunkX, chunkZ);
+            chunkX = RANDOM_GENERATOR.intInRange(100, 200);
+            chunkZ = RANDOM_GENERATOR.intInRange(100, 200);
+            blockX = RANDOM_GENERATOR.intInRange(0, 15);
+            blockZ = RANDOM_GENERATOR.intInRange(0, 15);
+            _chunkManager.loadChunk(chunkX, chunkZ);
+
+            blockY = _chunkManager.getChunk(chunkX, chunkZ).getHeightAt(blockX, blockZ);
+        }
+
+        int worldX = chunkX * CHUNK_SIZE + blockX;
+        int worldZ = chunkZ * CHUNK_SIZE + blockZ;
+
+        _playerSpawnPoint = {worldX, blockY, worldZ};
+    }
+
+    void World::playBlockSound() 
+    {
+        _block.play();
     }
 }

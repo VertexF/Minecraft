@@ -18,13 +18,14 @@ namespace acid
     Chunk::Chunk(World& world, const sf::Vector2i& location) : 
         _world(&world), _location(location), _isLoaded(false)
     {
+        _highestBlock.setAll(0);
     }
 
     bool Chunk::makeMesh(const Camera& camera)
     {
         for (int i = 0; i < _chunkSections.size(); i++)
         {
-            if (_chunkSections.at(i)->hasMesh() == false /* && camera.getViewFrustum().isBoxInFrustum(_chunkSections.at(i)->getCurrentAABB())*/)
+            if (_chunkSections.at(i)->hasMesh() == false  && camera.getViewFrustum().isBoxInFrustum(_chunkSections.at(i)->getCurrentAABB()))
             {
                 _chunkSections.at(i)->makeMesh();
                 return true;
@@ -56,6 +57,24 @@ namespace acid
 
         int bY = y % CHUNK_SIZE;
         _chunkSections.at(y / CHUNK_SIZE)->setBlock(x, bY, z, block);
+
+        if (y == _highestBlock.get(x, z)) 
+        {
+            auto highBlock = getBlock(x, y--, z);
+            while (highBlock.getData().isOpaque == false) 
+            {
+                highBlock = getBlock(x, y--, z);
+            }
+        }
+        else if (y > _highestBlock.get(x, z)) 
+        {
+            _highestBlock.get(x, z) = y;
+        }
+    }
+
+    int Chunk::getHeightAt(int x, int z)
+    {
+        return _highestBlock.get(x, z);
     }
 
     void Chunk::drawChunks(RenderMaster& renderer, const Camera& camera)
@@ -82,15 +101,14 @@ namespace acid
         return _isLoaded;
     }
 
-    void Chunk::load() 
+    void Chunk::load(TerrianGenerator& generator)
     {
         if (hasLoaded()) 
         {
             return;
         }
 
-        TerrianGenerator gen;
-        gen.generateTerrianFor(*this);
+        generator.generateTerrianFor(*this);
         _isLoaded = true;
     }
 
@@ -163,5 +181,10 @@ namespace acid
         }
 
         return false;
+    }
+
+    const sf::Vector2i& Chunk::getLocation() const
+    { 
+        return _location; 
     }
 }

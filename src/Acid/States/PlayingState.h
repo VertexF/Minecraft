@@ -5,6 +5,8 @@
 #include "../Player/Player.h"
 #include "../Util/FPSCounter.h"
 #include "../World/World.h"
+#include "../Audio/BackgroundMusic.h"
+#include "../Audio/SoundEffects.h"
 
 namespace acid 
 {
@@ -26,6 +28,10 @@ namespace acid
 
         sf::RectangleShape _crossHair;
         sf::Texture _crossHairTexture;
+
+        BackgroundMusic _music;
+        BackgroundMusic _otherMusic;
+        SoundEffects _block;
 
         FPSCounter _fpsCounter;
         World _world;

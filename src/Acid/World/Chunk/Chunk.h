@@ -6,12 +6,14 @@
 
 #include "ChunkSection.h"
 #include "ChunkBase.h"
+#include "../../Util/Array2D.h"
 
 namespace acid 
 {
     class RenderMaster;
     class World;
     class Camera;
+    class TerrianGenerator;
 
     class Chunk : public BaseChunk
     {
@@ -22,16 +24,17 @@ namespace acid
 
         virtual ChunkBlock getBlock(int x, int y, int z) const noexcept override;
         virtual void setBlock(int x, int y, int z, const ChunkBlock& block) override;
+        int getHeightAt(int x, int z);
 
         void drawChunks(RenderMaster& renderer, const Camera& camera);
 
         bool hasLoaded() const noexcept;
-        void load();
+        void load(TerrianGenerator& generator);
 
         ChunkSection& getSection(int index);
         void deleteMeshes();
 
-        const sf::Vector2i& getLocation() const { return _location; }
+        const sf::Vector2i& getLocation() const;
     private:
         void addSection();
         void addSectionsBlockTarget(int blockY);
@@ -40,6 +43,7 @@ namespace acid
         bool outOfBound(int x, int y, int z) const noexcept;
 
         std::vector<std::unique_ptr<ChunkSection>> _chunkSections;
+        Array2D<int, CHUNK_SIZE> _highestBlock;
         sf::Vector2i _location;
         World* _world;
 

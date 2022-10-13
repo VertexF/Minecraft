@@ -16,7 +16,7 @@ namespace acid
         _noiseParameters.roughness = 0.53;
     }
 
-    double NoiseGenerator::getHeight(int x, int z, int chunkX, int chunkZ) const 
+    double NoiseGenerator::getHeight(int x, int z, int chunkX, int chunkZ) const noexcept
     {
         auto newX = (x + (chunkX * CHUNK_SIZE));
         auto newZ = (z + (chunkZ * CHUNK_SIZE));
@@ -44,12 +44,12 @@ namespace acid
         return value > 0 ? value : 1;
     }
 
-    void NoiseGenerator::setParameters(const NoiseParameters& params) 
+    void NoiseGenerator::setParameters(const NoiseParameters& params) noexcept
     {
         _noiseParameters = params;
     }
 
-    double NoiseGenerator::getNoise(int n) const 
+    double NoiseGenerator::getNoise(int n) const noexcept
     {
         n += _seed;
         n = (n << 13) ^ n;
@@ -58,18 +58,18 @@ namespace acid
         return 1.0 - (static_cast<double>(newN) / 1073741824.0);
     }
 
-    double NoiseGenerator::getNoise(double x, double z) const 
+    double NoiseGenerator::getNoise(double x, double z) const noexcept
     {
         return getNoise(x * z + 57);
     }
 
-    double NoiseGenerator::lerp(double a, double b, double z) const 
+    double NoiseGenerator::lerp(double a, double b, double z) const noexcept
     {
         double mu2 = (1 - std::cos(z * 3.14)) / 2;
         return (a * (1 - mu2) + b * mu2);
     }
 
-    double NoiseGenerator::noise(double x, double z) const 
+    double NoiseGenerator::noise(double x, double z) const noexcept
     {
         //This is a cheap way to get the follow of a double.
         auto floorX = static_cast<double>(static_cast<int>(x));

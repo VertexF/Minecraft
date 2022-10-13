@@ -10,9 +10,9 @@ namespace acid
     const Material Material::OAK_LEAF_BLOCK(Material::ID::OAK_LEAF, 99, true, "Oak Leaf Block");
     const Material Material::SAND_BLOCK(Material::ID::SAND, 99, true, "Sand Block");
     const Material Material::CACTUS_BLOCK(Material::ID::CACTUS, 99, true, "Cactus Block");
-    const Material Material::ROSE_FLOWER(Material::ID::OAK_LEAF, 99, true, "Rose");
-    const Material Material::DEAD_SHRUB(Material::ID::SAND, 99, true, "Dead Shrub");
-    const Material Material::TALL_GRASS(Material::ID::CACTUS, 99, true, "Tall Grass");
+    const Material Material::ROSE_FLOWER(Material::ID::ROSE, 99, true, "Rose");
+    const Material Material::DEAD_SHRUB(Material::ID::DEADSHRUB, 99, true, "Dead Shrub");
+    const Material Material::TALL_GRASS(Material::ID::TALLGRASS, 99, true, "Tall Grass");
 
     Material::Material(Material::ID id, int maxStack, bool isBlock, std::string&& name) :
         id(id), maxStackSize(maxStack), isBlock(isBlock), name(std::move(name))

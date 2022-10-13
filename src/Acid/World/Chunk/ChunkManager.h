@@ -7,6 +7,7 @@
 
 #include "../../Maths/Vector2XZ.h"
 #include "Chunk.h"
+#include "../Generation/TerrainGenerator.h"
 
 namespace acid 
 {
@@ -34,6 +35,8 @@ namespace acid
     private:
         std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>> _chunks;
         World* _world;
+
+        TerrianGenerator _terrianGenerator;
     };
 }
 

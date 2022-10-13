@@ -15,6 +15,7 @@
 #include "Chunk/ChunkManager.h"
 #include "Event/IWorldEvent.h"
 #include "Event/PlayerDigEvent.h"
+#include "../Audio/SoundEffects.h"
 
 namespace acid 
 {
@@ -49,6 +50,8 @@ namespace acid
             _events.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
         }
 
+        void playBlockSound();
+
     private:
         void loadChunks(const Camera& camera);
         void updateChunks();
@@ -65,6 +68,7 @@ namespace acid
         std::mutex _genMutex;
 
         glm::vec3 _playerSpawnPoint;
+        SoundEffects _block;
 
         int _loadDistance;
     };
