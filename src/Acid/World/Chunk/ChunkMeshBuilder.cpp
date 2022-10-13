@@ -141,7 +141,7 @@ namespace acid
                     direction.update(x, y, z);
 
                     tryAddFaceToMesh(topFace, data.texTopCoord, position, direction.up, LIGHT_TOP);
-                    if ((_chunkSection->getLocation().y != 0) && (y != 0))
+                    if ((_chunkSection->getLocation().y != 0) || (y != 0))
                     {
                         tryAddFaceToMesh(bottomFace, data.texBottomCoord, position, direction.down, LIGHT_BOT);
                     }

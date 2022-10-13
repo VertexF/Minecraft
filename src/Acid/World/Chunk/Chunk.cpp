@@ -105,6 +105,14 @@ namespace acid
         return *_chunkSections.at(index);
     }
 
+    void Chunk::deleteMeshes()
+    {
+        for (unsigned int i = 0; i < _chunkSections.size(); i++) 
+        {
+            _chunkSections.at(i)->deleteMeshes();
+        }
+    }
+
     void Chunk::addSection() 
     {
         int y = _chunkSections.size();

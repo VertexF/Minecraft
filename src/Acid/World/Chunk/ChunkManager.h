@@ -29,6 +29,8 @@ namespace acid
 
         void loadChunk(int x, int z);
         void unloadChunk(int x, int z);
+
+        void deleteMeshes();
     private:
         std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>> _chunks;
         World* _world;

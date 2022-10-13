@@ -105,6 +105,17 @@ namespace acid
         return _meshes;
     }
 
+    void ChunkSection::deleteMeshes()
+    {
+        if (_hasMesh) 
+        {
+            _hasBufferedMesh = false;
+            _hasMesh = false;
+            _meshes.solidMesh.deleteData();
+            _meshes.waterMesh.deleteData();
+        }
+    }
+
     sf::Vector3i ChunkSection::toWorldPosition(int x, int y, int z) const
     {
         return

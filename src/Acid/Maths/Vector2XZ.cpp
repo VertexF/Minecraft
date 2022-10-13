@@ -4,6 +4,11 @@ namespace acid
 {
     bool operator==(const VectorXZ& lhs, const VectorXZ& rhs) noexcept
     {
+        if (&rhs == nullptr) 
+        {
+            return false;
+        }
+
         return (lhs.x == rhs.x && lhs.z == rhs.z);
     }
 

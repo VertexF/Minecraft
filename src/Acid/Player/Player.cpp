@@ -8,7 +8,9 @@
 namespace acid 
 {
     Player::Player() : _isOnGround(false),
-        Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}), _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up), _speed(0.25f), _acceleration(0, 0, 0)
+        Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}),
+        _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up), 
+        _speed(0.25f), _isFlying(false), _acceleration(0, 0, 0)
     {
         if (font.loadFromFile("Assets/Fonts/rs.ttf") == false)
         {
@@ -82,11 +84,11 @@ namespace acid
 
     void Player::collide(World& world, const glm::vec3& vel, float dt)
     {
-        for (int x = position.x - position.x; x < position.x + box.dimension.x; x++)
+        for (int x = position.x - box.dimension.x; x < position.x + box.dimension.x; x++)
         {
             for (int y = position.y - box.dimension.y; y < position.y + 0.7; y++)
             {
-                for (int z = position.z - box.dimension.y; z < position.z + box.dimension.z; z++)
+                for (int z = position.z - box.dimension.z; z < position.z + box.dimension.z; z++)
                 {
                     auto block = world.getBlock(x, y, z);
 
@@ -185,8 +187,14 @@ namespace acid
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {
-            _acceleration.x += -glm::cos(glm::radians(rotation.y + 90)) * _speed;
-            _acceleration.z += -glm::sin(glm::radians(rotation.y + 90)) * _speed;
+            float newSpeed = _speed;
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+            {
+                newSpeed *= 5;
+            }
+
+            _acceleration.x += -glm::cos(glm::radians(rotation.y + 90)) * newSpeed;
+            _acceleration.z += -glm::sin(glm::radians(rotation.y + 90)) * newSpeed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
@@ -208,15 +216,15 @@ namespace acid
         {
             jump();
         }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && _isFlying)
         {
-            _acceleration.y -= _speed;
+            _acceleration.y -= _speed * 3;
         }
     }
 
     void Player::mouseInput(const sf::RenderWindow& window)
     {
-        static auto const BOUND = 80;
+        static auto const BOUND = 89.9999;
         static auto lastMousePosition = sf::Mouse::getPosition(window);
         auto change = sf::Mouse::getPosition() - lastMousePosition;
 

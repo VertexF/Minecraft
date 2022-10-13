@@ -70,4 +70,12 @@ namespace acid
     {
         //Save to a file or something.
     }
+
+    void ChunkManager::deleteMeshes()
+    {
+        for (auto& chunk : _chunks) 
+        {
+            chunk.second.deleteMeshes();
+        }
+    }
 }

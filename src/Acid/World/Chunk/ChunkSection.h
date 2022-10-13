@@ -62,6 +62,8 @@ namespace acid
         AABB getCurrentAABB() const;
 
         const ChunkMeshCollection& getMeshes() const;
+
+        void deleteMeshes();
     private:
         sf::Vector3i toWorldPosition(int x, int y, int z) const;
 

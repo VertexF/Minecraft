@@ -29,6 +29,7 @@ namespace acid
         void load();
 
         ChunkSection& getSection(int index);
+        void deleteMeshes();
 
         const sf::Vector2i& getLocation() const { return _location; }
     private:

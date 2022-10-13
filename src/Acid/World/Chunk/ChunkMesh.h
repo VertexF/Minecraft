@@ -24,6 +24,8 @@ namespace acid
         int getTotalFaces() const;
 
         bool isXMesh() const;
+
+        void deleteData();
     private:
         Mesh _mesh;
         Model _model;

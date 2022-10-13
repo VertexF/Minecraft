@@ -5,6 +5,9 @@
 #include <set>
 #include <memory>
 #include <unordered_map>
+#include <thread>
+#include <mutex>
+#include <atomic>
 
 #include "../Maths/Vector2XZ.h"
 #include "Chunk/ChunkBase.h"
@@ -18,12 +21,13 @@ namespace acid
     class RenderMaster;
     class Camera;
     struct Entity;
+    class Player;
 
     class World
     {
     public:
-        World(const Camera& camera);
-        ~World() = default;
+        World(const Camera& camera, Player& player);
+        ~World();
 
         ChunkBlock getBlock(int x, int y, int z);
         void setBlock(int x, int y, int z, const ChunkBlock& block);
@@ -49,9 +53,18 @@ namespace acid
         void loadChunks(const Camera& camera);
         void updateChunks();
 
+        void setSpwanPoint();
+
         std::vector<std::unique_ptr<IWorldEvent>> _events;
         std::unordered_map<sf::Vector3i, ChunkSection*, hash<sf::Vector3i>> _chunkUpdates;
         ChunkManager _chunkManager;
+
+        std::atomic<bool> _isRunning{true};
+        std::vector<std::thread> _chunkLoadThreads;
+        std::mutex _mutex;
+        std::mutex _genMutex;
+
+        glm::vec3 _playerSpawnPoint;
 
         int _loadDistance;
     };

@@ -5,6 +5,7 @@
 #include "../Renderer/RenderMaster.h"
 #include "../Source/Camera.h"
 #include "Chunk/Chunk.h"
+#include "../Player/Player.h"
 
 namespace 
 {
@@ -14,9 +15,29 @@ namespace
 
 namespace acid
 {
-    World::World(const Camera& camera) :
+    World::World(const Camera& camera, Player& player) :
         _chunkManager(*this), _loadDistance(2)
     {
+        for (int i = 0; i < 2; i++) 
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            _chunkLoadThreads.emplace_back([&]()
+            {
+                while (_isRunning)
+                {
+                    loadChunks(camera);
+                }
+            });
+        }
+    }
+
+    World::~World() 
+    {
+        _isRunning = false;
+        for (auto& thread : _chunkLoadThreads) 
+        {
+            thread.join();
+        }
     }
 
     ChunkBlock World::getBlock(int x, int y, int z)
@@ -37,6 +58,16 @@ namespace acid
 
     void World::update(const Camera& camera)
     {
+        static ToggleKey key(sf::Keyboard::C);
+
+        if (key.isKeyPressed()) 
+        {
+            _mutex.lock();
+            _chunkManager.deleteMeshes();
+            _loadDistance = 2;
+            _mutex.unlock();
+        }
+
         for (auto& event : _events)
         {
             event->handle(*this);
@@ -44,11 +75,11 @@ namespace acid
         _events.clear();
 
         updateChunks();
-        loadChunks(camera);
     }
 
     void World::updateChunk(int blockX, int blockY, int blockZ)
     {
+        _mutex.lock();
         auto addChunkToUpdateBatch = [&](const sf::Vector3i& key, ChunkSection& section) 
         {
             _chunkUpdates.emplace(key, &section);
@@ -95,10 +126,12 @@ namespace acid
             sf::Vector3i newKey(chunkPosition.x, chunkY, chunkPosition.z + 1);
             addChunkToUpdateBatch(newKey, _chunkManager.getChunk(newKey.x, newKey.z).getSection(newKey.y));
         }
+        _mutex.unlock();
     }
 
     void World::renderWorld(RenderMaster& master, const Camera& camera)
     {
+        _mutex.lock();
         master.drawSky();
 
         std::unordered_map<VectorXZ, Chunk, hash<VectorXZ>>& chunkMap = _chunkManager.getChunks();
@@ -128,6 +161,7 @@ namespace acid
                 iterator++;
             }
         }
+        _mutex.unlock();
     }
 
     ChunkManager& World::getChunkManager() 
@@ -165,7 +199,8 @@ namespace acid
 
         for (int i = 0; i < _loadDistance; i++)
         {
-            int minX = std::max(cameraX - i, 0);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1))
+                ;            int minX = std::max(cameraX - i, 0);
             int minZ = std::max(cameraZ - i, 0);
             int maxX = cameraX + i;
             int maxZ = cameraZ + i;
@@ -174,17 +209,15 @@ namespace acid
             {
                 for (int z = minZ; z < maxZ; z++)
                 {
-                    if (_chunkManager.makeMesh(x, z, camera))
-                    {
-                        isMeshMade = true;
-                        break;
-                    }
+                    _mutex.lock();
+                    isMeshMade = _chunkManager.makeMesh(x, z, camera);
+                    _mutex.unlock();
                 }
 
-                if (isMeshMade)
-                {
-                    break;
-                }
+                //if (isMeshMade)
+                //{
+                //    break;
+                //}
             }
 
             if (isMeshMade)
@@ -205,11 +238,20 @@ namespace acid
 
     void World::updateChunks() 
     {
+        _mutex.lock();
         for (auto& newChunk : _chunkUpdates)
         {
             ChunkSection& section = *newChunk.second;
             section.makeMesh();
         }
         _chunkUpdates.clear();
+        _mutex.unlock();
+    }
+
+    void World::setSpwanPoint() 
+    {
+        sf::Clock timer;
+
+        //auto h = _chunkManager.get
     }
 }

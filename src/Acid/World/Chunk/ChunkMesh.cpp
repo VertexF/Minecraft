@@ -73,4 +73,9 @@ namespace acid
     {
         return _isXMesh;
     }
+
+    void ChunkMesh::deleteData()
+    {
+        _model.deleteData();
+    }
 }

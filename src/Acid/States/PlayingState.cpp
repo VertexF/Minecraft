@@ -14,7 +14,7 @@
 namespace acid 
 {
     StatePlaying::StatePlaying(Application& app) :
-        StateBase(app), _world(app.getCamera())
+        StateBase(app), _world(app.getCamera(), _player)
     {
         app.getCamera().hookEntity(_player);
 

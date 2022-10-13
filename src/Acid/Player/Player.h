@@ -42,6 +42,7 @@ namespace acid
         ToggleKey _itemUp;
 
         bool _isOnGround;
+        bool _isFlying;
         int _heldItem;
         float _speed;
 
