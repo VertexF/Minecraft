@@ -214,10 +214,10 @@ namespace acid
                     _mutex.unlock();
                 }
 
-                //if (isMeshMade)
-                //{
-                //    break;
-                //}
+                if (isMeshMade)
+                {
+                    break;
+                }
             }
 
             if (isMeshMade)

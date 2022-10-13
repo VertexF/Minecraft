@@ -179,7 +179,7 @@ namespace acid
         if (_isOnGround) 
         {
             _isOnGround = false;
-            _acceleration.y += _speed * 50;
+            _acceleration.y += _speed * 60;
         }
     }
 

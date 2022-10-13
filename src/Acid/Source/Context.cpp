@@ -24,8 +24,8 @@ namespace acid
             throw std::runtime_error("Failed to set window to active");
         }
 
-        glewInit();
         glewExperimental = GL_TRUE;
+        glewInit();
         glViewport(0, 0, 1280, 720);
 
         glCullFace(GL_BACK);

@@ -23,7 +23,7 @@ namespace acid
             throw std::runtime_error("Could not load the cross hair texture.");
         }
         _crossHair.setTexture(&_crossHairTexture);
-        _crossHair.setSize({21, 21});
+        _crossHair.setSize({22, 22});
         _crossHair.setOrigin({ _crossHair.getGlobalBounds().width / 2, _crossHair.getGlobalBounds().height / 2 });
         sf::Vector2f position(_application->getWindow().getSize().x / 2, _application->getWindow().getSize().y / 2);
         _crossHair.setPosition(position);
