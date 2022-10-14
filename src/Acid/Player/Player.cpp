@@ -200,18 +200,21 @@ namespace acid
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
+            _grassWalkingSound.play();
             _isWalking = true;
             _acceleration.x += glm::cos(glm::radians(rotation.y + 90)) * _speed;
             _acceleration.z += glm::sin(glm::radians(rotation.y + 90)) * _speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
+            _grassWalkingSound.play();
             _isWalking = true;
             _acceleration.x += -glm::cos(glm::radians(rotation.y)) * _speed;
             _acceleration.z += -glm::sin(glm::radians(rotation.y)) * _speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
+            _grassWalkingSound.play();
             _isWalking = true;
             _acceleration.x += glm::cos(glm::radians(rotation.y)) * _speed;
             _acceleration.z += glm::sin(glm::radians(rotation.y)) * _speed;

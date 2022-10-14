@@ -11,7 +11,6 @@ namespace acid
             throw std::runtime_error("Cannot find background music file.");
         }
 
-        _music.setLoop(true);
     }
 
     void BackgroundMusic::play() 

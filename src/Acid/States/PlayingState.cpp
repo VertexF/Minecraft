@@ -93,7 +93,7 @@ namespace acid
         _player.update(deltaTime, _world);
         //_fpsCounter.update();
 
-        if (RANDOM_GENERATOR.intInRange(0, 25000) == 5) 
+        if (RANDOM_GENERATOR.intInRange(0, 7000) == 5) 
         {
             if (_otherMusic.isPlaying() == false)
             {
@@ -101,7 +101,7 @@ namespace acid
             }
         }
 
-        if (RANDOM_GENERATOR.intInRange(0, 25000) == 6)
+        if (RANDOM_GENERATOR.intInRange(0, 7000) == 6)
         {
             if (_music.isPlaying() == false)
             {

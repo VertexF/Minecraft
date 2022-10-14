@@ -4,7 +4,7 @@ namespace acid
 {
     bool operator==(const VectorXZ& lhs, const VectorXZ& rhs) noexcept
     {
-        if (&rhs == nullptr) 
+        if (&rhs.z == nullptr || &rhs.x == nullptr || &rhs == nullptr)
         {
             return false;
         }
