@@ -12,7 +12,6 @@ namespace acid
 {
     CubeRenderer::CubeRenderer() : _textureAtlas("DefaultPack")
     {
-        _basicTexture.loadFromFile("Test");
 
         std::vector<GLfloat> vertexCoords
         {

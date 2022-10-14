@@ -9,7 +9,6 @@ namespace acid
 {
     QuadRenderer::QuadRenderer() 
     {
-        _basicTexture.loadFromFile("Test");
 
         _quadModel.addData({
             {
