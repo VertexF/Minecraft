@@ -26,6 +26,8 @@ namespace acid
         position = _entity->position;
         rotation = _entity->rotation;
 
+        position.y += 0.4;
+
         _viewMatrix = makeViewMatrix(*this);
         _projViewMatrix = _projectionMatrix * _viewMatrix;
         _viewFrustum.update(_projViewMatrix);

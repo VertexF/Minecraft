@@ -11,6 +11,7 @@ namespace acid
     Application::Application(std::string&& title) 
     {
         BLOCK_DATABASE;
+        RANDOM_GENERATOR;
         pushState<StatePlaying>(*this);
     }
 

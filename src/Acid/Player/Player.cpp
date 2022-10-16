@@ -8,7 +8,7 @@
 namespace acid 
 {
     Player::Player() : _isOnGround(false),
-        Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.5, 1.5, 0.5}),
+        Entity({ 1500.f, 125.f, 1500.f }, { 0, 0, 0 }, {0.4, 1.2, 0.4}),
         _heldItem(0), _itemDown(sf::Keyboard::Down), _itemUp(sf::Keyboard::Up), 
         _speed(0.25f), _isFlying(false), _isWalking(false), _acceleration(0, 0, 0)
     {

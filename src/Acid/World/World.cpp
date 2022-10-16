@@ -63,16 +63,6 @@ namespace acid
 
     void World::update(const Camera& camera)
     {
-        static ToggleKey key(sf::Keyboard::C);
-
-        if (key.isKeyPressed()) 
-        {
-            _mutex.lock();
-            _chunkManager.deleteMeshes();
-            _loadDistance = 2;
-            _mutex.unlock();
-        }
-
         for (auto& event : _events)
         {
             event->handle(*this);
@@ -257,8 +247,8 @@ namespace acid
     {
         sf::Clock timer;
 
-        int chunkX = 0;
-        int chunkZ = 0;
+        int chunkX = -1;
+        int chunkZ = -1;
         int blockX = 0;
         int blockZ = 0;
         int blockY = 0;
